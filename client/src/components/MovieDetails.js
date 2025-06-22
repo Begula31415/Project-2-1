@@ -68,7 +68,7 @@ const MovieDetails = () => {
 
   // Dummy data for now
   const [movie, setMovie] = useState({
-    title: "Movie",
+    title: "Movie Title",
     year: "2024",
     rating: 8.5,
     genre: "Drama, Thriller",
