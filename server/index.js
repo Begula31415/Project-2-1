@@ -6,6 +6,7 @@ const pool = require("./db");
 //middleware
 app.use(cors());
 app.use(express.json()); //req.body
+const { hashPassword, comparePassword } = require('./utils/password');
 
 
 //ROUTES
@@ -50,13 +51,14 @@ app.post("/signup", async (req, res) => {
       }
     }
 
+    const hashedPassword = await hashPassword(password_hash);
     // Insert into users
     const newUser = await pool.query(
       `INSERT INTO users 
       (name, created_at, email, username, password_hash, bio, birth_date, location, role)
       VALUES ($1, CURRENT_TIMESTAMP, $2, $3, $4, $5, $6, $7, $8)
       RETURNING user_id`,
-      [name, email, username, password_hash, bio, birth_date, location, role]
+      [name, email, username, hashedPassword, bio, birth_date, location, role]
     );
 
     const userId = newUser.rows[0].user_id;
@@ -83,13 +85,13 @@ app.post("/signup", async (req, res) => {
 
 // SIGNIN ROUTE
 app.post("/signin", async (req, res) => {
-  const { username, password_hash, role } = req.body;
+  const { username, password_hash, role } = req.body; // password_hash is plain password from frontend
 
   try {
-    // Find user by username and password
+    // Find user by username and role
     const userResult = await pool.query(
-      "SELECT * FROM users WHERE username = $1 AND password_hash = $2 AND role = $3",
-      [username, password_hash, role]
+      "SELECT * FROM users WHERE username = $1 AND role = $2",
+      [username, role]
     );
 
     if (userResult.rows.length === 0) {
@@ -97,6 +99,11 @@ app.post("/signin", async (req, res) => {
     }
 
     const user = userResult.rows[0];
+
+    const isMatch = await comparePassword(password_hash, user.password_hash);
+    if (!isMatch) {
+      return res.status(401).json({ error: "Invalid credentials or role" });
+    }
 
     // Optional: Send role-specific data
     if (role === "admin") {
