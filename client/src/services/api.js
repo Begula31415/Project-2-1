@@ -44,6 +44,74 @@ export const signUp = async (signUpData) => {
   }
 };
 
+// ==================== FILMFUSION API UPDATES START ====================
+
+// Get top rated movies (for trending section)
+export const getTopRatedMovies = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/movies/top-rated`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Get top rated movies error:', error);
+    throw error;
+  }
+};
+
+// Get most viewed movies
+export const getMostViewedMovies = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/movies/most-viewed`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Get most viewed movies error:', error);
+    throw error;
+  }
+};
+
+// Get popular series
+export const getPopularSeries = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/series/popular`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Get popular series error:', error);
+    throw error;
+  }
+};
+
+// Get popular celebrities
+export const getPopularCelebrities = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/celebrities/popular`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Get popular celebrities error:', error);
+    throw error;
+  }
+};
+
+// ==================== FILMFUSION API UPDATES END ====================
+
 // Get movies function
 export const getMovies = async (category = 'all') => {
   try {
