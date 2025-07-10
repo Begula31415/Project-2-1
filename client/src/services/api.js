@@ -44,30 +44,6 @@ export const signUp = async (signUpData) => {
   }
 };
 
-export const getUserDetails = async (userId) => {
-  const response = await fetch(`${API_BASE_URL}/user/${userId}`);
-  return await handleResponse(response);
-};
-
-export const updateProfile = async (userId, data) => {
-  const response = await fetch(`${API_BASE_URL}/user/${userId}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
-  return await handleResponse(response);
-};
-
-export const removeFromWatchlist = async (userId, movieId) => {
-  const response = await fetch(`${API_BASE_URL}/watchlist`, {
-    method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ userId, movieId })
-  });
-  return await handleResponse(response);
-};
-
-
 // Get movies function
 export const getMovies = async (category = 'all') => {
   try {

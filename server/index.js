@@ -6,6 +6,7 @@ const pool = require("./db");
 //middleware
 app.use(cors());
 app.use(express.json()); //req.body
+const { hashPassword, comparePassword } = require('./utils/password');
 
 
 //ROUTES
@@ -50,13 +51,14 @@ app.post("/signup", async (req, res) => {
       }
     }
 
+    const hashedPassword = await hashPassword(password_hash);
     // Insert into users
     const newUser = await pool.query(
       `INSERT INTO users 
       (name, created_at, email, username, password_hash, bio, birth_date, location, role)
       VALUES ($1, CURRENT_TIMESTAMP, $2, $3, $4, $5, $6, $7, $8)
       RETURNING user_id`,
-      [name, email, username, password_hash, bio, birth_date, location, role]
+      [name, email, username, hashedPassword, bio, birth_date, location, role]
     );
 
     const userId = newUser.rows[0].user_id;
@@ -83,13 +85,13 @@ app.post("/signup", async (req, res) => {
 
 // SIGNIN ROUTE
 app.post("/signin", async (req, res) => {
-  const { username, password_hash, role } = req.body;
+  const { username, password_hash, role } = req.body; // password_hash is plain password from frontend
 
   try {
-    // Find user by username and password
+    // Find user by username and role
     const userResult = await pool.query(
-      "SELECT * FROM users WHERE username = $1 AND password_hash = $2 AND role = $3",
-      [username, password_hash, role]
+      "SELECT * FROM users WHERE username = $1 AND role = $2",
+      [username, role]
     );
 
     if (userResult.rows.length === 0) {
@@ -97,6 +99,11 @@ app.post("/signin", async (req, res) => {
     }
 
     const user = userResult.rows[0];
+
+    const isMatch = await comparePassword(password_hash, user.password_hash);
+    if (!isMatch) {
+      return res.status(401).json({ error: "Invalid credentials or role" });
+    }
 
     // Optional: Send role-specific data
     if (role === "admin") {
@@ -123,6 +130,198 @@ app.post("/signin", async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+
+// ==================== FILMFUSION ENDPOINTS START ====================
+
+// Get top rated movies (for trending section)
+app.get("/movies/top-rated", async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT 
+        c.content_id as id,
+        c.title,
+        EXTRACT(YEAR FROM c.release_date) as year,
+        ROUND(AVG(r.score), 1) as rating,
+        c.poster_url as poster,
+        c.description,
+        c.type
+      FROM content c
+      LEFT JOIN rating r ON c.content_id = r.content_id
+      WHERE c.type = 'Movie'
+      GROUP BY c.content_id, c.title, c.release_date, c.poster_url, c.description, c.type
+      HAVING AVG(r.score) IS NOT NULL
+      ORDER BY AVG(r.score) DESC
+      LIMIT 10
+    `);
+
+    res.json({
+      success: true,
+      movies: result.rows
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Get most viewed movies (for top viewed section)
+app.get("/movies/most-viewed", async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT 
+        c.content_id as id,
+        c.title,
+        EXTRACT(YEAR FROM c.release_date) as year,
+        ROUND(AVG(r.score), 1) as rating,
+        c.poster_url as poster,
+        c.description,
+        c.views,
+        c.type
+      FROM content c
+      LEFT JOIN rating r ON c.content_id = r.content_id
+      WHERE c.type = 'Movie'
+      GROUP BY c.content_id, c.title, c.release_date, c.poster_url, c.description, c.views, c.type
+      ORDER BY c.views DESC
+      LIMIT 10
+    `);
+
+    res.json({
+      success: true,
+      movies: result.rows
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Get popular series (for series section)
+app.get("/series/popular", async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT 
+        c.content_id as id,
+        c.title,
+        EXTRACT(YEAR FROM c.release_date) as year,
+        ROUND(AVG(r.score), 1) as rating,
+        c.poster_url as poster,
+        c.description,
+        c.views,
+        c.type,
+        COUNT(s.season_id) as season_count
+      FROM content c
+      LEFT JOIN rating r ON c.content_id = r.content_id
+      LEFT JOIN season s ON c.content_id = s.series_id
+      WHERE c.type = 'Series'
+      GROUP BY c.content_id, c.title, c.release_date, c.poster_url, c.description, c.views, c.type
+      ORDER BY c.views DESC
+      LIMIT 10
+    `);
+
+    res.json({
+      success: true,
+      series: result.rows
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Get popular celebrities (most movies worked in)
+app.get("/celebrities/popular", async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT 
+        c.celebrity_id as id,
+        c.name,
+        c.bio,
+        c.birth_date,
+        c.photo_url as photo,
+        c.place_of_birth,
+        c.gender,
+        COUNT(crc.content_id) as movie_count
+      FROM celebrity c
+      INNER JOIN celebrity_role cr ON c.celebrity_id = cr.celebrity_id
+      INNER JOIN celebrity_role_content crc ON cr.celebrity_role_id = crc.celebrity_role_id
+      INNER JOIN content co ON crc.content_id = co.content_id
+      WHERE co.type = 'Movie'
+      GROUP BY c.celebrity_id, c.name, c.bio, c.birth_date, c.photo_url, c.place_of_birth, c.gender
+      ORDER BY movie_count DESC
+      LIMIT 10
+    `);
+
+    res.json({
+      success: true,
+      celebrities: result.rows
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Generic movies endpoint (for backward compatibility)
+app.get("/movies", async (req, res) => {
+  const { category } = req.query;
+  
+  try {
+    let query;
+    let params = [];
+
+    switch (category) {
+      case 'top-rated':
+        return res.redirect('/movies/top-rated');
+      case 'most-viewed':
+        return res.redirect('/movies/most-viewed');
+      case 'upcoming':
+        // For upcoming movies, we'll get movies with future release dates
+        query = `
+          SELECT 
+            c.content_id as id,
+            c.title,
+            EXTRACT(YEAR FROM c.release_date) as year,
+            null as rating,
+            c.poster_url as poster,
+            c.description,
+            c.type
+          FROM content c
+          WHERE c.type = 'Movie' AND c.release_date > CURRENT_DATE
+          ORDER BY c.release_date ASC
+          LIMIT 10
+        `;
+        break;
+      default:
+        query = `
+          SELECT 
+            c.content_id as id,
+            c.title,
+            EXTRACT(YEAR FROM c.release_date) as year,
+            ROUND(AVG(r.score), 1) as rating,
+            c.poster_url as poster,
+            c.description,
+            c.type
+          FROM content c
+          LEFT JOIN rating r ON c.content_id = r.content_id
+          WHERE c.type = 'Movie'
+          GROUP BY c.content_id, c.title, c.release_date, c.poster_url, c.description, c.type
+          ORDER BY c.release_date DESC
+          LIMIT 10
+        `;
+    }
+
+    const result = await pool.query(query, params);
+    res.json({
+      success: true,
+      movies: result.rows
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ==================== FILMFUSION ENDPOINTS END ====================
 
 app.get("/user/:userId", async (req, res) => {
   const { userId } = req.params;

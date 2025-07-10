@@ -59,55 +59,254 @@
 
 // export default MovieDetails;
 
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+// import React, { useState, useEffect } from 'react';
+// import { useParams } from 'react-router-dom';
 // import './MovieDetails.css';
+
+// const MovieDetails = () => {
+//   const { id } = useParams();
+
+//   // Dummy data for now
+//   const [movie, setMovie] = useState({
+//     title: "Movie Title",
+//     year: "2024",
+//     rating: 8.5,
+//     genre: "Drama, Thriller",
+//     language: "English",
+//     description: "This movie is a suspenseful story about...",
+//     poster: "https://via.placeholder.com/300x450"
+//   });
+
+//   useEffect(() => {
+//     // You could fetch real data based on ID here
+//     console.log("Fetching movie with ID:", id);
+//   }, [id]);
+
+//   return (
+//     <div className="movie-details-container">
+//       <div className="movie-header">
+//         <h1 className="movie-title">{movie.title} <span className="movie-year">({movie.year})</span></h1>
+//         <p className="movie-tagline">A gripping thriller you won’t forget</p>
+//       </div>
+
+//       <div className="movie-content">
+//         <div className="movie-poster">
+//           <img src={movie.poster} alt={movie.title} />
+//         </div>
+//         <div className="movie-info">
+//           <p><strong>IMDb Rating:</strong> ⭐ {movie.rating} / 10</p>
+//           <p><strong>Genre:</strong> {movie.genre}</p>
+//           <p><strong>Language:</strong> {movie.language}</p>
+//           <p><strong>Description:</strong> {movie.description}</p>
+
+//           <div className="movie-buttons">
+//             <button className="btn">Add to Watchlist</button>
+//             <button className="btn">Mark as Watched</button>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default MovieDetails;
+
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import './MovieDetails.css';
 
 const MovieDetails = () => {
   const { id } = useParams();
+  const [photosModalOpen, setPhotosModalOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Replace with real auth
+  const [reviewText, setReviewText] = useState('');
 
-  // Dummy data for now
-  const [movie, setMovie] = useState({
-    title: "Movie Title",
-    year: "2024",
-    rating: 8.5,
-    genre: "Drama, Thriller",
-    language: "English",
-    description: "This movie is a suspenseful story about...",
-    poster: "https://via.placeholder.com/300x450"
-  });
+  const handleAddToWatchlist = () => {
+    if (!isAuthenticated) {
+      alert('Please sign in to add movies to your watchlist');
+      return;
+    }
+    alert('Movie added to watchlist!');
+  };
 
-  useEffect(() => {
-    // You could fetch real data based on ID here
-    console.log("Fetching movie with ID:", id);
-  }, [id]);
+  const handleMarkVisited = () => {
+    if (!isAuthenticated) {
+      alert('Please sign in to mark movies as visited');
+      return;
+    }
+    alert('Movie marked as visited!');
+  };
+
+  const handleRate = () => {
+    if (!isAuthenticated) {
+      alert('Please sign in to rate this movie');
+      return;
+    }
+    const rating = prompt('Rate this movie (1-10):');
+    if (rating && rating >= 1 && rating <= 10) {
+      alert(`You rated this movie ${rating}/10`);
+    }
+  };
+
+  const handleReviewSubmit = (e) => {
+    e.preventDefault();
+    if (!reviewText.trim()) {
+      alert('Please write a review before submitting');
+      return;
+    }
+    alert('Review submitted successfully!');
+    setReviewText('');
+  };
 
   return (
-    <div className="movie-details-container">
-      <div className="movie-header">
-        <h1 className="movie-title">{movie.title} <span className="movie-year">({movie.year})</span></h1>
-        <p className="movie-tagline">A gripping thriller you won’t forget</p>
+    <div className={styles.movieDetailsContainer}>
+      <div style={{ color: '#f5c518', marginBottom: 10 }}>
+        Movie ID from URL: {id}
       </div>
-
-      <div className="movie-content">
-        <div className="movie-poster">
-          <img src={movie.poster} alt={movie.title} />
-        </div>
-        <div className="movie-info">
-          <p><strong>IMDb Rating:</strong> ⭐ {movie.rating} / 10</p>
-          <p><strong>Genre:</strong> {movie.genre}</p>
-          <p><strong>Language:</strong> {movie.language}</p>
-          <p><strong>Description:</strong> {movie.description}</p>
-
-          <div className="movie-buttons">
-            <button className="btn">Add to Watchlist</button>
-            <button className="btn">Mark as Watched</button>
+      {/* Movie Header */}
+      <div className={styles.movieHeader}>
+        <div>
+          <h1 className={styles.movieTitle}>
+            {dummyMovie.title}
+            <span className={styles.movieYear}>({dummyMovie.year})</span>
+          </h1>
+          <div className={styles.ratingSection}>
+            <div className={styles.imdbRating}>
+              <div>
+                <div className={styles.ratingLabel}>IMDb RATING</div>
+                <div className={styles.ratingValue}>
+                  <span className={styles.ratingStars}>★</span>
+                  {dummyMovie.imdbRating}
+                  <span style={{ color: "#999", fontSize: 16 }}>/10</span>
+                </div>
+              </div>
+            </div>
+            <div className={styles.userRating}>
+              <div>
+                <div className={styles.ratingLabel}>YOUR RATING</div>
+                <button className={styles.rateBtn} onClick={handleRate}>★ Rate</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Main Content Grid */}
+      <div className={styles.mainContent}>
+        {/* Movie Poster */}
+        <div className={styles.moviePosterSection}>
+          <div className={styles.moviePoster}>
+            {dummyMovie.poster ? (
+              <img src={dummyMovie.poster} alt="Movie Poster" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            ) : (
+              "Movie Poster"
+            )}
+          </div>
+        </div>
+
+        {/* Center Content */}
+        <div className={styles.centerContent}>
+          {/* Action Buttons */}
+          <div className={styles.actionButtons}>
+            <button className={styles.actionBtn} onClick={handleMarkVisited}>✓ Mark as Visited</button>
+            <button className={`${styles.actionBtn} ${styles.secondary}`} onClick={handleAddToWatchlist}>+ Add to Watchlist</button>
+          </div>
+
+          {/* Plot Section */}
+          <div className={styles.plotSection}>
+            <h2 className={styles.sectionTitle}>Plot</h2>
+            <p className={styles.plotText}>{dummyMovie.plot}</p>
+          </div>
+
+          {/* Movie Details */}
+          <div className={styles.detailsSection}>
+            <h2 className={styles.sectionTitle}>Details</h2>
+            <div className={styles.detailsGrid}>
+              {dummyMovie.details.map((item, idx) => (
+                <div className={styles.detailItem} key={idx}>
+                  <span className={styles.detailLabel}>{item.label}</span>
+                  <span className={styles.detailValue}>{item.value}</span>
+                </div>
+              ))}
+            </div>
+            {/* Cast Section */}
+            <div style={{ marginTop: 30 }}>
+              <h3 className={styles.sectionTitle}>Cast</h3>
+              <div className={styles.castList}>
+                {dummyMovie.cast.map((actor, idx) => (
+                  <span className={styles.castMember} key={idx}>{actor}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Sidebar */}
+        <div className={styles.trailerSection}>
+          <h2 className={styles.sectionTitle}>Trailer</h2>
+          <div className={styles.trailerPlaceholder}>🎬 Movie Trailer</div>
+          <div className={styles.photosCard} onClick={() => setPhotosModalOpen(true)}>
+            <div className={styles.photosIcon}>📸</div>
+            <div>Photos</div>
+            <div style={{ fontSize: 12, color: "#999" }}>View all images</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Reviews Section */}
+      <div className={styles.reviewsSection}>
+        <h2 className={styles.sectionTitle}>User Reviews</h2>
+        {/* Review Form or Prompt */}
+        {isAuthenticated ? (
+          <form className={styles.reviewForm} onSubmit={handleReviewSubmit}>
+            <textarea
+              className={styles.reviewTextarea}
+              placeholder="Write your review here..."
+              value={reviewText}
+              onChange={e => setReviewText(e.target.value)}
+            />
+            <button className={styles.reviewSubmit} type="submit">Submit Review</button>
+          </form>
+        ) : (
+          <div className={styles.guestLoginPrompt}>
+            <p style={{ color: "#999", marginBottom: 10 }}>Sign in to write a review</p>
+            <button className={styles.loginPromptBtn} onClick={() => alert('Redirecting to sign in page...')}>Sign In to Review</button>
+          </div>
+        )}
+
+        {/* Existing Reviews */}
+        <div className={styles.existingReviews}>
+          {dummyMovie.reviews.map((review, idx) => (
+            <div className={styles.reviewItem} key={idx}>
+              <div className={styles.reviewHeader}>
+                <span className={styles.reviewerName}>{review.name}</span>
+                <span className={styles.reviewRating}>
+                  {"★".repeat(Math.round(review.rating / 2))} {review.rating}/10
+                </span>
+                <span className={styles.reviewDate}>{review.date}</span>
+              </div>
+              <p className={styles.reviewText}>{review.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Photos Modal */}
+      {photosModalOpen && (
+        <div className={styles.photosModal} onClick={e => { if (e.target.className === styles.photosModal) setPhotosModalOpen(false); }}>
+          <div className={styles.photosModalContent}>
+            <span className={styles.close} onClick={() => setPhotosModalOpen(false)}>&times;</span>
+            <h2 className={styles.sectionTitle}>{dummyMovie.title} - Photos</h2>
+            <div className={styles.photosGrid}>
+              {dummyMovie.photos.map((photo, idx) => (
+                <div className={styles.photoItem} key={idx}>{photo}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default MovieDetails;
-
