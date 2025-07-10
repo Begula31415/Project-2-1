@@ -65,11 +65,14 @@ const AuthPage = ({ mode, onClose, onAuthSuccess, onSwitchMode }) => {
     }));
   };
 
+
+  //Closes the modal when you click outside the form area.
   const handleModalClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
   };
+
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -126,6 +129,7 @@ const AuthPage = ({ mode, onClose, onAuthSuccess, onSwitchMode }) => {
     }
   };
 
+  
   const renderSignInForm = () => (
     <form onSubmit={handleSignIn}>
       <div className="form-group">

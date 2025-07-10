@@ -1,3 +1,4 @@
+//this file working as middle ware between the client and the backend API
 const API_BASE_URL = 'http://localhost:5000';
 
 // Helper function to handle API responses
@@ -42,6 +43,30 @@ export const signUp = async (signUpData) => {
     throw error;
   }
 };
+
+export const getUserDetails = async (userId) => {
+  const response = await fetch(`${API_BASE_URL}/user/${userId}`);
+  return await handleResponse(response);
+};
+
+export const updateProfile = async (userId, data) => {
+  const response = await fetch(`${API_BASE_URL}/user/${userId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  return await handleResponse(response);
+};
+
+export const removeFromWatchlist = async (userId, movieId) => {
+  const response = await fetch(`${API_BASE_URL}/watchlist`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userId, movieId })
+  });
+  return await handleResponse(response);
+};
+
 
 // Get movies function
 export const getMovies = async (category = 'all') => {
@@ -123,6 +148,70 @@ export const getWatchlist = async (userId) => {
     throw error;
   }
 };
+
+//addMovie function for admin to add new movies
+export const addMovie = async (movieData) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/movies`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(movieData),
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Add movie error:', error);
+    throw error;
+  }
+};
+
+
+
+// Add these at the end or export them in your existing export block
+
+export const addCelebrity = async (data) => {
+  // Replace with actual API call
+  return fetch('/api/celebrities', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+};
+
+export const addAward = async (data) => {
+  // Replace with actual API call
+  return fetch('/api/awards', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+};
+
+export const getCelebrities = async () => {
+  // Replace with real API
+  const res = await fetch('/api/celebrities');
+  return await res.json();
+};
+
+export const getAwards = async () => {
+  // Replace with real API
+  const res = await fetch('/api/awards');
+  return await res.json();
+};
+
+export const deleteContentById = async (id) => {
+  return fetch(`/api/content/${id}`, { method: 'DELETE' });
+};
+
+export const deleteCelebrityById = async (id) => {
+  return fetch(`/api/celebrities/${id}`, { method: 'DELETE' });
+};
+
+export const deleteAwardById = async (id) => {
+  return fetch(`/api/awards/${id}`, { method: 'DELETE' });
+};
+
 
 // Add these functions for movie details functionality
 
