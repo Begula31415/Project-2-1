@@ -26,7 +26,7 @@ export const signIn = async (signInData) => {
   }
 };
 
-// Sign up function
+// Sign up function 
 export const signUp = async (signUpData) => {
   try {
     const response = await fetch(`${API_BASE_URL}/signup`, {
