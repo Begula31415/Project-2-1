@@ -1,5 +1,6 @@
 // db.js
 const { Pool } = require('pg');
+//Imports the Pool class from the pg library (PostgreSQL client for Node.js)A Pool manages multiple database connections efficiently
 
 const pool = new Pool({
   connectionString: 'postgresql://neondb_owner:npg_VwHRAkxd0ST1@ep-wild-sun-a847eqq8-pooler.eastus2.azure.neon.tech/neondb?sslmode=require',

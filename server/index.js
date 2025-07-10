@@ -323,6 +323,117 @@ app.get("/movies", async (req, res) => {
 
 // ==================== FILMFUSION ENDPOINTS END ====================
 
+app.get("/user/:userId", async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const userResult = await pool.query(
+      "SELECT * FROM users WHERE user_id = $1",
+      [userId]
+    );
+
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const user = userResult.rows[0];
+
+    if (user.role === "admin") {
+      const adminData = await pool.query(
+        "SELECT phone, official_mail FROM admin WHERE user_id = $1",
+        [userId]
+      );
+      user.phone = adminData.rows[0]?.phone;
+      user.official_mail = adminData.rows[0]?.official_mail;
+    } else {
+      const userData = await pool.query(
+        "SELECT profile_picture_url FROM registered_user WHERE user_id = $1",
+        [userId]
+      );
+      user.profile_picture_url = userData.rows[0]?.profile_picture_url;
+    }
+
+    res.status(200).json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+ 
+app.put("/user/:userId", async (req, res) => {
+  const { userId } = req.params;
+  const { username, bio, profile_picture_url } = req.body;
+
+  try {
+    await pool.query(
+      "UPDATE users SET username = $1, bio = $2 WHERE user_id = $3",
+      [username, bio, userId]
+    );
+
+    await pool.query(
+      "UPDATE registered_user SET profile_picture_url = $1 WHERE user_id = $2",
+      [profile_picture_url, userId]
+    );
+
+    res.status(200).json({ message: "Profile updated successfully" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
+
+app.delete("/watchlist", async (req, res) => {
+  const { userId, movieId } = req.body;
+
+  try {
+    await pool.query(
+      "DELETE FROM watchlist WHERE user_id = $1 AND movie_id = $2",
+      [userId, movieId]
+    );
+
+    res.status(200).json({ message: "Movie removed from watchlist" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error" );
+  }
+});
+
+
+// Add new content (movie, series, documentary) by admin
+app.post("/movies", async (req, res) => {
+  const {
+    title, description, release_date, language_id, type, duration,
+    poster_url, trailer_url, budget, box_office_collection,
+    currency_code, min_age
+  } = req.body;
+
+  const views = req.body.views || 0; // default value
+
+  if (!title || !release_date || !type) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  try {
+    const result = await pool.query(
+      `INSERT INTO content
+       (title, description, release_date, language_id, type, duration, poster_url, trailer_url,
+        budget, box_office_collection, currency_code, min_age, views)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+       RETURNING content_id`,
+      [title, description, release_date, language_id, type, duration,
+       poster_url, trailer_url, budget, box_office_collection,
+       currency_code, min_age, views]
+    );
+
+    res.status(201).json({ message: "Content added successfully", contentId: result.rows[0].content_id });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
+
 
 app.listen(5000, () => {
   console.log("Server has started on port 5000");
