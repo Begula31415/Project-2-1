@@ -419,3 +419,11 @@ FROM (
     GROUP BY content_id
 ) cv
 WHERE c.content_id = cv.content_id;
+
+CREATE TABLE user_fav_celeb (
+  user_fav_celeb_id SERIAL PRIMARY KEY,
+  registered_user_id INT REFERENCES registered_user(registered_user_id) ON DELETE CASCADE,
+  celebrity_id INT REFERENCES celebrity(celebrity_id) ON DELETE CASCADE,
+  added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT unique_user_celebrity_fav UNIQUE (registered_user_id, celebrity_id)
+);
