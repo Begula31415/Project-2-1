@@ -93,7 +93,7 @@ import ScrollAnimatedSection from './ScrollAnimatedSection';
 
 // ==================== FILMFUSION UPDATE START ====================
 // Updated to handle series data and isSeriesSection prop
-const MovieSection = ({ title, movies, onMovieClick, isSeriesSection = false }) => {
+const MovieSection = ({ title, movies, onMovieClick,onRemove, isSeriesSection = false }) => {
 // ==================== FILMFUSION UPDATE END ====================
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -118,7 +118,7 @@ const MovieSection = ({ title, movies, onMovieClick, isSeriesSection = false }) 
     }
   };
 
-  const MovieCard = ({ movie }) => (
+  const MovieCard = ({ movie,  /* new changesss hereeeeeeee */onRemove }) => (
     <motion.div 
       className="movie-card"
       variants={cardVariants}
@@ -181,6 +181,51 @@ const MovieSection = ({ title, movies, onMovieClick, isSeriesSection = false }) 
           </div>
         )}
         {/* ==================== FILMFUSION UPDATE END ==================== */}
+        
+        {/* Show remove button if onRemove is passed 
+        new start is hereeeeeeeeeee   eeeeeee */}
+
+        {onRemove && (
+
+          <div className="movie-remove">
+
+            <button
+
+              onClick={(e) =>{e.stopPropagation();
+                  onRemove(movie.id)}}
+
+              className="remove-button"
+
+              style={{
+
+                marginTop: '0.5rem',
+
+                backgroundColor: '#ef4444',
+
+                color: 'white',
+
+                padding: '0.4rem 0.8rem',
+
+                borderRadius: '6px',
+
+                border: 'none',
+
+                cursor: 'pointer',
+
+                fontSize: '0.85rem'
+
+              }}
+
+            >
+
+              Remove
+
+            </button>
+
+          </div>
+
+        )}
+        {/* new end is hereeeeeeeeeee   eeeeeee */}
       </div>
     </motion.div>
   );
@@ -197,7 +242,7 @@ const MovieSection = ({ title, movies, onMovieClick, isSeriesSection = false }) 
           viewport={{ once: true, margin: "-100px" }}
         >
           {movies.map(movie => (
-            <MovieCard key={movie.id} movie={movie} />
+            <MovieCard key={movie.id} movie={movie}/*  also made changes hereeeeeeeeeeee */ onRemove={onRemove} />
           ))}
         </motion.div>
       </section>

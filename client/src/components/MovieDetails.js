@@ -1,312 +1,223 @@
-// import React, { useState } from 'react';
-// import { useParams } from 'react-router-dom';
-// import styles from './MovieDetails.module.css';
-
-// const dummyMovie = {
-//   title: "The Dark Knight",
-//   year: 2008,
-//   imdbRating: 9.0,
-//   plot: `When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets. The partnership proves to be effective, but they soon find themselves prey to a reign of chaos unleashed by a rising criminal mastermind known to the terrified citizens of Gotham as the Joker.`,
-//   details: [
-//     { label: "Release Date", value: "July 18, 2008" },
-//     { label: "Duration", value: "152 minutes" },
-//     { label: "Language", value: "English" },
-//     { label: "Type", value: "Movie" },
-//     { label: "Director", value: "Christopher Nolan" },
-//     { label: "Writers", value: "Jonathan Nolan, Christopher Nolan" },
-//     { label: "Budget", value: "$185 million" },
-//     { label: "Box Office", value: "$1.005 billion" },
-//     { label: "Age Rating", value: "PG-13" },
-//     { label: "Country", value: "United States" },
-//     { label: "Awards", value: "2 Oscars, 159 wins & 163 nominations" },
-//     { label: "Views", value: "2,450,738" }
-//   ],
-//   cast: [
-//     "Christian Bale", "Heath Ledger", "Aaron Eckhart", "Michael Caine",
-//     "Maggie Gyllenhaal", "Gary Oldman", "Morgan Freeman"
-//   ],
-//   reviews: [
-//     {
-//       name: "MovieBuff2024",
-//       rating: 10,
-//       date: "January 15, 2024",
-//       text: "Christopher Nolan's masterpiece continues to amaze me every time I watch it. Heath Ledger's performance as the Joker is absolutely phenomenal and deserved every accolade it received. The cinematography, the story, the acting - everything is just perfect."
-//     },
-//     {
-//       name: "CinemaLover",
-//       rating: 9,
-//       date: "December 28, 2023",
-//       text: "One of the best superhero movies ever made. The moral complexity and psychological depth set it apart from typical comic book adaptations. A must-watch for any film enthusiast."
-//     }
-//   ],
-//   poster: null,
-//   trailer: null,
-//   photos: Array.from({ length: 8 }, (_, i) => `Photo ${i + 1}`)
-// };
-
-// const MovieDetails = () => {
-//   const { id } = useParams();
-//   const [photosModalOpen, setPhotosModalOpen] = useState(false);
-//   const [isAuthenticated, setIsAuthenticated] = useState(false); // Replace with real auth
-//   const [reviewText, setReviewText] = useState('');
-
-//   const handleAddToWatchlist = () => {
-//     if (!isAuthenticated) {
-//       alert('Please sign in to add movies to your watchlist');
-//       return;
-//     }
-//     alert('Movie added to watchlist!');
-//   };
-
-//   const handleMarkVisited = () => {
-//     if (!isAuthenticated) {
-//       alert('Please sign in to mark movies as visited');
-//       return;
-//     }
-//     alert('Movie marked as visited!');
-//   };
-
-//   const handleRate = () => {
-//     if (!isAuthenticated) {
-//       alert('Please sign in to rate this movie');
-//       return;
-//     }
-//     const rating = prompt('Rate this movie (1-10):');
-//     if (rating && rating >= 1 && rating <= 10) {
-//       alert(`You rated this movie ${rating}/10`);
-//     }
-//   };
-
-//   const handleReviewSubmit = (e) => {
-//     e.preventDefault();
-//     if (!reviewText.trim()) {
-//       alert('Please write a review before submitting');
-//       return;
-//     }
-//     alert('Review submitted successfully!');
-//     setReviewText('');
-//   };
-
-//   return (
-//     <div className={styles.movieDetailsContainer}>
-//       <div style={{ color: '#f5c518', marginBottom: 10 }}>
-//         Movie ID from URL: {id}
-//       </div>
-//       {/* Movie Header */}
-//       <div className={styles.movieHeader}>
-//         <div>
-//           <h1 className={styles.movieTitle}>
-//             {dummyMovie.title}
-//             <span className={styles.movieYear}>({dummyMovie.year})</span>
-//           </h1>
-//           <div className={styles.ratingSection}>
-//             <div className={styles.imdbRating}>
-//               <div>
-//                 <div className={styles.ratingLabel}>IMDb RATING</div>
-//                 <div className={styles.ratingValue}>
-//                   <span className={styles.ratingStars}>★</span>
-//                   {dummyMovie.imdbRating}
-//                   <span style={{ color: "#999", fontSize: 16 }}>/10</span>
-//                 </div>
-//               </div>
-//             </div>
-//             <div className={styles.userRating}>
-//               <div>
-//                 <div className={styles.ratingLabel}>YOUR RATING</div>
-//                 <button className={styles.rateBtn} onClick={handleRate}>★ Rate</button>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Main Content Grid */}
-//       <div className={styles.mainContent}>
-//         {/* Movie Poster */}
-//         <div className={styles.moviePosterSection}>
-//           <div className={styles.moviePoster}>
-//             {dummyMovie.poster ? (
-//               <img src={dummyMovie.poster} alt="Movie Poster" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-//             ) : (
-//               "Movie Poster"
-//             )}
-//           </div>
-//         </div>
-
-//         {/* Center Content */}
-//         <div className={styles.centerContent}>
-//           {/* Action Buttons */}
-//           <div className={styles.actionButtons}>
-//             <button className={styles.actionBtn} onClick={handleMarkVisited}>✓ Mark as Visited</button>
-//             <button className={`${styles.actionBtn} ${styles.secondary}`} onClick={handleAddToWatchlist}>+ Add to Watchlist</button>
-//           </div>
-
-//           {/* Plot Section */}
-//           <div className={styles.plotSection}>
-//             <h2 className={styles.sectionTitle}>Plot</h2>
-//             <p className={styles.plotText}>{dummyMovie.plot}</p>
-//           </div>
-
-//           {/* Movie Details */}
-//           <div className={styles.detailsSection}>
-//             <h2 className={styles.sectionTitle}>Details</h2>
-//             <div className={styles.detailsGrid}>
-//               {dummyMovie.details.map((item, idx) => (
-//                 <div className={styles.detailItem} key={idx}>
-//                   <span className={styles.detailLabel}>{item.label}</span>
-//                   <span className={styles.detailValue}>{item.value}</span>
-//                 </div>
-//               ))}
-//             </div>
-//             {/* Cast Section */}
-//             <div style={{ marginTop: 30 }}>
-//               <h3 className={styles.sectionTitle}>Cast</h3>
-//               <div className={styles.castList}>
-//                 {dummyMovie.cast.map((actor, idx) => (
-//                   <span className={styles.castMember} key={idx}>{actor}</span>
-//                 ))}
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-
-//         {/* Right Sidebar */}
-//         <div className={styles.trailerSection}>
-//           <h2 className={styles.sectionTitle}>Trailer</h2>
-//           <div className={styles.trailerPlaceholder}>🎬 Movie Trailer</div>
-//           <div className={styles.photosCard} onClick={() => setPhotosModalOpen(true)}>
-//             <div className={styles.photosIcon}>📸</div>
-//             <div>Photos</div>
-//             <div style={{ fontSize: 12, color: "#999" }}>View all images</div>
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Reviews Section */}
-//       <div className={styles.reviewsSection}>
-//         <h2 className={styles.sectionTitle}>User Reviews</h2>
-//         {/* Review Form or Prompt */}
-//         {isAuthenticated ? (
-//           <form className={styles.reviewForm} onSubmit={handleReviewSubmit}>
-//             <textarea
-//               className={styles.reviewTextarea}
-//               placeholder="Write your review here..."
-//               value={reviewText}
-//               onChange={e => setReviewText(e.target.value)}
-//             />
-//             <button className={styles.reviewSubmit} type="submit">Submit Review</button>
-//           </form>
-//         ) : (
-//           <div className={styles.guestLoginPrompt}>
-//             <p style={{ color: "#999", marginBottom: 10 }}>Sign in to write a review</p>
-//             <button className={styles.loginPromptBtn} onClick={() => alert('Redirecting to sign in page...')}>Sign In to Review</button>
-//           </div>
-//         )}
-
-//         {/* Existing Reviews */}
-//         <div className={styles.existingReviews}>
-//           {dummyMovie.reviews.map((review, idx) => (
-//             <div className={styles.reviewItem} key={idx}>
-//               <div className={styles.reviewHeader}>
-//                 <span className={styles.reviewerName}>{review.name}</span>
-//                 <span className={styles.reviewRating}>
-//                   {"★".repeat(Math.round(review.rating / 2))} {review.rating}/10
-//                 </span>
-//                 <span className={styles.reviewDate}>{review.date}</span>
-//               </div>
-//               <p className={styles.reviewText}>{review.text}</p>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-
-//       {/* Photos Modal */}
-//       {photosModalOpen && (
-//         <div className={styles.photosModal} onClick={e => { if (e.target.className === styles.photosModal) setPhotosModalOpen(false); }}>
-//           <div className={styles.photosModalContent}>
-//             <span className={styles.close} onClick={() => setPhotosModalOpen(false)}>&times;</span>
-//             <h2 className={styles.sectionTitle}>{dummyMovie.title} - Photos</h2>
-//             <div className={styles.photosGrid}>
-//               {dummyMovie.photos.map((photo, idx) => (
-//                 <div className={styles.photoItem} key={idx}>{photo}</div>
-//               ))}
-//             </div>
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default MovieDetails;
-
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import styles from './MovieDetails.module.css';
+import { FaThumbsUp, FaThumbsDown, FaHeart, FaLaugh, FaSurprise, FaAngry } from "react-icons/fa";
+import { IoSend } from "react-icons/io5";
+import { 
+  getMovieDetails, 
+  getMovieImages, 
+  getMovieReviews, 
+  getMovieCast, 
+  getMovieAwards,
+  getRatingDistribution, 
+  getSimilarMovies,
+  submitReview,
+  rateMovie,
+  getUserRating,
+  removeRating,
+  submitReaction,
+  getUserReactions,
+  editReview,
+  deleteReview
+} from '../services/api';
+import MovieSection from './MovieSection';
+import axios from 'axios';
 
-const dummyMovie = {
-  title: "The Dark Knight",
-  year: 2008,
-  imdbRating: 9.0,
-  yourRating: null,
-  plot: `When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets. The partnership proves to be effective, but they soon find themselves prey to a reign of chaos unleashed by a rising criminal mastermind known to the terrified citizens of Gotham as the Joker.`,
-  genres: ["Action", "Crime", "Drama", "Thriller"],
-  details: {
-    releaseDate: "July 18, 2008",
-    duration: "152 minutes",
-    language: "English",
-    country: "United States",
-    type: "Movie",
-    director: "Christopher Nolan",
-    writer: "Jonathan Nolan, Christopher Nolan",
-    budget: "$185 million",
-    boxOffice: "$1.005 billion",
-    collection: "The Dark Knight Trilogy",
-    awards: "2 Oscars, 159 wins & 163 nominations",
-    views: "2,450,738"
-  },
-  cast: [
-    { name: "Christian Bale", photo: null },
-    { name: "Heath Ledger", photo: null },
-    { name: "Aaron Eckhart", photo: null },
-    { name: "Michael Caine", photo: null },
-    { name: "Maggie Gyllenhaal", photo: null },
-    { name: "Gary Oldman", photo: null }
-  ],
-  userRatings: {
-    averageRating: 8.2,
-    totalRatings: 15420,
-    distribution: [120, 450, 980, 2340, 3890, 4210, 2980, 450]
-  },
-  reviews: [
-    {
-      name: "MovieBuff2024",
-      rating: 10,
-      date: "January 15, 2024",
-      text: "Christopher Nolan's masterpiece continues to amaze me every time I watch it. Heath Ledger's performance as the Joker is absolutely phenomenal and deserved every accolade it received."
-    },
-    {
-      name: "CinemaLover",
-      rating: 9,
-      date: "December 28, 2023",
-      text: "One of the best superhero movies ever made. The moral complexity and psychological depth set it apart from typical comic book adaptations."
-    }
-  ],
-  similarMovies: [
-    { title: "Batman Begins", year: 2005, poster: null },
-    { title: "The Dark Knight Rises", year: 2012, poster: null },
-    { title: "Joker", year: 2019, poster: null }
-  ],
-  poster: null,
-  trailer: null,
-  images: Array.from({ length: 6 }, (_, i) => `Image ${i + 1}`)
+const ReactionButton = ({ icon: Icon, count, onClick, active }) => {
+  return (
+    <button 
+      className={`${styles.reactionButton} ${active ? styles.active : ''}`}
+      onClick={onClick}
+    >
+      <Icon className={styles.reactionIcon} />
+      <span className={styles.reactionCount}>{count}</span>
+    </button>
+  );
 };
 
-const MovieDetails = () => {
+const MovieDetails = ({ isAuthenticated, currentUser, onAuthRequired }) => {
   const { id } = useParams();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [reviewText, setReviewText] = useState('');
+  const navigate = useNavigate();
+  const [movie, setMovie] = useState(null);
+  const [images, setImages] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [cast, setCast] = useState([]);
+  const [awards, setAwards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [userRating, setUserRating] = useState(null);
+  const [tempRating, setTempRating] = useState(0); // For hovering effect
+  const [selectedRating, setSelectedRating] = useState(0); // For tracking clicked rating
+  const [reviewReactions, setReviewReactions] = useState({}); // For storing review reactions
+  const [reviewText, setReviewText] = useState('');
+  const [spoilerAlert, setSpoilerAlert] = useState(false); // For spoiler alert checkbox
+  const [spoilerRevealed, setSpoilerRevealed] = useState({}); // For tracking revealed spoilers
+  const [editingReviewId, setEditingReviewId] = useState(null); // For tracking which review is being edited
+  const [editingText, setEditingText] = useState(''); // For storing the text being edited
+  const [ratingDistribution, setRatingDistribution] = useState([]);
+  const [similarMovies, setSimilarMovies] = useState([]);
+  const [showRatingPopup, setShowRatingPopup] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const videoRef = useRef(null);
+  const ratingPopupRef = useRef(null);
+
+  // Emoji mapping for reactions
+  const reactionEmojis = {
+    'like': '👍',
+    'dislike': '👎',
+    'love': '❤️',
+    'funny': '😄',
+    'wow': '😮',
+    'angry': '😠'
+  };
+
+  useEffect(() => {
+    const fetchMovieData = async () => {
+      try {
+        setLoading(true);
+        console.log('Fetching movie data for ID:', id);
+        const [movieData, imagesData, reviewsData, castData, awardsData, ratingData] = await Promise.all([
+          getMovieDetails(id),
+          getMovieImages(id),
+          getMovieReviews(id),
+          getMovieCast(id),
+          getMovieAwards(id),
+          getRatingDistribution(id)
+        ]);
+        console.log('Movie data:', movieData);
+
+        setMovie(movieData);
+        setImages(imagesData);
+        setReviews(reviewsData);
+        setCast(castData);
+        setAwards(awardsData);
+        setRatingDistribution(ratingData.distribution);
+
+        // Fetch similar movies based on genres
+        if (movieData.genres) {
+          console.log('Fetching similar movies with genres:', movieData.genres);
+          const similarMoviesData = await getSimilarMovies(movieData.genres, id);
+          console.log('Similar movies response:', similarMoviesData);
+          // Check if similarMoviesData has movies array and use it
+          const moviesArray = similarMoviesData.movies || similarMoviesData;
+          setSimilarMovies(moviesArray.slice(0, 6)); // Limit to 6 similar movies
+        }
+
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching movie data:', err);
+        setError(err.message || 'Failed to load movie details');
+        setSimilarMovies([]); // Reset similar movies on error
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMovieData();
+  }, [id]);
+
+  // Fetch user's existing rating when authenticated user changes
+  useEffect(() => {
+    const fetchUserRating = async () => {
+      if (isAuthenticated && currentUser?.user_id && id) {
+        try {
+          const ratingData = await getUserRating(id, currentUser.user_id);
+          if (ratingData.success && ratingData.rating) {
+            setUserRating(ratingData.rating.score);
+            setSelectedRating(ratingData.rating.score);
+            setTempRating(ratingData.rating.score);
+          }
+        } catch (error) {
+          console.error('Error fetching user rating:', error);
+          // User hasn't rated this movie yet, which is fine
+        }
+      }
+    };
+
+    fetchUserRating();
+  }, [isAuthenticated, currentUser?.user_id, id]);
+
+  // Fetch user's reactions when authenticated and reviews are loaded
+  useEffect(() => {
+    const fetchUserReactions = async () => {
+      if (isAuthenticated && currentUser?.user_id && id && reviews.length > 0) {
+        try {
+          const reactionsData = await getUserReactions(id, currentUser.user_id);
+          if (reactionsData.success) {
+            // Convert to the format expected by the component
+            const reactions = {};
+            reviews.forEach(review => {
+              reactions[review.review_id] = {
+                like: false,
+                dislike: false,
+                love: false,
+                funny: false,
+                wow: false,
+                angry: false,
+                ...reactionsData.reactions[review.review_id]
+              };
+            });
+            setReviewReactions(reactions);
+          }
+        } catch (error) {
+          console.error('Error fetching user reactions:', error);
+          // Initialize empty reactions if API fails
+          const reactions = {};
+          reviews.forEach(review => {
+            reactions[review.review_id] = {
+              like: false, dislike: false, love: false, 
+              funny: false, wow: false, angry: false
+            };
+          });
+          setReviewReactions(reactions);
+        }
+      } else if (!isAuthenticated && reviews.length > 0) {
+        // Initialize empty reactions for non-authenticated users
+        const reactions = {};
+        reviews.forEach(review => {
+          reactions[review.review_id] = {
+            like: false, dislike: false, love: false, 
+            funny: false, wow: false, angry: false
+          };
+        });
+        setReviewReactions(reactions);
+      }
+    };
+
+    fetchUserReactions();
+  }, [isAuthenticated, currentUser?.user_id, id, reviews]);
+
+  const calculateRatingPercentage = (count) => {
+    const total = ratingDistribution.reduce((sum, item) => sum + parseInt(item.count), 0);
+    return total > 0 ? (count / total * 100).toFixed(1) : 0;
+  };
+
+  const renderRatingDistribution = () => {
+    const total = ratingDistribution.reduce((sum, item) => sum + parseInt(item.count), 0);
+    return (
+      <div className={styles.ratingDistribution}>
+        <div className={styles.overallRating}>
+          <div className={styles.ratingNumber}>{movie?.average_rating || 0}</div>
+          <div className={styles.totalRatings}>{total} ratings</div>
+        </div>
+        <div className={styles.ratingBars}>
+          {[10, 9, 8, 7, 6, 5, 4, 3, 2, 1].map(score => {
+            const ratingData = ratingDistribution.find(r => r.score === score) || { count: 0 };
+            const percentage = calculateRatingPercentage(ratingData.count);
+            return (
+              <div key={score} className={styles.ratingBar}>
+                <span className={styles.ratingScore}>{score}</span>
+                <div className={styles.barContainer}>
+                  <div className={styles.barFill} style={{ width: `${percentage}%` }} />
+                </div>
+                <span className={styles.ratingCount}>{ratingData.count}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
 
   const handleAddToWatchlist = () => {
     if (!isAuthenticated) {
@@ -324,296 +235,814 @@ const MovieDetails = () => {
     alert('Movie marked as visited!');
   };
 
-  const handleRating = (rating) => {
+  const handleRating = async (rating) => {
     if (!isAuthenticated) {
-      alert('Please sign in to rate this movie');
+      onAuthRequired();
       return;
     }
-    setUserRating(rating);
-    alert(`You rated this movie ${rating}/10`);
+    
+    try {
+      const response = await rateMovie(id, rating, currentUser.user_id);
+      if (response.success) {
+        setUserRating(rating);
+        // Update movie stats if returned
+        if (response.movieStats) {
+          setMovie(prevMovie => ({
+            ...prevMovie,
+            average_rating: response.movieStats.average_rating,
+            rating_count: response.movieStats.rating_count
+          }));
+        }
+        alert(`You rated this movie ${rating}/10`);
+      }
+    } catch (error) {
+      console.error('Error submitting rating:', error);
+      alert('Failed to submit rating. Please try again.');
+    }
   };
 
-  const handleReviewSubmit = (e) => {
-    e.preventDefault();
-    if (!reviewText.trim()) {
-      alert('Please write a review before submitting');
+  const handleAddReview = async () => {
+    if (!reviewText.trim()) return;
+    
+    if (!isAuthenticated) {
+      onAuthRequired();
       return;
     }
-    alert('Review submitted successfully!');
-    setReviewText('');
+
+    try {
+      const response = await submitReview(id, reviewText, currentUser.user_id, spoilerAlert);
+
+      if (response.success) {
+        // Add the new review to the current reviews list
+        setReviews(prevReviews => [response.review, ...prevReviews]);
+        setReviewText('');
+        setSpoilerAlert(false); // Reset spoiler alert
+        alert('Review submitted successfully!');
+      }
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      if (error.message) {
+        alert(error.message);
+      } else {
+        alert('Failed to submit review. Please try again.');
+      }
+    }
   };
 
-  return (
-    <div className={styles.movieDetailsContainer}>
-      {/* Movie Header */}
-      <div className={styles.movieHeader}>
-        <h1 className={styles.movieTitle}>
-          {dummyMovie.title} ({dummyMovie.year})
-        </h1>
-        <div className={styles.ratingButtons}>
-          <div className={styles.imdbRating}>
-            <span className={styles.ratingLabel}>IMDb Rating</span>
-            <span className={styles.ratingValue}>
-              ⭐ {dummyMovie.imdbRating}/10
-            </span>
-          </div>
-          <div className={styles.yourRating}>
-            <span className={styles.ratingLabel}>Your Rating</span>
-            <span className={styles.ratingValue}>
-              {userRating ? `⭐ ${userRating}/10` : '⭐ Rate'}
-            </span>
-          </div>
+  const handleRatingClick = () => {
+    setShowRatingPopup(true);
+  };
+
+  // Function to toggle spoiler visibility
+  const toggleSpoilerReveal = (reviewId) => {
+    setSpoilerRevealed(prev => ({
+      ...prev,
+      [reviewId]: !prev[reviewId]
+    }));
+  };
+
+  const handleRatingSubmit = async (rating) => {
+    if (!isAuthenticated) {
+      onAuthRequired();
+      return;
+    }
+    
+    try {
+      const response = await rateMovie(id, rating, currentUser.user_id);
+      if (response.success) {
+        setUserRating(rating);
+        setSelectedRating(rating);
+        setTempRating(rating);
+        setShowRatingPopup(false);
+        
+        // Update movie stats if returned
+        if (response.movieStats) {
+          setMovie(prevMovie => ({
+            ...prevMovie,
+            average_rating: response.movieStats.average_rating,
+            rating_count: response.movieStats.rating_count
+          }));
+        }
+        
+        // Refresh rating distribution to show updated data
+        try {
+          const ratingData = await getRatingDistribution(id);
+          setRatingDistribution(ratingData.distribution);
+        } catch (err) {
+          console.error('Error refreshing rating distribution:', err);
+        }
+        
+        alert(`You rated this movie ${rating}/10`);
+      }
+    } catch (error) {
+      console.error('Error submitting rating:', error);
+      alert('Failed to submit rating. Please try again.');
+    }
+  };
+
+  const handleMouseEnter = (rating) => {
+    if (!selectedRating) {
+      setTempRating(rating);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setTempRating(selectedRating || userRating || 0);
+  };
+
+  // Handle submitting the rating
+  const handleSubmitRating = async () => {
+    if (!isAuthenticated) {
+      onAuthRequired();
+      return;
+    }
+    
+    if (tempRating) {
+      await handleRating(tempRating);
+      setShowRatingPopup(false);
+    }
+  };
+
+  // Handle removing the rating
+  const handleRemoveRating = async () => {
+    try {
+      const response = await removeRating(id, currentUser.user_id);
+      if (response.success) {
+        setUserRating(null);
+        setTempRating(0);
+        setSelectedRating(0);
+        
+        // Update movie stats if returned
+        if (response.movieStats) {
+          setMovie(prevMovie => ({
+            ...prevMovie,
+            average_rating: response.movieStats.average_rating,
+            rating_count: response.movieStats.rating_count
+          }));
+        }
+        
+        // Refresh rating distribution to show updated data
+        try {
+          const ratingData = await getRatingDistribution(id);
+          setRatingDistribution(ratingData.distribution);
+        } catch (err) {
+          console.error('Error refreshing rating distribution:', err);
+        }
+        
+        alert('Rating removed successfully');
+      }
+    } catch (error) {
+      console.error('Error removing rating:', error);
+      alert('Failed to remove rating. Please try again.');
+    }
+  };
+
+  const handleReaction = async (reviewId, reactionType) => {
+    if (!isAuthenticated) {
+      setShowLoginPrompt(true);
+      return;
+    }
+
+    try {
+      const currentReactions = reviewReactions[reviewId] || {};
+      const currentValue = currentReactions[reactionType] || false;
+      
+      // Calculate new reaction state
+      const newValue = !currentValue; // Toggle current reaction
+      
+      // Update local state optimistically (only user's reaction state, not counts)
+      const updatedReactions = {
+        ...reviewReactions,
+        [reviewId]: {
+          // Clear all reactions first (user can only have one)
+          like: false,
+          dislike: false, 
+          love: false,
+          funny: false,
+          wow: false,
+          angry: false,
+          // Set the new reaction
+          [reactionType]: newValue
+        }
+      };
+      setReviewReactions(updatedReactions);
+
+      // Send to the backend - let the trigger handle count updates
+      await submitReaction(reviewId, reactionType, newValue, currentUser.user_id);
+      
+      // Refresh the reviews to get the updated counts from database
+      const reviewsData = await getMovieReviews(id);
+      setReviews(reviewsData);
+      
+    } catch (error) {
+      console.error('Error updating reaction:', error);
+      alert('Failed to update reaction. Please try again.');
+      
+      // Revert the optimistic update on error
+      const fetchReviewData = async () => {
+        try {
+          const reviewsData = await getMovieReviews(id);
+          setReviews(reviewsData);
+          // Also refresh user reactions
+          if (currentUser?.user_id) {
+            const userReactionsData = await getUserReactions(id, currentUser.user_id);
+            setReviewReactions(userReactionsData);
+          }
+        } catch (err) {
+          console.error('Error refreshing reviews:', err);
+        }
+      };
+      fetchReviewData();
+    }
+  };
+
+  // Handle editing a review
+  const handleEditReview = (reviewId, currentText) => {
+    setEditingReviewId(reviewId);
+    setEditingText(currentText);
+  };
+
+  // Handle saving edited review
+  const handleSaveEdit = async (reviewId) => {
+    if (!editingText.trim()) {
+      alert('Review text cannot be empty');
+      return;
+    }
+
+    try {
+      const response = await editReview(reviewId, editingText, currentUser.user_id);
+      if (response.success) {
+        // Update the review in the local state
+        setReviews(prevReviews => 
+          prevReviews.map(review => 
+            review.review_id === reviewId 
+              ? { ...review, text: editingText }
+              : review
+          )
+        );
+        setEditingReviewId(null);
+        setEditingText('');
+        alert('Review updated successfully!');
+      }
+    } catch (error) {
+      console.error('Error updating review:', error);
+      alert(error.message || 'Failed to update review. Please try again.');
+    }
+  };
+
+  // Handle canceling edit
+  const handleCancelEdit = () => {
+    setEditingReviewId(null);
+    setEditingText('');
+  };
+
+  // Handle deleting a review
+  const handleDeleteReview = async (reviewId) => {
+    if (!window.confirm('Are you sure you want to delete this review?')) {
+      return;
+    }
+
+    try {
+      const response = await deleteReview(reviewId, currentUser.user_id);
+      if (response.success) {
+        // Remove the review from local state
+        setReviews(prevReviews => 
+          prevReviews.filter(review => review.review_id !== reviewId)
+        );
+        alert('Review deleted successfully!');
+      }
+    } catch (error) {
+      console.error('Error deleting review:', error);
+      alert(error.message || 'Failed to delete review. Please try again.');
+    }
+  };
+
+  const renderRating = () => (
+    <div className={styles.ratingButtons}>
+      <div className={styles.ratingBox}>
+        <span className={styles.starIcon}>⭐</span>
+        <div className={styles.ratingContent}>
+          <div className={styles.ratingValue}>{movie?.average_rating || '0'}</div>
+          <div className={styles.ratingLabel}>IMDb RATING</div>
         </div>
       </div>
 
-      {/* Main Content Grid */}
-      <div className={styles.mainGrid}>
-        {/* Movie Poster */}
-        <div className={styles.posterSection}>
-          <div className={styles.moviePoster}>
-            {dummyMovie.poster ? (
-              <img src={dummyMovie.poster} alt="Movie Poster" />
-            ) : (
-              <div className={styles.posterPlaceholder}>Movie Poster</div>
+      <div 
+        className={`${styles.ratingBox} ${!isAuthenticated ? styles.notRated : ''}`}
+        onClick={handleRatingClick}
+      >
+        <span className={styles.starIcon}>{userRating ? '★' : '☆'}</span>
+        <div className={styles.ratingContent}>
+          <div className={styles.ratingValue}>{userRating || 'Rate'}</div>
+          <div className={styles.ratingLabel}>YOUR RATING</div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderVideoPlayer = () => {
+    if (!movie?.trailer_url) return null;
+    
+    // Check if it's a YouTube URL
+    const isYouTubeUrl = movie.trailer_url.includes('youtube.com') || movie.trailer_url.includes('youtu.be');
+    
+    if (isYouTubeUrl) {
+      // Extract YouTube video ID
+      let videoId = '';
+      if (movie.trailer_url.includes('youtube.com/watch?v=')) {
+        videoId = movie.trailer_url.split('v=')[1];
+      } else if (movie.trailer_url.includes('youtu.be/')) {
+        videoId = movie.trailer_url.split('youtu.be/')[1];
+      }
+      
+      if (videoId) {
+        return (
+          <div className={styles.videoContainer}>
+            <iframe
+              className={styles.videoPlayer}
+              src={`https://www.youtube.com/embed/${videoId}`}
+              title="Movie Trailer"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+        );
+      }
+    }
+    
+    // Fallback to direct video player for non-YouTube URLs
+    return (
+      <div className={styles.videoContainer}>
+        <video 
+          ref={videoRef}
+          className={styles.videoPlayer} 
+          controls
+          playsInline
+          preload="metadata"
+          controlsList="nodownload"
+          poster={movie.poster_url}
+        >
+          <source src={movie.trailer_url} type="video/mp4" />
+          <source src={movie.trailer_url} type="video/webm" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    );
+  };
+
+  // Render the rating popup
+  const renderRatingPopup = () => {
+    if (!showRatingPopup) return null;
+
+    return (
+      <div className={styles.ratingPopupOverlay} onClick={() => setShowRatingPopup(false)}>
+        <div className={styles.ratingPopup} onClick={e => e.stopPropagation()}>
+          <button className={styles.closeButton} onClick={() => setShowRatingPopup(false)}>×</button>
+          <div className={styles.ratingPopupIcon}>★</div>
+          <div className={styles.ratingPopupTitle}>{movie.title}</div>
+          <div className={styles.ratingPopupSubheader}>Rate this</div>
+          <div className={styles.stars}>
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(star => (
+              <span
+                key={star}
+                className={`${styles.star} ${(tempRating || selectedRating || userRating) >= star ? styles.active : ''}`}
+                onMouseEnter={() => handleMouseEnter(star)}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => {
+                  setSelectedRating(star);
+                  setTempRating(star);
+                }}
+              >
+                ★
+              </span>
+            ))}
+          </div>
+          <div className={styles.ratingActions}>
+            <button 
+              className={styles.rateButton}
+              onClick={() => handleRatingSubmit(selectedRating || tempRating)}
+              disabled={!selectedRating && !tempRating}
+            >
+              Rate
+            </button>
+            {userRating && (
+              <button 
+                className={styles.removeButton}
+                onClick={handleRemoveRating}
+              >
+                Remove rating
+              </button>
             )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Render reviews section with reactions
+  const renderReviewsSection = () => {
+    return (
+      <div className={styles.reviewsSection}>
+        <h2>User Reviews</h2>
+        <div className={styles.addReview}>
+          <textarea
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
+            placeholder="Write your review..."
+            className={styles.reviewInput}
+          />
+          <div className={styles.reviewOptions}>
+            <label className={styles.spoilerCheckbox}>
+              <input
+                type="checkbox"
+                checked={spoilerAlert}
+                onChange={(e) => setSpoilerAlert(e.target.checked)}
+              />
+              Contains spoilers
+            </label>
+            <button 
+              className={styles.sendReviewButton}
+              onClick={() => {
+                if (!isAuthenticated) {
+                  setShowLoginPrompt(true);
+                } else {
+                  handleAddReview();
+                }
+              }}
+            >
+              <IoSend className={styles.sendIcon} />
+            </button>
+          </div>
+        </div>
+        <div className={styles.reviewsList}>
+          {reviews.map((review) => (
+            <div key={review.review_id} className={styles.reviewItem}>
+              <div className={styles.reviewHeader}>
+                <span className={styles.reviewAuthor}>{review.username}</span>
+                <span className={styles.reviewDate}>
+                  {new Date(review.created_at).toLocaleDateString()}
+                </span>
+              </div>
+              
+              {/* Review text - either editable or readonly */}
+              {editingReviewId === review.review_id ? (
+                <div className={styles.editReviewContainer}>
+                  <textarea
+                    value={editingText}
+                    onChange={(e) => setEditingText(e.target.value)}
+                    className={styles.editReviewInput}
+                    autoFocus
+                  />
+                  <div className={styles.editActions}>
+                    <button 
+                      className={styles.saveButton}
+                      onClick={() => handleSaveEdit(review.review_id)}
+                    >
+                      Save
+                    </button>
+                    <button 
+                      className={styles.cancelButton}
+                      onClick={handleCancelEdit}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className={styles.reviewContent}>
+                  {review.spoiler_alert && !spoilerRevealed[review.review_id] ? (
+                    <div className={styles.spoilerContainer}>
+                      <div className={styles.spoilerWarning}>
+                        <span className={styles.spoilerIcon}>⚠️</span>
+                        <span className={styles.spoilerText}>This review contains spoilers</span>
+                      </div>
+                      <div className={styles.spoilerBlurred}>
+                        <p className={styles.reviewText}>{review.text}</p>
+                      </div>
+                      <button 
+                        className={styles.revealSpoilerButton}
+                        onClick={() => toggleSpoilerReveal(review.review_id)}
+                      >
+                        Reveal Spoiler
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      {review.spoiler_alert && (
+                        <div className={styles.spoilerRevealed}>
+                          <span className={styles.spoilerIcon}>⚠️</span>
+                          <span className={styles.spoilerText}>Spoiler revealed</span>
+                          <button 
+                            className={styles.hideSpoilerButton}
+                            onClick={() => toggleSpoilerReveal(review.review_id)}
+                          >
+                            Hide
+                          </button>
+                        </div>
+                      )}
+                      <p className={styles.reviewText}>{review.text}</p>
+                    </div>
+                  )}
+                  
+                  {/* Edit and Delete buttons - only show for the review author */}
+                  {isAuthenticated && currentUser?.username === review.username && (
+                    <div className={styles.reviewActions}>
+                      <button 
+                        className={styles.editReviewButton}
+                        onClick={() => handleEditReview(review.review_id, review.text)}
+                        title="Edit review"
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        className={styles.deleteReviewButton}
+                        onClick={() => handleDeleteReview(review.review_id)}
+                        title="Delete review"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+              
+              <div className={styles.reactionContainer}>
+                <ReactionButton
+                  icon={FaThumbsUp}
+                  count={review.like_count || 0}
+                  onClick={() => handleReaction(review.review_id, 'like')}
+                  active={reviewReactions[review.review_id]?.like}
+                />
+                <ReactionButton
+                  icon={FaThumbsDown}
+                  count={review.dislike_count || 0}
+                  onClick={() => handleReaction(review.review_id, 'dislike')}
+                  active={reviewReactions[review.review_id]?.dislike}
+                />
+                <ReactionButton
+                  icon={FaHeart}
+                  count={review.love_count || 0}
+                  onClick={() => handleReaction(review.review_id, 'love')}
+                  active={reviewReactions[review.review_id]?.love}
+                />
+                <ReactionButton
+                  icon={FaLaugh}
+                  count={review.funny_count || 0}
+                  onClick={() => handleReaction(review.review_id, 'funny')}
+                  active={reviewReactions[review.review_id]?.funny}
+                />
+                <ReactionButton
+                  icon={FaSurprise}
+                  count={review.wow_count || 0}
+                  onClick={() => handleReaction(review.review_id, 'wow')}
+                  active={reviewReactions[review.review_id]?.wow}
+                />
+                <ReactionButton
+                  icon={FaAngry}
+                  count={review.angry_count || 0}
+                  onClick={() => handleReaction(review.review_id, 'angry')}
+                  active={reviewReactions[review.review_id]?.angry}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  if (loading) return <div className={styles.loading}>Loading...</div>;
+  if (error) return <div className={styles.error}>{error}</div>;
+  if (!movie) return <div className={styles.notFound}>Movie not found</div>;
+
+  return (
+    <div className={styles.container}>
+      {/* Main Content */}
+      <div className={styles.backdropContainer}>
+        <div className={styles.backdropOverlay} />
+        <img 
+          src={movie.poster_url} 
+          alt={movie.title} 
+          className={styles.backdropImage}
+        />
+      </div>
+
+      {/* Movie Details Section */}
+      <div className={styles.contentContainer}>
+        {/* Main Movie Info */}
+        <div className={styles.mainInfo}>
+          <img src={movie.poster_url} alt={movie.title} className={styles.poster} />
+          <div className={styles.details}>
+            <h1>{movie.title}</h1>
+            <div className={styles.metadata}>
+              <span>{new Date(movie.release_date).getFullYear()}</span>
+              <span>{movie.duration} min</span>
+              <span>{movie.language_name}</span>
+              {movie.genres && <span>{movie.genres.join(', ')}</span>}
+            </div>
+            <p className={styles.description}>{movie.description}</p>
+            
+            <div className={styles.actions}>
+              <button onClick={handleAddToWatchlist}>Add to Watchlist</button>
+              <button onClick={handleMarkAsVisited}>Mark as Watched</button>
+              
+              {/* Rating Buttons */}
+              {renderRating()}
+              {renderRatingPopup()}
+            </div>
+
+            {/* Login Prompt */}
+            {showLoginPrompt && (
+              <div className={styles.ratingPopupOverlay} onClick={() => setShowLoginPrompt(false)}>
+                <div className={styles.ratingPopup} onClick={e => e.stopPropagation()}>
+                  <div className={styles.ratingPopupHeader}>
+                    <h3>Sign in required</h3>
+                    <button className={styles.closeButton} onClick={() => setShowLoginPrompt(false)}>
+                      ×
+                    </button>
+                  </div>
+                  <p style={{ textAlign: 'center', marginBottom: '20px' }}>
+                    Please sign in to rate this movie
+                  </p>
+                  <button 
+                    className={styles.actionBtn} 
+                    onClick={() => {
+                      setShowLoginPrompt(false);
+                      // TODO: Redirect to login page or show login modal
+                    }}
+                  >
+                    Sign In
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Additional Details */}
+            <div className={styles.additionalDetails}>
+              {movie.director && (
+                <div className={styles.detail}>
+                  <span className={styles.label}>Director:</span>
+                  <span>{movie.director}</span>
+                </div>
+              )}
+              {movie.producer && (
+                <div className={styles.detail}>
+                  <span className={styles.label}>Producer:</span>
+                  <span>{movie.producer}</span>
+                </div>
+              )}
+              {movie.country && (
+                <div className={styles.detail}>
+                  <span className={styles.label}>Country:</span>
+                  <span>{movie.country}</span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Trailer Section */}
-        <div className={styles.trailerSection}>
-          <div className={styles.trailer}>
-            {dummyMovie.trailer ? (
-              <video controls>
-                <source src={dummyMovie.trailer} type="video/mp4" />
-              </video>
-            ) : (
-              <div className={styles.trailerPlaceholder}>
-                <div className={styles.playButton}>▶</div>
-                <span>Trailer</span>
+        {movie.trailer_url && (
+          <div className={styles.trailerSection}>
+            <h2>Trailer</h2>
+            {renderVideoPlayer()}
+          </div>
+        )}
+
+        {/* Details Section */}
+        <div className={styles.detailsSection}>
+          <h2>Movie Details</h2>
+          <div className={styles.detailsGrid}>
+            {movie.language_name && (
+              <div className={styles.detailItem}>
+                <span className={styles.label}>Language:</span>
+                <span className={styles.value}>{movie.language_name}</span>
+              </div>
+            )}
+            {movie.duration && (
+              <div className={styles.detailItem}>
+                <span className={styles.label}>Runtime:</span>
+                <span className={styles.value}>{movie.duration} minutes</span>
+              </div>
+            )}
+            {movie.release_date && (
+              <div className={styles.detailItem}>
+                <span className={styles.label}>Release Date:</span>
+                <span className={styles.value}>
+                  {new Date(movie.release_date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </span>
+              </div>
+            )}
+            {movie.genres && (
+              <div className={styles.detailItem}>
+                <span className={styles.label}>Genres:</span>
+                <span className={styles.value}>{movie.genres.join(', ')}</span>
+              </div>
+            )}
+            {movie.budget && (
+              <div className={styles.detailItem}>
+                <span className={styles.label}>Budget:</span>
+                <span className={styles.value}>{movie.currency_code} {movie.budget.toLocaleString()}</span>
+              </div>
+            )}
+            {movie.box_office_collection && (
+              <div className={styles.detailItem}>
+                <span className={styles.label}>Box Office:</span>
+                <span className={styles.value}>{movie.currency_code} {movie.box_office_collection.toLocaleString()}</span>
+              </div>
+            )}
+            {movie.min_age && (
+              <div className={styles.detailItem}>
+                <span className={styles.label}>Age Rating:</span>
+                <span className={styles.value}>{movie.min_age}+</span>
               </div>
             )}
           </div>
-          <div className={styles.viewsCount}>{dummyMovie.details.views} Views</div>
         </div>
 
         {/* Images Section */}
         <div className={styles.imagesSection}>
-          <h3>Images</h3>
+          <h2>Photos</h2>
           <div className={styles.imageGrid}>
-            {dummyMovie.images.slice(0, 4).map((image, idx) => (
-              <div key={idx} className={styles.imageItem}>
-                {image}
+            {images.map((image, index) => (
+              <div key={image.image_id} className={styles.imageItem}>
+                <img src={image.url} alt={image.caption || `Still ${index + 1}`} />
               </div>
             ))}
           </div>
         </div>
-      </div>
 
-      {/* Genre Tags */}
-      <div className={styles.genreSection}>
-        {dummyMovie.genres.map((genre, idx) => (
-          <span key={idx} className={styles.genreTag}>{genre}</span>
-        ))}
-      </div>
-
-      {/* Movie Details */}
-      <div className={styles.detailsSection}>
-        <h2>Details</h2>
-        <div className={styles.detailsGrid}>
-          <div className={styles.detailsColumn}>
-            <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Release Date:</span>
-              <span className={styles.detailValue}>{dummyMovie.details.releaseDate}</span>
-            </div>
-            <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Type:</span>
-              <span className={styles.detailValue}>{dummyMovie.details.type}</span>
-            </div>
-            <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Box Office:</span>
-              <span className={styles.detailValue}>{dummyMovie.details.boxOffice}</span>
-            </div>
-          </div>
-          <div className={styles.detailsColumn}>
-            <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Duration:</span>
-              <span className={styles.detailValue}>{dummyMovie.details.duration}</span>
-            </div>
-            <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Director:</span>
-              <span className={styles.detailValue}>{dummyMovie.details.director}</span>
-            </div>
-            <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Collection:</span>
-              <span className={styles.detailValue}>{dummyMovie.details.collection}</span>
-            </div>
-          </div>
-          <div className={styles.detailsColumn}>
-            <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Language:</span>
-              <span className={styles.detailValue}>{dummyMovie.details.language}</span>
-            </div>
-            <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Writer:</span>
-              <span className={styles.detailValue}>{dummyMovie.details.writer}</span>
-            </div>
-            <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Awards:</span>
-              <span className={styles.detailValue}>{dummyMovie.details.awards}</span>
-            </div>
-          </div>
-          <div className={styles.detailsColumn}>
-            <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Country:</span>
-              <span className={styles.detailValue}>{dummyMovie.details.country}</span>
-            </div>
-            <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Budget:</span>
-              <span className={styles.detailValue}>{dummyMovie.details.budget}</span>
-            </div>
-            <div className={styles.detailItem}>
-              <span className={styles.detailLabel}>Views:</span>
-              <span className={styles.detailValue}>{dummyMovie.details.views}</span>
-            </div>
-          </div>
-        </div>
-        
-        {/* Action Buttons */}
-        <div className={styles.actionButtons}>
-          <button className={styles.actionBtn} onClick={handleAddToWatchlist}>
-            Add to Watchlist
-          </button>
-          <button className={styles.actionBtn} onClick={handleMarkAsVisited}>
-            Mark as Visited
-          </button>
-        </div>
-      </div>
-
-      {/* Plot Section */}
-      <div className={styles.plotSection}>
-        <h2>Plot</h2>
-        <p>{dummyMovie.plot}</p>
-      </div>
-
-      {/* Cast Section */}
-      <div className={styles.castSection}>
-        <h2>Cast</h2>
-        <div className={styles.castGrid}>
-          {dummyMovie.cast.map((actor, idx) => (
-            <div key={idx} className={styles.castMember}>
-              <div className={styles.castPhoto}>
-                {actor.photo ? (
-                  <img src={actor.photo} alt={actor.name} />
-                ) : (
-                  <div className={styles.castPhotoPlaceholder}>Photo</div>
-                )}
-              </div>
-              <div className={styles.castName}>{actor.name}</div>
-            </div>
-          ))}
-        </div>
-        <p className={styles.castNote}>
-          This can be clicked to check side or that I can see more cast from the right side of this section
-        </p>
-      </div>
-
-      {/* User Ratings Section */}
-      <div className={styles.userRatingsSection}>
-        <h2>User Ratings</h2>
-        <div className={styles.ratingsContainer}>
-          <div className={styles.averageRating}>
-            <span className={styles.ratingNumber}>⭐ {dummyMovie.userRatings.averageRating}</span>
-            <span className={styles.totalRatings}>({dummyMovie.userRatings.totalRatings} ratings)</span>
-          </div>
-          <div className={styles.ratingBars}>
-            {dummyMovie.userRatings.distribution.map((count, idx) => (
-              <div key={idx} className={styles.ratingBar}>
-                <span className={styles.ratingLabel}>{idx + 1}</span>
-                <div className={styles.barContainer}>
-                  <div 
-                    className={styles.bar} 
-                    style={{ width: `${(count / Math.max(...dummyMovie.userRatings.distribution)) * 100}%` }}
-                  ></div>
+        {/* Cast Section */}
+        <div className={styles.castSection}>
+          <h2>Cast & Crew</h2>
+          <div className={styles.castGrid}>
+            {cast.map((member) => (
+              <div key={member.celebrity_id} className={styles.castMember}>
+                <div className={styles.castImage}>
+                  <img src={member.photo_url} alt={member.name} />
                 </div>
-                <span className={styles.ratingCount}>{count}</span>
+                <div className={styles.castInfo}>
+                  <h3>{member.name}</h3>
+                  <p>{member.role_name}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
-      </div>
 
-      {/* Reviews Section */}
-      <div className={styles.reviewsSection}>
-        <h2>Reviews</h2>
-        
-        {/* Review Input */}
-        {isAuthenticated ? (
-          <form className={styles.reviewForm} onSubmit={handleReviewSubmit}>
-            <textarea
-              className={styles.reviewTextarea}
-              placeholder="Write your review here..."
-              value={reviewText}
-              onChange={(e) => setReviewText(e.target.value)}
-            />
-            <button type="submit" className={styles.reviewSubmitBtn}>
-              Submit Review
-            </button>
-          </form>
-        ) : (
-          <div className={styles.loginPrompt}>
-            <p>Sign in to write a review</p>
-            <button 
-              className={styles.loginBtn}
-              onClick={() => alert('Redirecting to sign in page...')}
-            >
-              Sign In
-            </button>
+        {/* Awards Section */}
+        {awards.length > 0 && (
+          <div className={styles.awardsSection}>
+            <h2>Awards & Recognition</h2>
+            <div className={styles.awardsGrid}>
+              {awards.map((award, index) => (
+                <div key={`${award.award_id}-${index}`} className={styles.awardItem}>
+                  <div className={styles.awardIcon}>🏆</div>
+                  <div className={styles.awardInfo}>
+                    <h3 className={styles.awardName}>{award.name}</h3>
+                    <p className={styles.awardYear}>{award.year}</p>
+                    {award.type && <p className={styles.awardType}>{award.type}</p>}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
-        {/* Existing Reviews */}
-        <div className={styles.reviewsList}>
-          {dummyMovie.reviews.map((review, idx) => (
-            <div key={idx} className={styles.reviewItem}>
-              <div className={styles.reviewHeader}>
-                <span className={styles.reviewerName}>{review.name}</span>
-                <span className={styles.reviewRating}>⭐ {review.rating}/10</span>
-                <span className={styles.reviewDate}>{review.date}</span>
-              </div>
-              <p className={styles.reviewText}>{review.text}</p>
-            </div>
-          ))}
+        {/* Rating Distribution Section */}
+        <div className={styles.ratingSection}>
+          <h2>User Ratings</h2>
+          {renderRatingDistribution()}
         </div>
-      </div>
 
-      {/* Similar Movies Section */}
-      <div className={styles.similarMoviesSection}>
-        <h2>More like this (Movies with similar genre)</h2>
-        <div className={styles.similarMoviesGrid}>
-          {dummyMovie.similarMovies.map((movie, idx) => (
-            <div key={idx} className={styles.similarMovieCard}>
-              <div className={styles.similarMoviePoster}>
-                {movie.poster ? (
-                  <img src={movie.poster} alt={movie.title} />
-                ) : (
-                  <div className={styles.posterPlaceholder}>Poster</div>
-                )}
-              </div>
-              <div className={styles.similarMovieInfo}>
-                <h4>{movie.title}</h4>
-                <p>{movie.year}</p>
-                <p>Genre: Action</p>
-                <p>IMDb: 8.5/10</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+        {/* Reviews Section */}
+        {renderReviewsSection()}
 
-      {/* Credits Section */}
-      <div className={styles.creditsSection}>
-        <h2>FilmFusion Credits Section</h2>
-        <p>Credits and acknowledgments for the FilmFusion platform</p>
+        {/* Similar Movies Section */}
+        {similarMovies.length > 0 && (
+          <div className={styles.similarMoviesWrapper}>
+            <MovieSection
+              title="Similar Movies"
+              movies={similarMovies.map(movie => ({
+                id: movie.movie_id,
+                title: movie.title,
+                year: new Date(movie.release_date).getFullYear(),
+                poster: movie.poster_url,
+                rating: typeof movie.average_rating === 'number' ? movie.average_rating.toFixed(1) : '0.0',
+                views: movie.views || 0
+              }))}
+              onMovieClick={(movieId) => {
+                if (movieId === parseInt(id)) return; // Don't navigate to the same movie
+                navigate(`/movie/${movieId}`);
+              }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -169,21 +169,51 @@ export const searchMovies = async (query) => {
   }
 };
 
-// Get movie details function
+// Movie Details Related APIs
 export const getMovieDetails = async (movieId) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/movie/${movieId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return await handleResponse(response);
+    const response = await fetch(`${API_BASE_URL}/movies/${movieId}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    console.log('API Response:', data); // Debug log
+    
+    if (!data.success || !data.movie) {
+      console.error('Invalid movie data:', data);
+      throw new Error(data.message || 'Failed to fetch movie details');
+    }
+    return data.movie;
   } catch (error) {
-    console.error('Get movie details error:', error);
+    console.error('Error in getMovieDetails:', error);
     throw error;
   }
 };
+
+export const getMovieImages = async (movieId) => {
+  const response = await fetch(`${API_BASE_URL}/movies/${movieId}/images`);
+  const data = await response.json();
+  return data.images;
+};
+
+export const getMovieReviews = async (movieId) => {
+  const response = await fetch(`${API_BASE_URL}/movies/${movieId}/reviews`);
+  const data = await response.json();
+  return data.reviews;
+};
+
+export const getMovieCast = async (movieId) => {
+  const response = await fetch(`${API_BASE_URL}/movies/${movieId}/cast`);
+  const data = await response.json();
+  return data.cast;
+};
+
+export const getMovieAwards = async (movieId) => {
+  const response = await fetch(`${API_BASE_URL}/movies/${movieId}/awards`);
+  const data = await response.json();
+  return data.awards;
+};
+
 
 // Add to watchlist function
 export const addToWatchlist = async (movieId, userId) => {
@@ -284,8 +314,51 @@ export const deleteAwardById = async (id) => {
 
 // Add these functions for movie details functionality
 
-export const rateMovie = async (movieId, rating) => {
-  // Submit rating to backend
+export const rateMovie = async (movieId, rating, userId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/movies/${movieId}/rating`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        score: rating,
+        user_id: userId
+      }),
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Rate movie error:', error);
+    throw error;
+  }
+};
+
+export const getUserRating = async (movieId, userId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/movies/${movieId}/rating/${userId}`);
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Get user rating error:', error);
+    throw error;
+  }
+};
+
+export const removeRating = async (movieId, userId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/movies/${movieId}/rating`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: userId
+      }),
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Remove rating error:', error);
+    throw error;
+  }
 };
 
 
@@ -293,6 +366,237 @@ export const markAsVisited = async (movieId) => {
   // Mark movie as visited
 };
 
-export const submitReview = async (movieId, reviewText) => {
-  // Submit user review
+export const submitReview = async (movieId, reviewText, userId, spoilerAlert = false) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/movies/${movieId}/reviews`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        text: reviewText,
+        user_id: userId,
+        spoiler_alert: spoilerAlert
+      }),
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Submit review error:', error);
+    throw error;
+  }
 };
+
+export const submitReaction = async (reviewId, reactionType, value, userId) => {
+  try {
+    console.log('Submitting reaction:', { reviewId, reactionType, value, userId });
+    
+    const response = await fetch(`${API_BASE_URL}/reviews/${reviewId}/reactions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        type: reactionType,
+        value: value,
+        user_id: userId
+      }),
+    });
+    
+    const result = await handleResponse(response);
+    console.log('Reaction response:', result);
+    return result;
+  } catch (error) {
+    console.error('Submit reaction error:', error);
+    throw error;
+  }
+};
+
+export const getUserReactions = async (movieId, userId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/reviews/reactions/${movieId}/${userId}`);
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Get user reactions error:', error);
+    throw error;
+  }
+};
+
+// Edit a review
+export const editReview = async (reviewId, reviewText, userId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/reviews/${reviewId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        text: reviewText,
+        user_id: userId
+      }),
+    });
+    
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Edit review error:', error);
+    throw error;
+  }
+};
+
+// Delete a review
+export const deleteReview = async (reviewId, userId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/reviews/${reviewId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: userId
+      }),
+    });
+    
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Delete review error:', error);
+    throw error;
+  }
+};
+
+//new start 
+
+export const getAllContent = async () => {
+  const res = await fetch('/api/content');
+  return await res.json();
+};
+
+export const getAllCelebrities = async () => {
+  const res = await fetch('/api/celebrities');
+  return await res.json();
+};
+
+export const getAllAwards = async () => {
+  const res = await fetch('/api/awards');
+  return await res.json();
+};
+
+export const getRatingDistribution = async (movieId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/movies/${movieId}/rating-distribution`);
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to fetch rating distribution');
+    }
+
+    console.log('API Response:', data);
+    return data;
+  } catch (error) {
+    console.error('Error in getRatingDistribution:', error);
+    throw error;
+  }
+};
+
+// Get similar movies by genres
+export const getSimilarMovies = async (genres, excludeId) => {
+  try {
+    // Make sure genres is an array and excludeId is a number
+    const genresParam = Array.isArray(genres) ? genres.join(',') : genres;
+    const response = await fetch(`${API_BASE_URL}/movies/similar?genres=${encodeURIComponent(genresParam)}&excludeId=${excludeId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await handleResponse(response);
+    return data || []; // Ensure we always return an array
+  } catch (error) {
+    console.error('Get similar movies error:', error);
+    return []; // Return empty array on error
+  }
+};
+
+// ==================== ADVANCED SEARCH API FUNCTIONS START ====================
+
+// Advanced search for movies and series
+export const advancedSearch = async (filters) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/search/advanced`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(filters),
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Advanced search error:', error);
+    throw error;
+  }
+};
+
+// Advanced search for celebrities
+export const searchCelebrities = async (filters) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/search/celebrities`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(filters),
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Celebrity search error:', error);
+    throw error;
+  }
+};
+
+// Get all available genres
+export const getGenres = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/search/genres`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Get genres error:', error);
+    throw error;
+  }
+};
+
+// Get all available languages
+export const getLanguages = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/search/languages`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Get languages error:', error);
+    throw error;
+  }
+};
+
+// Get all available countries
+export const getCountries = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/search/countries`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Get countries error:', error);
+    throw error;
+  }
+};
+
+// ==================== ADVANCED SEARCH API FUNCTIONS END ====================

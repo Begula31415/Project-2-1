@@ -1,7 +1,39 @@
+
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+//new 
+import Navigation from './Navigation';
+import MovieSection from './MovieSection';
+import CelebritySection from './CelebritySection';
+
+import {
+  getAllContent,
+  deleteContentById,
+  getAllCelebrities,
+  deleteCelebrityById,
+  getAllAwards,
+  deleteAwardById
+} from '../services/api';
+
+//new till now
 
 const AdminDashboard = ({ currentUser = null }) => {
+
+  //new start
+  const navigate=useNavigate();
+  //new end
+
   const [activeTab, setActiveTab] = useState('content');
+
+//new start
+
+const [contentData, setContentData] = useState([]);
+const [celebrityListData, setCelebrityListData] = useState([]);
+const [awardListData, setAwardListData] = useState([]);
+
+//new end
+
   const [showAddMovieModal, setShowAddMovieModal] = useState(false);
   const [showAddCelebrityModal, setShowAddCelebrityModal] = useState(false);
   const [showAddAwardModal, setShowAddAwardModal] = useState(false);
@@ -36,24 +68,38 @@ const AdminDashboard = ({ currentUser = null }) => {
     type: ''
   });
 
-  // Sample data - replace with actual API calls
-  const [contentData, setContentData] = useState([
-    { id: 1, title: 'The Matrix', type: 'Movie', year: 1999, rating: 8.7 },
-    { id: 2, title: 'Breaking Bad', type: 'Series', year: 2008, rating: 9.5 },
-    { id: 3, title: 'Planet Earth', type: 'Documentary', year: 2006, rating: 9.4 }
-  ]);
+  //new start again
 
-  const [celebrityListData, setCelebrityListData] = useState([
-    { id: 1, name: 'Leonardo DiCaprio', profession: 'Actor', movies: 25 },
-    { id: 2, name: 'Christopher Nolan', profession: 'Director', movies: 12 },
-    { id: 3, name: 'Meryl Streep', profession: 'Actress', movies: 40 }
-  ]);
+ useEffect(() => {
+  const fetchData = async () => {
+    try {
+      if (activeTab === 'content') {
+        const data = await getAllContent();
+        const mappedData = data.map(movie => ({
+          id: movie.id,
+          title: movie.title,
+          poster: movie.poster_url,
+          year: movie.release_date?.split('-')[0],
+          rating: movie.rating || null,
+          views: movie.views || 0
+        }));
+        setContentData(mappedData);
+      } else if (activeTab === 'celebrity') {
+        const data = await getAllCelebrities();
+        setCelebrityListData(data);
+      } else if (activeTab === 'award') {
+        const data = await getAllAwards();
+        setAwardListData(data);
+      }
+    } catch (error) {
+      console.error('Fetching error:', error);
+    }
+  };
 
-  const [awardListData, setAwardListData] = useState([
-    { id: 1, name: 'Academy Awards', year: 2024, category: 'Best Picture', winner: 'Oppenheimer' },
-    { id: 2, name: 'Golden Globe', year: 2024, category: 'Best Actor', winner: 'Cillian Murphy' },
-    { id: 3, name: 'BAFTA', year: 2024, category: 'Best Director', winner: 'Christopher Nolan' }
-  ]);
+  fetchData();
+}, [activeTab]);
+
+//new start end here 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -249,61 +295,72 @@ const AdminDashboard = ({ currentUser = null }) => {
 
   const renderContent = () => {
     switch (activeTab) {
+      // case 'content':
+      //   return (
+      //     <div style={{ display: 'grid', gap: '1rem' }}>
+      //       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+      //         <h3 style={{ color: '#fbbf24', fontSize: '1.5rem' }}>Content Management</h3>
+      //         <button
+      //           onClick={() => setShowAddMovieModal(true)}
+      //           style={{
+      //             backgroundColor: '#fbbf24',
+      //             color: '#000',
+      //             padding: '0.75rem 1.5rem',
+      //             borderRadius: '8px',
+      //             border: 'none',
+      //             fontWeight: 'bold',
+      //             cursor: 'pointer',
+      //             fontSize: '0.95rem'
+      //           }}
+      //         >
+      //           Add Movie
+      //         </button>
+      //       </div>
+      //       {contentData.map(item => (
+      //         <div key={item.id} style={{
+      //           backgroundColor: '#2a2a2a',
+      //           padding: '1rem',
+      //           borderRadius: '8px',
+      //           border: '1px solid #444',
+      //           display: 'flex',
+      //           justifyContent: 'space-between',
+      //           alignItems: 'center'
+      //         }}>
+      //           <div>
+      //             <h4 style={{ color: '#fbbf24', margin: '0 0 0.5rem 0' }}>{item.title}</h4>
+      //             <p style={{ color: '#9ca3af', margin: '0', fontSize: '0.875rem' }}>
+      //               {item.type} • {item.year} • Rating: {item.rating}
+      //             </p>
+      //           </div>
+      //           <button
+      //             onClick={() => handleRemoveItem(item.id, 'content')}
+      //             style={{
+      //               backgroundColor: '#ef4444',
+      //               color: 'white',
+      //               padding: '0.5rem 1rem',
+      //               borderRadius: '6px',
+      //               border: 'none',
+      //               cursor: 'pointer',
+      //               fontSize: '0.875rem'
+      //             }}
+      //           >
+      //             Remove
+      //           </button>
+      //         </div>
+      //       ))}
+      //     </div>
+      //   );
+      //new start again hereeeeeeeee
       case 'content':
-        return (
-          <div style={{ display: 'grid', gap: '1rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h3 style={{ color: '#fbbf24', fontSize: '1.5rem' }}>Content Management</h3>
-              <button
-                onClick={() => setShowAddMovieModal(true)}
-                style={{
-                  backgroundColor: '#fbbf24',
-                  color: '#000',
-                  padding: '0.75rem 1.5rem',
-                  borderRadius: '8px',
-                  border: 'none',
-                  fontWeight: 'bold',
-                  cursor: 'pointer',
-                  fontSize: '0.95rem'
-                }}
-              >
-                Add Movie
-              </button>
-            </div>
-            {contentData.map(item => (
-              <div key={item.id} style={{
-                backgroundColor: '#2a2a2a',
-                padding: '1rem',
-                borderRadius: '8px',
-                border: '1px solid #444',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}>
-                <div>
-                  <h4 style={{ color: '#fbbf24', margin: '0 0 0.5rem 0' }}>{item.title}</h4>
-                  <p style={{ color: '#9ca3af', margin: '0', fontSize: '0.875rem' }}>
-                    {item.type} • {item.year} • Rating: {item.rating}
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleRemoveItem(item.id, 'content')}
-                  style={{
-                    backgroundColor: '#ef4444',
-                    color: 'white',
-                    padding: '0.5rem 1rem',
-                    borderRadius: '6px',
-                    border: 'none',
-                    cursor: 'pointer',
-                    fontSize: '0.875rem'
-                  }}
-                >
-                  Remove
-                </button>
-              </div>
-            ))}
-          </div>
-        );
+  return (
+    <MovieSection
+      title="All Movies"
+      movies={contentData}
+      onMovieClick={(id) => console.log('Clicked movie:', id)}
+      onRemove={(id) => handleRemoveItem(id, 'content')}
+    />
+  );
+  //new enddddddddddddddddddddd
       case 'celebrity':
         return (
           <div style={{ display: 'grid', gap: '1rem' }}>
