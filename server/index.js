@@ -1453,6 +1453,41 @@ app.delete("/user-fav-celeb/:userId/:celebrityId", async (req, res) => {
 }); 
 
 
+app.get('/api/celebrities/:id/related', async (req, res) => {  
+  const { id } = req.params;  
+  try {  
+    const result = await pool.query(`  
+      SELECT DISTINCT   
+        c2.celebrity_id,  
+        c2.name,  
+        c2.photo_url,  
+        COUNT(DISTINCT co.content_id) as common_movies  
+      FROM celebrity c1  
+      INNER JOIN celebrity_role cr1 ON c1.celebrity_id = cr1.celebrity_id  
+      INNER JOIN celebrity_role_content crc1 ON cr1.celebrity_role_id = crc1.celebrity_role_id  
+      INNER JOIN content co ON crc1.content_id = co.content_id  
+      INNER JOIN celebrity_role_content crc2 ON co.content_id = crc2.content_id  
+      INNER JOIN celebrity_role cr2 ON crc2.celebrity_role_id = cr2.celebrity_role_id  
+      INNER JOIN celebrity c2 ON cr2.celebrity_id = c2.celebrity_id  
+      WHERE c1.celebrity_id = $1 AND c2.celebrity_id != $1  
+      GROUP BY c2.celebrity_id, c2.name, c2.photo_url  
+      HAVING COUNT(DISTINCT co.content_id) > 0  
+      ORDER BY common_movies DESC  
+      LIMIT 10  
+    `, [id]);  
+  
+    res.json(result.rows);  
+  } catch (err) {  
+    console.error("Error fetching related celebrities:", err);  
+    res.status(500).json({ error: "Server error" });  
+  }  
+});  
+
+
+
+
+
+
 
 
 

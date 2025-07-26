@@ -48,7 +48,7 @@ const HeroSection = () => {
           initial="hidden"
           animate={showText ? "visible" : "hidden"}
         >
-          Welcome.
+          Welcome To FilmFusion
         </motion.h1>
         <motion.p 
           className="hero-subtitle"

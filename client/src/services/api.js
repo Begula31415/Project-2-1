@@ -578,6 +578,20 @@ export const removeFromFavouriteCelebrities = async (userId, celebrityId) => {
 };
 
 
+export const getRelatedCelebrities = async (celebrityId) => {  
+  try {  
+    const res = await fetch(`${API_BASE_URL}/api/celebrities/${celebrityId}/related`);  
+    if (!res.ok) {  
+      throw new Error(`HTTP error! status: ${res.status}`);  
+    }  
+    return await res.json();  
+  } catch (error) {  
+    console.error('Get related celebrities error:', error);  
+    throw error;  
+  }  
+};  
+
+
 
 
 

@@ -39,7 +39,7 @@ const AdminDashboard = ({ currentUser = null }) => {
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState('celebrity');
-
+  const [viewMode, setViewMode] = useState('list'); 
   //new things hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 
   const [loading, setLoading] = useState(true);
@@ -874,218 +874,514 @@ useEffect(() => {
       );
     }
     switch (activeTab) {
-      case 'content':
-        return (
-          <>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>  
-  <h3 style={{ color: '#fbbf24', fontSize: '1.5rem' }}>Content Management</h3>  
-  <div style={{ display: 'flex', gap: '1rem' }}>  
-    <button  
-      onClick={() => setShowAddMovieModal(true)}  
-      style={{  
-        backgroundColor: '#fbbf24',  
-        color: '#000',  
-        padding: '0.75rem 1.5rem',  
-        borderRadius: '8px',  
-        border: 'none',  
-        fontWeight: 'bold',  
-        cursor: 'pointer',  
-        fontSize: '0.95rem'  
-      }}  
-    >  
-      Add Movie  
-    </button>  
-    <button  
-      onClick={() => setShowAddSeriesModal(true)}  
-      style={{  
-        backgroundColor: '#10b981',  
-        color: '#fff',  
-        padding: '0.75rem 1.5rem',  
-        borderRadius: '8px',  
-        border: 'none',  
-        fontWeight: 'bold',  
-        cursor: 'pointer',  
-        fontSize: '0.95rem'  
-      }}  
-    >  
-      Add Series  
-    </button>  
-  </div>  
-</div>  
+//       case 'content':
+//         return (
+//           <>
+//             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>  
+//   <h3 style={{ color: '#fbbf24', fontSize: '1.5rem' }}>Content Management</h3>  
+//   <div style={{ display: 'flex', gap: '1rem' }}>  
+//     <button  
+//       onClick={() => setShowAddMovieModal(true)}  
+//       style={{  
+//         backgroundColor: '#fbbf24',  
+//         color: '#000',  
+//         padding: '0.75rem 1.5rem',  
+//         borderRadius: '8px',  
+//         border: 'none',  
+//         fontWeight: 'bold',  
+//         cursor: 'pointer',  
+//         fontSize: '0.95rem'  
+//       }}  
+//     >  
+//       Add Movie  
+//     </button>  
+//     <button  
+//       onClick={() => setShowAddSeriesModal(true)}  
+//       style={{  
+//         backgroundColor: '#10b981',  
+//         color: '#fff',  
+//         padding: '0.75rem 1.5rem',  
+//         borderRadius: '8px',  
+//         border: 'none',  
+//         fontWeight: 'bold',  
+//         cursor: 'pointer',  
+//         fontSize: '0.95rem'  
+//       }}  
+//     >  
+//       Add Series  
+//     </button>  
+//   </div>  
+// </div>  
   
-{/* Search Bar */}  
-<div style={{ marginBottom: '1.5rem' }}>  
-  <input  
-    type="text"  
-    placeholder="Search content..."  
-    value={searchQuery}  
-    onChange={(e) => {  
-      setSearchQuery(e.target.value);  
-      handleSearch(e.target.value);  
-    }}  
-    style={{  
-      width: '100%',  
-      padding: '0.75rem',  
-      borderRadius: '8px',  
-      border: '1px solid #444',  
-      backgroundColor: '#0a0a0a',  
-      color: 'white',  
-      fontSize: '0.95rem'  
-    }}  
-  />  
-</div>  
-            {/* <AdminMovieSection
-        title="All Movies"
-        movies={contentData}
-        onRemove={(id) => handleRemoveItem(id, 'content')}
-      /> */}
-            <div style={{ display: 'grid', gap: '1rem' }}>
-              {(searchQuery ? searchResults : contentData).map(item => (
-                <div key={item.id} style={{
-                  backgroundColor: '#2a2a2a',
-                  padding: '1.5rem',
-                  borderRadius: '10px',
-                  border: '1px solid #444',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1.5rem'
-                }}>
-                  <img
-                    src={item.poster || 'https://via.placeholder.com/100x150'}
-                    alt={item.title}
-                    style={{
-                      width: '100px',
-                      height: '150px',
-                      borderRadius: '6px',
-                      objectFit: 'cover',
-                      border: '2px solid #fbbf24'
-                    }}
-                  />
-                  <div style={{ flexGrow: 1 }}>
-                    <h4 style={{ color: '#fbbf24', marginBottom: '0.25rem' }}>{item.title}</h4>
-                    <p style={{ color: '#9ca3af', margin: '0', fontSize: '0.875rem' }}>
-                      {item.type} • {item.year} • Rating: {item.rating}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => handleRemoveItem(item.id, 'content')}
-                    style={{
-                      backgroundColor: '#ef4444',
-                      color: 'white',
-                      padding: '0.5rem 1rem',
-                      borderRadius: '6px',
-                      border: 'none',
-                      cursor: 'pointer',
-                      fontSize: '0.875rem'
-                    }}
-                  >
-                    Remove
-                  </button>
-                </div>
-              ))}
-            </div>
-          </>
-        );
-      //hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-      case 'celebrity':
-        return (
-          <div style={{ display: 'grid', gap: '1rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h3 style={{ color: '#fbbf24', fontSize: '1.5rem' }}>Celebrity Management</h3>
-              <button
-                onClick={() => {
-                  //setActiveTab('celebrity');
+// {/* Search Bar */}  
+// <div style={{ marginBottom: '1.5rem' }}>  
+//   <input  
+//     type="text"  
+//     placeholder="Search content..."  
+//     value={searchQuery}  
+//     onChange={(e) => {  
+//       setSearchQuery(e.target.value);  
+//       handleSearch(e.target.value);  
+//     }}  
+//     style={{  
+//       width: '100%',  
+//       padding: '0.75rem',  
+//       borderRadius: '8px',  
+//       border: '1px solid #444',  
+//       backgroundColor: '#0a0a0a',  
+//       color: 'white',  
+//       fontSize: '0.95rem'  
+//     }}  
+//   />  
+// </div>  
+//             {/* <AdminMovieSection
+//         title="All Movies"
+//         movies={contentData}
+//         onRemove={(id) => handleRemoveItem(id, 'content')}
+//       /> */}
+//             <div style={{ display: 'grid', gap: '1rem' }}>
+//               {(searchQuery ? searchResults : contentData).map(item => (
+//                 <div key={item.id} style={{
+//                   backgroundColor: '#2a2a2a',
+//                   padding: '1.5rem',
+//                   borderRadius: '10px',
+//                   border: '1px solid #444',
+//                   display: 'flex',
+//                   alignItems: 'center',
+//                   gap: '1.5rem'
+//                 }}>
+//                   <img
+//                     src={item.poster || 'https://via.placeholder.com/100x150'}
+//                     alt={item.title}
+//                     style={{
+//                       width: '100px',
+//                       height: '150px',
+//                       borderRadius: '6px',
+//                       objectFit: 'cover',
+//                       border: '2px solid #fbbf24'
+//                     }}
+//                   />
+//                   <div style={{ flexGrow: 1 }}>
+//                     <h4 style={{ color: '#fbbf24', marginBottom: '0.25rem' }}>{item.title}</h4>
+//                     <p style={{ color: '#9ca3af', margin: '0', fontSize: '0.875rem' }}>
+//                       {item.type} • {item.year} • Rating: {item.rating}
+//                     </p>
+//                   </div>
+//                   <button
+//                     onClick={() => handleRemoveItem(item.id, 'content')}
+//                     style={{
+//                       backgroundColor: '#ef4444',
+//                       color: 'white',
+//                       padding: '0.5rem 1rem',
+//                       borderRadius: '6px',
+//                       border: 'none',
+//                       cursor: 'pointer',
+//                       fontSize: '0.875rem'
+//                     }}
+//                   >
+//                     Remove
+//                   </button>
+//                 </div>
+//               ))}
+//             </div>
+//           </>
+//         );
 
-                  setShowAddCelebrityModal(true);
-                }}
-                style={{
-                  backgroundColor: '#fbbf24',
-                  color: '#000',
-                  padding: '0.75rem 1.5rem',
-                  borderRadius: '8px',
-                  border: 'none',
-                  fontWeight: 'bold',
-                  cursor: 'pointer',
-                  fontSize: '0.95rem'
-                }}
-              >
-                Add Celebrity
-              </button>
-            </div>
+case 'content':  
+return (  
+  <>  
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>    
+      <h3 style={{ color: '#fbbf24', fontSize: '1.5rem' }}>Content Management</h3>    
+      <div style={{ display: 'flex', gap: '1rem' }}>    
+        <button    
+          onClick={() => setShowAddMovieModal(true)}    
+          style={{    
+            backgroundColor: '#fbbf24',    
+            color: '#000',    
+            padding: '0.75rem 1.5rem',    
+            borderRadius: '8px',    
+            border: 'none',    
+            fontWeight: 'bold',    
+            cursor: 'pointer',    
+            fontSize: '0.95rem'    
+          }}    
+        >    
+          Add Movie    
+        </button>    
+        <button    
+          onClick={() => setShowAddSeriesModal(true)}    
+          style={{    
+            backgroundColor: '#10b981',    
+            color: '#fff',    
+            padding: '0.75rem 1.5rem',    
+            borderRadius: '8px',    
+            border: 'none',    
+            fontWeight: 'bold',    
+            cursor: 'pointer',    
+            fontSize: '0.95rem'    
+          }}    
+        >    
+          Add Series    
+        </button>    
+      </div>    
+    </div>    
 
-            {/* Search Bar */}  
-<div style={{ marginBottom: '1.5rem' }}>  
-  <input  
-    type="text"  
-    placeholder="Search celebrities..."  
-    value={searchQuery}  
-    onChange={(e) => {  
-      setSearchQuery(e.target.value);  
-      handleSearch(e.target.value);  
-    }}  
-    style={{  
-      width: '100%',  
-      padding: '0.75rem',  
-      borderRadius: '8px',  
-      border: '1px solid #444',  
-      backgroundColor: '#0a0a0a',  
-      color: 'white',  
-      fontSize: '0.95rem'  
-    }}  
-  />  
-</div> 
+    {/* Search Bar */}    
+    <div style={{ marginBottom: '1.5rem' }}>    
+      <input    
+        type="text"    
+        placeholder="Search content..."    
+        value={searchQuery}    
+        onChange={(e) => {    
+          setSearchQuery(e.target.value);    
+          handleSearch(e.target.value);    
+        }}    
+        style={{    
+          width: '100%',    
+          padding: '0.75rem',    
+          borderRadius: '8px',    
+          border: '1px solid #444',    
+          backgroundColor: '#0a0a0a',    
+          color: 'white',    
+          fontSize: '0.95rem'    
+        }}    
+      />    
+    </div>  
 
-            {(searchQuery ? searchResults : celebrityListData).map(item => (
-              <div   
-              key={item.id}   
-              onClick={() => handleCelebrityClick(item.id)}  
+    {/* Content Display */}  
+    {viewMode === 'list' ? (  
+      <div style={{ display: 'grid', gap: '1rem' }}>  
+        {(searchQuery ? searchResults : contentData).map(item => (  
+          <div key={item.id} style={{  
+            backgroundColor: '#2a2a2a',  
+            padding: '1.5rem',  
+            borderRadius: '10px',  
+            border: '1px solid #444',  
+            display: 'flex',  
+            alignItems: 'center',  
+            gap: '1.5rem'  
+          }}>  
+            <img  
+              src={item.poster || 'https://via.placeholder.com/100x150'}  
+              alt={item.title}  
               style={{  
-                cursor: 'pointer', 
-                backgroundColor: '#2a2a2a',
-                padding: '1.5rem',
-                borderRadius: '10px',
-                border: '1px solid #444',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '1.5rem'
-              }}>
-                <img
-                  src={item.photo_url || 'https://via.placeholder.com/80'}
-                  alt={item.name}
-                  style={{
-                    width: '80px',
-                    height: '80px',
-                    borderRadius: '50%',
-                    objectFit: 'cover',
-                    border: '2px solid #fbbf24'
-                  }}
-                />
-                <div style={{ flexGrow: 1 }}>
-                  <h4 style={{ color: '#fbbf24', marginBottom: '0.25rem' }}>{item.name}</h4>
-                  <p style={{ color: '#9ca3af', margin: '0', fontSize: '0.875rem' }}>
-  {item.roles?.length ? item.roles.join(', ') : 'Profession Unknown'}
-</p>
+                width: '100px',  
+                height: '150px',  
+                borderRadius: '6px',  
+                objectFit: 'cover',  
+                border: '2px solid #fbbf24'  
+              }}  
+            />  
+            <div style={{ flexGrow: 1 }}>  
+              <h4 style={{ color: '#fbbf24', marginBottom: '0.25rem' }}>{item.title}</h4>  
+              <p style={{ color: '#9ca3af', margin: '0', fontSize: '0.875rem' }}>  
+                {item.type} • {item.year} • Rating: {item.rating}  
+              </p>  
+            </div>  
+            <button  
+              onClick={() => handleRemoveItem(item.id, 'content')}  
+              style={{  
+                backgroundColor: '#ef4444',  
+                color: 'white',  
+                padding: '0.5rem 1rem',  
+                borderRadius: '6px',  
+                border: 'none',  
+                cursor: 'pointer',  
+                fontSize: '0.875rem'  
+              }}  
+            >  
+              Remove  
+            </button>  
+          </div>  
+        ))}  
+      </div>  
+    ) : (  
+      <div style={{  
+        display: 'grid',  
+        gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',  
+        gap: '1.5rem'  
+      }}>  
+        {(searchQuery ? searchResults : contentData).map(item => (  
+          <div key={item.id} style={{  
+            backgroundColor: '#2a2a2a',  
+            borderRadius: '12px',  
+            overflow: 'hidden',  
+            border: '1px solid #444',  
+            transition: 'transform 0.3s ease',  
+            position: 'relative'  
+          }}  
+          onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}  
+          onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}  
+          >  
+            <button  
+              onClick={() => handleRemoveItem(item.id, 'content')}  
+              style={{  
+                position: 'absolute',  
+                top: '0.5rem',  
+                right: '0.5rem',  
+                backgroundColor: '#ef4444',  
+                color: 'white',  
+                border: 'none',  
+                borderRadius: '50%',  
+                width: '30px',  
+                height: '30px',  
+                cursor: 'pointer',  
+                fontSize: '1rem',  
+                display: 'flex',  
+                alignItems: 'center',  
+                justifyContent: 'center',  
+                zIndex: 1  
+              }}  
+            >  
+              ×  
+            </button>  
+              
+            <img  
+              src={item.poster || 'https://via.placeholder.com/300x400'}  
+              alt={item.title}  
+              style={{  
+                width: '100%',  
+                height: '400px',  
+                objectFit: 'cover'  
+              }}  
+            />  
+              
+            <div style={{ padding: '1rem' }}>  
+              <h4 style={{   
+                color: '#fbbf24',   
+                marginBottom: '0.5rem',  
+                fontSize: '1.1rem',  
+                fontWeight: 'bold'  
+              }}>  
+                {item.title}  
+              </h4>  
+              <p style={{   
+                color: '#9ca3af',   
+                margin: '0',  
+                fontSize: '0.875rem',  
+                lineHeight: '1.4'  
+              }}>  
+                {item.type} • {item.year}  
+              </p>  
+              <div style={{  
+                display: 'flex',  
+                alignItems: 'center',  
+                marginTop: '0.5rem',  
+                gap: '0.25rem'  
+              }}>  
+                <span style={{ color: '#fbbf24', fontSize: '1rem' }}>⭐</span>  
+                <span style={{ color: '#fbbf24', fontSize: '0.875rem' }}>  
+                  {item.rating}  
+                </span>  
+              </div>  
+            </div>  
+          </div>  
+        ))}  
+      </div>  
+    )}  
+  </>  
+);  
 
-                </div>
-                <button
-                  onClick={() => handleRemoveItem(item.id, 'celebrity')}
-                  style={{
-                    backgroundColor: '#ef4444',
-                    color: 'white',
-                    padding: '0.5rem 1rem',
-                    borderRadius: '6px',
-                    border: 'none',
-                    cursor: 'pointer',
-                    fontSize: '0.875rem'
-                  }}
-                >
-                  Remove
-                </button>
-              </div>
-            ))}
-          </div>
-        );
 
+      //hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+      case 'celebrity':  
+        return (  
+          <div>  
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>  
+              <h3 style={{ color: '#fbbf24', fontSize: '1.5rem' }}>Celebrity Management</h3>  
+              <button  
+                onClick={() => setShowAddCelebrityModal(true)}  
+                style={{  
+                  backgroundColor: '#fbbf24',  
+                  color: '#000',  
+                  padding: '0.75rem 1.5rem',  
+                  borderRadius: '8px',  
+                  border: 'none',  
+                  fontWeight: 'bold',  
+                  cursor: 'pointer',  
+                  fontSize: '0.95rem'  
+                }}  
+              >  
+                Add Celebrity  
+              </button>  
+            </div>  
+  
+            {/* Search Bar */}    
+            <div style={{ marginBottom: '1.5rem' }}>    
+              <input    
+                type="text"    
+                placeholder="Search celebrities..."    
+                value={searchQuery}    
+                onChange={(e) => {    
+                  setSearchQuery(e.target.value);    
+                  handleSearch(e.target.value);    
+                }}    
+                style={{    
+                  width: '100%',    
+                  padding: '0.75rem',    
+                  borderRadius: '8px',    
+                  border: '1px solid #444',    
+                  backgroundColor: '#0a0a0a',    
+                  color: 'white',    
+                  fontSize: '0.95rem'    
+                }}    
+              />    
+            </div>  
+  
+            {/* Celebrity Display */}  
+            {viewMode === 'list' ? (  
+              <div style={{ display: 'grid', gap: '1rem' }}>  
+                {(searchQuery ? searchResults : celebrityListData).map(item => (  
+                  <div     
+                    key={item.id}     
+                    onClick={() => handleCelebrityClick(item.id)}    
+                    style={{    
+                      cursor: 'pointer',   
+                      backgroundColor: '#2a2a2a',  
+                      padding: '1.5rem',  
+                      borderRadius: '10px',  
+                      border: '1px solid #444',  
+                      display: 'flex',  
+                      alignItems: 'center',  
+                      gap: '1.5rem',  
+                      transition: 'transform 0.2s ease'  
+                    }}  
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}  
+                    onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}  
+                  >  
+                    <img  
+                      src={item.photo_url || 'https://via.placeholder.com/80'}  
+                      alt={item.name}  
+                      style={{  
+                        width: '80px',  
+                        height: '80px',  
+                        borderRadius: '50%',  
+                        objectFit: 'cover',  
+                        border: '2px solid #fbbf24'  
+                      }}  
+                    />  
+                    <div style={{ flexGrow: 1 }}>  
+                      <h4 style={{ color: '#fbbf24', marginBottom: '0.25rem' }}>{item.name}</h4>  
+                      <p style={{ color: '#9ca3af', margin: '0', fontSize: '0.875rem' }}>  
+                        {item.roles?.length ? item.roles.join(', ') : 'Profession Unknown'}  
+                      </p>  
+                    </div>  
+                    <button  
+                      onClick={(e) => {  
+                        e.stopPropagation();  
+                        handleRemoveItem(item.id, 'celebrity');  
+                      }}  
+                      style={{  
+                        backgroundColor: '#ef4444',  
+                        color: 'white',  
+                        padding: '0.5rem 1rem',  
+                        borderRadius: '6px',  
+                        border: 'none',  
+                        cursor: 'pointer',  
+                        fontSize: '0.875rem'  
+                      }}  
+                    >  
+                      Remove  
+                    </button>  
+                  </div>  
+                ))}  
+              </div>  
+            ) : (  
+              <div style={{  
+                display: 'grid',  
+                gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',  
+                gap: '1.5rem'  
+              }}>  
+                {(searchQuery ? searchResults : celebrityListData).map(item => (  
+                  <div  
+                    key={item.id}  
+                    onClick={() => handleCelebrityClick(item.id)}  
+                    style={{  
+                      backgroundColor: '#2a2a2a',  
+                      borderRadius: '12px',  
+                      overflow: 'hidden',  
+                      border: '1px solid #444',  
+                      cursor: 'pointer',  
+                      transition: 'transform 0.3s ease',  
+                      position: 'relative'  
+                    }}  
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}  
+                    onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}  
+                  >  
+                    <button  
+                      onClick={(e) => {  
+                        e.stopPropagation();  
+                        handleRemoveItem(item.id, 'celebrity');  
+                      }}  
+                      style={{  
+                        position: 'absolute',  
+                        top: '0.5rem',  
+                        right: '0.5rem',  
+                        backgroundColor: '#ef4444',  
+                        color: 'white',  
+                        border: 'none',  
+                        borderRadius: '50%',  
+                        width: '30px',  
+                        height: '30px',  
+                        cursor: 'pointer',  
+                        fontSize: '1rem',  
+                        display: 'flex',  
+                        alignItems: 'center',  
+                        justifyContent: 'center',  
+                        zIndex: 1  
+                      }}  
+                    >  
+                      ×  
+                    </button>  
+                      
+                    <img  
+                      src={item.photo_url || 'https://via.placeholder.com/250x300'}  
+                      alt={item.name}  
+                      style={{  
+                        width: '100%',  
+                        height: '300px',  
+                        objectFit: 'cover'  
+                      }}  
+                    />  
+                      
+                    <div style={{ padding: '1rem' }}>  
+                      <h4 style={{   
+                        color: '#fbbf24',   
+                        marginBottom: '0.5rem',  
+                        fontSize: '1.1rem',  
+                        fontWeight: 'bold'  
+                      }}>  
+                        {item.name}  
+                      </h4>  
+                      <p style={{   
+                        color: '#9ca3af',   
+                        margin: '0',  
+                        fontSize: '0.875rem',  
+                        lineHeight: '1.4'  
+                      }}>  
+                        {item.roles?.length ? item.roles.join(', ') : 'Profession Unknown'}  
+                      </p>  
+                      {item.bio && (  
+                        <p style={{  
+                          color: '#ccc',  
+                          fontSize: '0.8rem',  
+                          marginTop: '0.5rem',  
+                          lineHeight: '1.3',  
+                          display: '-webkit-box',  
+                          WebkitLineClamp: 2,  
+                          WebkitBoxOrient: 'vertical',  
+                          overflow: 'hidden'  
+                        }}>  
+                          {item.bio}  
+                        </p>  
+                      )}  
+                    </div>  
+                  </div>  
+                ))}  
+              </div>  
+            )}  
+          </div>  
+        );  
       case 'award':
         return (
           <div style={{ display: 'grid', gap: '1rem' }}>
@@ -1522,80 +1818,431 @@ useEffect(() => {
           </div>
         </div>
 
-        {/* Admin Details Section */}  
-        {showAdminDetails && (  
-          <div style={{  
-            backgroundColor: '#1f1f1f',  
-            borderRadius: '12px',  
-            padding: '2rem',  
-            marginBottom: '2rem',  
-            border: '1px solid #333'  
-          }}>  
-            <h3 style={{  
-              margin: '0 0 1rem 0',  
-              color: '#fbbf24',  
-              fontSize: '1.25rem'  
-            }}>  
-              Admin Details  
-            </h3>  
+        {/* Admin Details Section */}    
+        {showAdminDetails && (    
+          <div style={{    
+            backgroundColor: '#1f1f1f',    
+            borderRadius: '12px',    
+            padding: '2rem',    
+            marginBottom: '2rem',    
+            border: '1px solid #333'    
+          }}>    
+            {/* Stats Row */}  
             <div style={{  
-              display: 'grid',  
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',  
-              gap: '1rem',  
-              color: '#9ca3af',  
-              fontSize: '0.875rem'  
+              display: 'flex',  
+              justifyContent: 'space-around',  
+              alignItems: 'center',  
+              marginBottom: '2rem',  
+              padding: '1rem 0',  
+              borderBottom: '1px solid #333'  
             }}>  
-              <div>  
-                <strong style={{ color: '#ffffff' }}>Role:</strong> Administrator  
+              <div style={{ textAlign: 'center' }}>  
+                <div style={{  
+                  fontSize: '2rem',  
+                  fontWeight: 'bold',  
+                  color: '#fbbf24',  
+                  marginBottom: '0.5rem'  
+                }}>  
+                  {contentData.length}  
+                </div>  
+                <div style={{  
+                  fontSize: '0.875rem',  
+                  color: '#9ca3af'  
+                }}>  
+                  Total Content  
+                </div>  
               </div>  
-              <div>  
-                <strong style={{ color: '#ffffff' }}>Status:</strong> Active  
+                
+              <div style={{ textAlign: 'center' }}>  
+                <div style={{  
+                  fontSize: '2rem',  
+                  fontWeight: 'bold',  
+                  color: '#10b981',  
+                  marginBottom: '0.5rem'  
+                }}>  
+                  {celebrityListData.length}  
+                </div>  
+                <div style={{  
+                  fontSize: '0.875rem',  
+                  color: '#9ca3af'  
+                }}>  
+                  Celebrities  
+                </div>  
               </div>  
-              <div>  
-                <strong style={{ color: '#ffffff' }}>Phone:</strong> {adminFormData.phone || 'Not provided'}  
+                
+              <div style={{ textAlign: 'center' }}>  
+                <div style={{  
+                  fontSize: '2rem',  
+                  fontWeight: 'bold',  
+                  color: '#8b5cf6',  
+                  marginBottom: '0.5rem'  
+                }}>  
+                  {awardListData.length}  
+                </div>  
+                <div style={{  
+                  fontSize: '0.875rem',  
+                  color: '#9ca3af'  
+                }}>  
+                  Awards  
+                </div>  
               </div>  
-              <div>  
-                <strong style={{ color: '#ffffff' }}>Official Email:</strong> {adminFormData.official_mail || 'Not provided'}  
-              </div>  
-              <div>  
-                <strong style={{ color: '#ffffff' }}>Access Level:</strong> Full Access  
-              </div>  
-              <div>  
-                <strong style={{ color: '#ffffff' }}>Last Login:</strong> Just now  
+                
+              <div style={{ textAlign: 'center' }}>  
+                <div style={{  
+                  fontSize: '2rem',  
+                  fontWeight: 'bold',  
+                  color: '#ef4444',  
+                  marginBottom: '0.5rem'  
+                }}>  
+                  100%  
+                </div>  
+                <div style={{  
+                  fontSize: '0.875rem',  
+                  color: '#9ca3af'  
+                }}>  
+                  System Health  
+                </div>  
               </div>  
             </div>  
-          </div>  
-        )} 
+  
+            <h3 style={{    
+              margin: '0 0 1.5rem 0',    
+              color: '#fbbf24',    
+              fontSize: '1.25rem',  
+              display: 'flex',  
+              alignItems: 'center',  
+              gap: '0.5rem'  
+            }}>    
+              🔧 Admin Details    
+            </h3>    
+              
+            <div style={{  
+              display: 'grid',  
+              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',  
+              gap: '1.5rem'  
+            }}>  
+              {/* Role */}  
+              <div style={{  
+                display: 'flex',  
+                alignItems: 'center',  
+                gap: '1rem',  
+                padding: '1rem',  
+                backgroundColor: '#2a2a2a',  
+                borderRadius: '8px',  
+                border: '1px solid #444'  
+              }}>  
+                <div style={{  
+                  width: '40px',  
+                  height: '40px',  
+                  backgroundColor: '#fbbf24',  
+                  borderRadius: '8px',  
+                  display: 'flex',  
+                  alignItems: 'center',  
+                  justifyContent: 'center',  
+                  fontSize: '1.25rem'  
+                }}>  
+                  👑  
+                </div>  
+                <div>  
+                  <div style={{  
+                    fontSize: '0.875rem',  
+                    color: '#9ca3af',  
+                    marginBottom: '0.25rem'  
+                  }}>  
+                    Role  
+                  </div>  
+                  <div style={{  
+                    fontSize: '1rem',  
+                    color: '#ffffff',  
+                    fontWeight: '500'  
+                  }}>  
+                    Administrator  
+                  </div>  
+                </div>  
+              </div>  
+  
+              {/* Status */}  
+              <div style={{  
+                display: 'flex',  
+                alignItems: 'center',  
+                gap: '1rem',  
+                padding: '1rem',  
+                backgroundColor: '#2a2a2a',  
+                borderRadius: '8px',  
+                border: '1px solid #444'  
+              }}>  
+                <div style={{  
+                  width: '40px',  
+                  height: '40px',  
+                  backgroundColor: '#10b981',
+                  borderRadius: '8px',  
+                  display: 'flex',  
+                  alignItems: 'center',  
+                  justifyContent: 'center',  
+                  fontSize: '1.25rem'  
+                }}>  
+                  ✅  
+                </div>  
+                <div>  
+                  <div style={{  
+                    fontSize: '0.875rem',  
+                    color: '#9ca3af',  
+                    marginBottom: '0.25rem'  
+                  }}>  
+                    Status  
+                  </div>  
+                  <div style={{  
+                    fontSize: '1rem',  
+                    color: '#ffffff',  
+                    fontWeight: '500'  
+                  }}>  
+                    Active  
+                  </div>  
+                </div>  
+              </div>  
+  
+              {/* Access Level */}  
+              <div style={{  
+                display: 'flex',  
+                alignItems: 'center',  
+                gap: '1rem',  
+                padding: '1rem',  
+                backgroundColor: '#2a2a2a',  
+                borderRadius: '8px',  
+                border: '1px solid #444'  
+              }}>  
+                <div style={{  
+                  width: '40px',  
+                  height: '40px',  
+                  backgroundColor: '#8b5cf6',  
+                  borderRadius: '8px',  
+                  display: 'flex',  
+                  alignItems: 'center',  
+                  justifyContent: 'center',  
+                  fontSize: '1.25rem'  
+                }}>  
+                  🔐  
+                </div>  
+                <div>  
+                  <div style={{  
+                    fontSize: '0.875rem',  
+                    color: '#9ca3af',  
+                    marginBottom: '0.25rem'  
+                  }}>  
+                    Access Level  
+                  </div>  
+                  <div style={{  
+                    fontSize: '1rem',  
+                    color: '#ffffff',  
+                    fontWeight: '500'  
+                  }}>  
+                    Full Access  
+                  </div>  
+                </div>  
+              </div>  
+  
+              {/* Last Login */}  
+              <div style={{  
+                display: 'flex',  
+                alignItems: 'center',  
+                gap: '1rem',  
+                padding: '1rem',  
+                backgroundColor: '#2a2a2a',  
+                borderRadius: '8px',  
+                border: '1px solid #444'  
+              }}>  
+                <div style={{  
+                  width: '40px',  
+                  height: '40px',  
+                  backgroundColor: '#f59e0b',  
+                  borderRadius: '8px',  
+                  display: 'flex',  
+                  alignItems: 'center',  
+                  justifyContent: 'center',  
+                  fontSize: '1.25rem'  
+                }}>  
+                  🕐  
+                </div>  
+                <div>  
+                  <div style={{  
+                    fontSize: '0.875rem',  
+                    color: '#9ca3af',  
+                    marginBottom: '0.25rem'  
+                  }}>  
+                    Last Login  
+                  </div>  
+                  <div style={{  
+                    fontSize: '1rem',  
+                    color: '#ffffff',  
+                    fontWeight: '500'  
+                  }}>  
+                    Just now  
+                  </div>  
+                </div>  
+              </div>  
+  
+              {/* Phone */}  
+              <div style={{  
+                display: 'flex',  
+                alignItems: 'center',  
+                gap: '1rem',  
+                padding: '1rem',  
+                backgroundColor: '#2a2a2a',  
+                borderRadius: '8px',  
+                border: '1px solid #444'  
+              }}>  
+                <div style={{  
+                  width: '40px',  
+                  height: '40px',  
+                  backgroundColor: '#06b6d4',  
+                  borderRadius: '8px',  
+                  display: 'flex',  
+                  alignItems: 'center',  
+                  justifyContent: 'center',  
+                  fontSize: '1.25rem'  
+                }}>  
+                  📞  
+                </div>  
+                <div>  
+                  <div style={{  
+                    fontSize: '0.875rem',  
+                    color: '#9ca3af',  
+                    marginBottom: '0.25rem'  
+                  }}>  
+                    Phone  
+                  </div>  
+                  <div style={{  
+                    fontSize: '1rem',  
+                    color: '#ffffff',  
+                    fontWeight: '500'  
+                  }}>  
+                    {adminFormData.phone || 'Not provided'}  
+                  </div>  
+                </div>  
+              </div>  
+  
+              {/* Official Email */}  
+              <div style={{  
+                display: 'flex',  
+                alignItems: 'center',  
+                gap: '1rem',  
+                padding: '1rem',  
+                backgroundColor: '#2a2a2a',  
+                borderRadius: '8px',  
+                border: '1px solid #444'  
+              }}>  
+                <div style={{  
+                  width: '40px',  
+                  height: '40px',  
+                  backgroundColor: '#ef4444',  
+                  borderRadius: '8px',  
+                  display: 'flex',  
+                  alignItems: 'center',  
+                  justifyContent: 'center',  
+                  fontSize: '1.25rem'  
+                }}>  
+                  📧  
+                </div>  
+                <div>  
+                  <div style={{  
+                    fontSize: '0.875rem',  
+                    color: '#9ca3af',  
+                    marginBottom: '0.25rem'  
+                  }}>  
+                    Official Email  
+                  </div>  
+                  <div style={{  
+                    fontSize: '1rem',  
+                    color: '#ffffff',  
+                    fontWeight: '500'  
+                  }}>  
+                    {adminFormData.official_mail || 'Not provided'}  
+                  </div>  
+                </div>  
+              </div>  
+            </div>  
+          </div>    
+        )}
 
-        {/* Navigation Buttons */}
-        <div style={{
-          display: 'flex',
-          gap: '1rem',
-          marginBottom: '2rem'
-        }}>
-          {[
-            { key: 'content', label: 'Content' },
-            { key: 'celebrity', label: 'Celebrity' },
-            { key: 'award', label: 'Award' }
-          ].map(tab => (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key)}
-              style={{
-                backgroundColor: activeTab === tab.key ? '#fbbf24' : '#2a2a2a',
-                color: activeTab === tab.key ? '#000' : '#fff',
-                padding: '0.75rem 1.5rem',
-                borderRadius: '8px',
-                border: '1px solid #444',
-                cursor: 'pointer',
-                fontWeight: 'bold',
-                fontSize: '0.95rem',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              {tab.label}
-            </button>
-          ))}
+         {/* Navigation Buttons */}  
+         <div style={{  
+          display: 'flex',  
+          justifyContent: 'space-between',  
+          alignItems: 'center',  
+          marginBottom: '2rem'  
+        }}>  
+          <div style={{  
+            display: 'flex',  
+            gap: '1rem'  
+          }}>  
+            {[  
+              { key: 'content', label: 'Content' },  
+              { key: 'celebrity', label: 'Celebrity' },  
+              { key: 'award', label: 'Award' }  
+            ].map(tab => (  
+              <button  
+                key={tab.key}  
+                onClick={() => setActiveTab(tab.key)}  
+                style={{  
+                  backgroundColor: activeTab === tab.key ? '#fbbf24' : '#2a2a2a',  
+                  color: activeTab === tab.key ? '#000' : '#fff',  
+                  padding: '0.75rem 1.5rem',  
+                  borderRadius: '8px',  
+                  border: '1px solid #444',  
+                  cursor: 'pointer',  
+                  fontWeight: 'bold',  
+                  fontSize: '0.95rem',  
+                  transition: 'all 0.3s ease'  
+                }}  
+              >  
+                {tab.label}  
+              </button>  
+            ))}  
+          </div>  
+  
+          {/* View Mode Toggle */}  
+          {(activeTab === 'content' || activeTab === 'celebrity') && (  
+            <div style={{  
+              display: 'flex',  
+              backgroundColor: '#2a2a2a',  
+              borderRadius: '8px',  
+              border: '1px solid #444',  
+              overflow: 'hidden'  
+            }}>  
+              <button  
+                onClick={() => setViewMode('list')}  
+                style={{  
+                  backgroundColor: viewMode === 'list' ? '#fbbf24' : 'transparent',  
+                  color: viewMode === 'list' ? '#000' : '#9ca3af',  
+                  padding: '0.5rem 1rem',  
+                  border: 'none',  
+                  cursor: 'pointer',  
+                  fontSize: '0.875rem',  
+                  display: 'flex',  
+                  alignItems: 'center',  
+                  gap: '0.5rem'  
+                }}  
+              >  
+                ☰ List  
+              </button>  
+              <button  
+                onClick={() => setViewMode('card')}  
+                style={{  
+                  backgroundColor: viewMode === 'card' ? '#fbbf24' : 'transparent',  
+                  color: viewMode === 'card' ? '#000' : '#9ca3af',  
+                  padding: '0.5rem 1rem',  
+                  border: 'none',  
+                  cursor: 'pointer',  
+                  fontSize: '0.875rem',  
+                  display: 'flex',  
+                  alignItems: 'center',  
+                  gap: '0.5rem'  
+                }}  
+              >  
+                ⊞ Cards  
+              </button>  
+            </div>  
+          )}  
         </div>
 
         {/* Content Area */}
