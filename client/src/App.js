@@ -7,6 +7,7 @@ import MovieDetails from './components/MovieDetails';
 import UserDashboard from './components/UserDashboard';
 import AdminDashboard from './components/AdminDashboard';
 import AdvancedSearch from './components/AdvancedSearch';
+import CelebrityProfile from './components/CelebrityProfile';
 
 import './App.css';
 
@@ -125,6 +126,28 @@ function App() {
       />
     }
   />
+
+  {/* Add the celebrity dashboard route */}
+
+  <Route
+
+path="/celebrity/:id"
+
+element={
+
+  <CelebrityProfile
+
+    currentUser={currentUser}
+
+    isAuthenticated={isAuthenticated}
+
+  />
+
+}
+
+/>
+
+
 </Routes>
 
 
