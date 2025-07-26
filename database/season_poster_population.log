@@ -1,0 +1,68 @@
+2025-07-25 21:05:18,928 - INFO - TMDB API key validated successfully
+2025-07-25 21:05:42,006 - INFO - Successfully connected to database
+2025-07-25 21:05:42,647 - INFO - Found 32 seasons across 12 series
+2025-07-25 21:05:42,648 - INFO - Starting to populate posters for 32 seasons across 12 series
+2025-07-25 21:05:42,649 - INFO - Processing series: Dawn of the Croods (4 seasons)
+2025-07-25 21:05:43,191 - INFO - Found exact match for 'Dawn of the Croods': TMDB ID 64783
+2025-07-25 21:05:44,306 - INFO - Updated poster for season 1 of 'Dawn of the Croods': https://image.tmdb.org/t/p/w500/eDLcL6sgY0M4xRzG2K6O6Z7MABd.jpg
+2025-07-25 21:05:45,678 - INFO - Updated poster for season 2 of 'Dawn of the Croods': https://image.tmdb.org/t/p/w500/yhlPpslpEaQjuAffKohqwfv9cDZ.jpg
+2025-07-25 21:05:47,585 - INFO - Updated poster for season 3 of 'Dawn of the Croods': https://image.tmdb.org/t/p/w500/3NgSo4xeyBpsOMAh3Si9Fw0ychX.jpg
+2025-07-25 21:05:48,970 - INFO - Updated poster for season 4 of 'Dawn of the Croods': https://image.tmdb.org/t/p/w500/hVngbiwbkXUZWO3qyhwdyE0bMf9.jpg
+2025-07-25 21:05:48,970 - INFO - Processing series: Jessie (4 seasons)
+2025-07-25 21:05:49,503 - INFO - Found exact match for 'Jessie': TMDB ID 38974
+2025-07-25 21:05:50,885 - INFO - Updated poster for season 1 of 'Jessie': https://image.tmdb.org/t/p/w500/tspQe0FuiaUj0U1R1norNbiYTe4.jpg
+2025-07-25 21:05:52,285 - INFO - Updated poster for season 2 of 'Jessie': https://image.tmdb.org/t/p/w500/45eUoyRdMfsTs6b5tFRdIw1q9s4.jpg
+2025-07-25 21:05:53,654 - INFO - Updated poster for season 3 of 'Jessie': https://image.tmdb.org/t/p/w500/duvgRZrzUMokyh3wI1futgO5Byh.jpg
+2025-07-25 21:05:55,028 - INFO - Updated poster for season 4 of 'Jessie': https://image.tmdb.org/t/p/w500/qiRn2U5TGROpxbs0DleXEWVpuMV.jpg
+2025-07-25 21:05:55,029 - INFO - Processing series: Lord of Mysteries (1 seasons)
+2025-07-25 21:05:55,565 - INFO - Found exact match for 'Lord of Mysteries': TMDB ID 232230
+2025-07-25 21:05:56,925 - INFO - Updated poster for season 1 of 'Lord of Mysteries': https://image.tmdb.org/t/p/w500/3aKx6RIt8FJURtELLHs8JsWlCoH.jpg
+2025-07-25 21:05:56,926 - INFO - Processing series: Marvel's Spider-Man (3 seasons)
+2025-07-25 21:05:57,465 - INFO - Found exact match for 'Marvel's Spider-Man': TMDB ID 72705
+2025-07-25 21:05:58,869 - INFO - Updated poster for season 1 of 'Marvel's Spider-Man': https://image.tmdb.org/t/p/w500/3GLe7l5rBCn1qB0gKuaQgDvv9hN.jpg
+2025-07-25 21:06:00,338 - INFO - Updated poster for season 2 of 'Marvel's Spider-Man': https://image.tmdb.org/t/p/w500/467Madt1P0ZF1pYOvd55cjn4OCo.jpg
+2025-07-25 21:06:01,737 - INFO - Updated poster for season 3 of 'Marvel's Spider-Man': https://image.tmdb.org/t/p/w500/gGgLtVOVL0AObZh2ydndWwV7JDR.jpg
+2025-07-25 21:06:01,737 - INFO - Processing series: Olympo (1 seasons)
+2025-07-25 21:06:02,273 - INFO - Found exact match for 'Olympo': TMDB ID 259669
+2025-07-25 21:06:03,660 - INFO - Updated poster for season 1 of 'Olympo': https://image.tmdb.org/t/p/w500/dsIIOLCTpHRc54m0tQMWoXfrxAC.jpg
+2025-07-25 21:06:03,660 - INFO - Processing series: R. L. Stine's The Haunting Hour (4 seasons)
+2025-07-25 21:06:04,197 - INFO - Found exact match for 'R. L. Stine's The Haunting Hour': TMDB ID 33841
+2025-07-25 21:06:05,600 - INFO - Updated poster for season 1 of 'R. L. Stine's The Haunting Hour': https://image.tmdb.org/t/p/w500/h1QmbHBIap1EMIhzuzeiSN05Pn5.jpg
+2025-07-25 21:06:06,986 - INFO - Updated poster for season 2 of 'R. L. Stine's The Haunting Hour': https://image.tmdb.org/t/p/w500/6L0tR9Rm63F4hkvZDtZ6CJfmaub.jpg
+2025-07-25 21:06:08,391 - INFO - Updated poster for season 3 of 'R. L. Stine's The Haunting Hour': https://image.tmdb.org/t/p/w500/aZH6Q3HaHZMSU0Envv4P7LFSeQX.jpg
+2025-07-25 21:06:09,757 - INFO - Updated poster for season 4 of 'R. L. Stine's The Haunting Hour': https://image.tmdb.org/t/p/w500/rl1nF1S1v4x6c6nF0k1o4MVdGWn.jpg
+2025-07-25 21:06:09,758 - INFO - Processing series: Rapunzel's Tangled Adventure (3 seasons)
+2025-07-25 21:06:10,300 - INFO - Found exact match for 'Rapunzel's Tangled Adventure': TMDB ID 70047
+2025-07-25 21:06:11,674 - INFO - Updated poster for season 1 of 'Rapunzel's Tangled Adventure': https://image.tmdb.org/t/p/w500/8t3iwOAgXSTnmwFjAIApZNKGLMP.jpg
+2025-07-25 21:06:13,052 - INFO - Updated poster for season 2 of 'Rapunzel's Tangled Adventure': https://image.tmdb.org/t/p/w500/s12Z2uGrvjj5sA7LsBStTtfTYjC.jpg
+2025-07-25 21:06:14,510 - INFO - Updated poster for season 3 of 'Rapunzel's Tangled Adventure': https://image.tmdb.org/t/p/w500/g78aEpYM0RatUGfwJi7xk2rrGfp.jpg
+2025-07-25 21:06:14,511 - INFO - Processing series: Scooby-Doo and Guess Who? (2 seasons)
+2025-07-25 21:06:15,058 - INFO - Found exact match for 'Scooby-Doo and Guess Who?': TMDB ID 88367
+2025-07-25 21:06:16,442 - INFO - Updated poster for season 1 of 'Scooby-Doo and Guess Who?': https://image.tmdb.org/t/p/w500/5Tm1G6ZZFvjpguTD9rWhoDPVdzm.jpg
+2025-07-25 21:06:17,814 - INFO - Updated poster for season 2 of 'Scooby-Doo and Guess Who?': https://image.tmdb.org/t/p/w500/nliMyQ8tVXlYwSUWG0p9mO3abut.jpg
+2025-07-25 21:06:17,814 - INFO - Processing series: Smoke (1 seasons)
+2025-07-25 21:06:18,361 - INFO - Found exact match for 'Smoke': TMDB ID 215995
+2025-07-25 21:06:19,716 - INFO - Updated poster for season 1 of 'Smoke': https://image.tmdb.org/t/p/w500/p789YfZtMqe3ErII3t61FWmAaFQ.jpg
+2025-07-25 21:06:19,717 - INFO - Processing series: Squid Game (3 seasons)
+2025-07-25 21:06:20,252 - INFO - Found exact match for 'Squid Game': TMDB ID 93405
+2025-07-25 21:06:21,635 - INFO - Updated poster for season 1 of 'Squid Game': https://image.tmdb.org/t/p/w500/jlbrV1Kl4Y8pWXu12SppebRs7On.jpg
+2025-07-25 21:06:23,016 - INFO - Updated poster for season 2 of 'Squid Game': https://image.tmdb.org/t/p/w500/sXZhtWLo3fecavpDuOyJiayjt32.jpg
+2025-07-25 21:06:24,376 - INFO - Updated poster for season 3 of 'Squid Game': https://image.tmdb.org/t/p/w500/6VZsJ37aJDvf45PLJk7Z0UVhzxt.jpg
+2025-07-25 21:06:24,377 - INFO - Processing series: The Bear (4 seasons)
+2025-07-25 21:06:24,921 - INFO - Found exact match for 'The Bear': TMDB ID 136315
+2025-07-25 21:06:26,293 - INFO - Updated poster for season 1 of 'The Bear': https://image.tmdb.org/t/p/w500/i6sJI3O1874FBdDtM0jn6fpPE0x.jpg
+2025-07-25 21:06:27,681 - INFO - Updated poster for season 2 of 'The Bear': https://image.tmdb.org/t/p/w500/3MVHF64rlvH1eofKefIoazXwOK0.jpg
+2025-07-25 21:06:29,049 - INFO - Updated poster for season 3 of 'The Bear': https://image.tmdb.org/t/p/w500/kmKOXOC6txne2tXjcnZPHNtsY9E.jpg
+2025-07-25 21:06:30,417 - INFO - Updated poster for season 4 of 'The Bear': https://image.tmdb.org/t/p/w500/eKfVzzEazSIjJMrw9ADa2x8ksLz.jpg
+2025-07-25 21:06:30,417 - INFO - Processing series: The Last of Us (2 seasons)
+2025-07-25 21:06:30,959 - INFO - Found exact match for 'The Last of Us': TMDB ID 100088
+2025-07-25 21:06:32,354 - INFO - Updated poster for season 1 of 'The Last of Us': https://image.tmdb.org/t/p/w500/pMfG5XIlmvCL9bQQiJKdTvmF2FW.jpg
+2025-07-25 21:06:33,729 - INFO - Updated poster for season 2 of 'The Last of Us': https://image.tmdb.org/t/p/w500/2TpP0oApo9M7dKF2MkoYKOxRbb.jpg
+2025-07-25 21:06:33,731 - INFO - ==================================================
+2025-07-25 21:06:33,732 - INFO - SEASON POSTER POPULATION COMPLETE
+2025-07-25 21:06:33,732 - INFO - Total seasons processed: 32
+2025-07-25 21:06:33,732 - INFO - Successfully updated: 32
+2025-07-25 21:06:33,732 - INFO - Skipped (already had posters): 0
+2025-07-25 21:06:33,732 - INFO - Errors/Not found: 0
+2025-07-25 21:06:33,733 - INFO - ==================================================
+2025-07-25 21:06:33,733 - INFO - Database connection closed

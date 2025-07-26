@@ -64,16 +64,98 @@ body {
   flex: 1;
   max-width: 500px;
   position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-dropdown-container {
+  position: relative;
+}
+
+.search-dropdown-btn {
+  background: #2a2a2a;
+  border: none;
+  color: #f5c518;
+  padding: 12px 10px;
+  border-radius: 5px 0 0 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 50px;
+  justify-content: center;
+  border-right: 1px solid #444;
+}
+
+.search-dropdown-btn:hover {
+  background: #333;
+}
+
+.search-type-icon {
+  font-size: 16px;
+}
+
+.dropdown-arrow {
+  font-size: 10px;
+  color: #999;
+}
+
+.search-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 5px;
+  min-width: 200px;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  margin-top: 2px;
+}
+
+.search-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 15px;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid #444;
+}
+
+.search-option:last-child {
+  border-bottom: none;
+}
+
+.search-option:hover {
+  background: #333;
+}
+
+.search-option.active {
+  background: #f5c518;
+  color: #000;
+}
+
+.option-icon {
+  font-size: 16px;
+  min-width: 20px;
+}
+
+.option-label {
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .search-bar {
-  width: 100%;
+  flex: 1;
   padding: 12px 45px 12px 15px;
   border: none;
-  border-radius: 5px;
+  border-radius: 0;
   background-color: #2a2a2a;
   color: #ffffff;
   font-size: 16px;
+  border-left: none;
 }
 
 .search-bar::placeholder {
@@ -90,6 +172,7 @@ body {
   color: #f5c518;
   cursor: pointer;
   font-size: 18px;
+  z-index: 10;
 }
 
 .nav-actions {
@@ -390,6 +473,17 @@ body {
     order: 3;
     flex-basis: 100%;
     margin-top: 10px;
+    max-width: none;
+  }
+
+  .search-dropdown {
+    right: 0;
+    left: auto;
+    min-width: 250px;
+  }
+
+  .search-dropdown-btn {
+    min-width: 60px;
   }
 
   .movies-grid {
