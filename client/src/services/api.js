@@ -469,21 +469,6 @@ export const deleteReview = async (reviewId, userId) => {
 
 //new start 
 
-export const getAllContent = async () => {
-  const res = await fetch('/api/content');
-  return await res.json();
-};
-
-export const getAllCelebrities = async () => {
-  const res = await fetch('/api/celebrities');
-  return await res.json();
-};
-
-export const getAllAwards = async () => {
-  const res = await fetch('/api/awards');
-  return await res.json();
-};
-
 export const getRatingDistribution = async (movieId) => {
   try {
     const response = await fetch(`${API_BASE_URL}/movies/${movieId}/rating-distribution`);
@@ -606,9 +591,6 @@ export const getCountries = async () => {
 
 // ==================== ADVANCED SEARCH API FUNCTIONS END ====================
 
-export const submitReview = async (movieId, reviewText) => {
-  // Submit user review
-};
 
 
 //new code added from here 
@@ -750,10 +732,10 @@ export const searchContent = async (query) => {
 
 
   
-export const searchCelebrities = async (query) => {  
-  const res = await fetch(`/api/search/celebrities?q=${encodeURIComponent(query)}`);  
-  return await res.json();  
-};  
+// export const searchCelebrities = async (query) => {  
+//   const res = await fetch(`/api/search/celebrities?q=${encodeURIComponent(query)}`);  
+//   return await res.json();  
+// };  
   
 export const searchAwards = async (query) => {  
   const res = await fetch(`/api/search/awards?q=${encodeURIComponent(query)}`);  
