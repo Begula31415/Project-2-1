@@ -1,0 +1,1071 @@
+2025-07-27 21:57:18,997 - INFO - TMDB API key validated successfully
+2025-07-27 21:58:02,155 - INFO - Successfully connected to database
+2025-07-27 21:58:02,774 - INFO - Found 149 content items in database
+2025-07-27 21:58:03,067 - INFO - Found 62 celebrities in database
+2025-07-27 21:58:03,067 - INFO - Starting to populate images for 149 content items and 62 celebrities
+2025-07-27 21:58:03,067 - INFO - Processing content (1/211): 28 Days Later (Movie)
+2025-07-27 21:58:03,391 - ERROR - Error in populate_backdrop_images: 'BackdropImagePopulator' object has no attribute 'search_tmdb_content'
+2025-07-27 21:58:03,400 - INFO - Database connection closed
+2025-07-27 22:17:07,418 - INFO - TMDB API key validated successfully
+2025-07-27 22:17:18,509 - INFO - Successfully connected to database
+2025-07-27 22:17:19,242 - INFO - Found 149 content items in database
+2025-07-27 22:17:19,534 - INFO - Found 62 celebrities in database
+2025-07-27 22:17:19,534 - INFO - Starting to populate images for 149 content items and 62 celebrities
+2025-07-27 22:17:19,534 - INFO - Processing content (1/211): 28 Days Later (Movie)
+2025-07-27 22:17:20,756 - INFO - Found 52 backdrop images for TMDB ID 1100988
+2025-07-27 22:17:21,073 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:21,454 - ERROR - Failed to insert image 1 for '28 Days Later'
+2025-07-27 22:17:22,168 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:22,472 - ERROR - Failed to insert image 2 for '28 Days Later'
+2025-07-27 22:17:23,089 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:23,377 - ERROR - Failed to insert image 3 for '28 Days Later'
+2025-07-27 22:17:23,929 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:24,340 - ERROR - Failed to insert image 4 for '28 Days Later'
+2025-07-27 22:17:24,964 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:25,236 - ERROR - Failed to insert image 5 for '28 Days Later'
+2025-07-27 22:17:25,838 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:26,118 - ERROR - Failed to insert image 6 for '28 Days Later'
+2025-07-27 22:17:26,784 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:27,066 - ERROR - Failed to insert image 7 for '28 Days Later'
+2025-07-27 22:17:27,696 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:27,977 - ERROR - Failed to insert image 8 for '28 Days Later'
+2025-07-27 22:17:28,542 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:28,928 - ERROR - Failed to insert image 9 for '28 Days Later'
+2025-07-27 22:17:29,543 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:29,858 - ERROR - Failed to insert image 10 for '28 Days Later'
+2025-07-27 22:17:30,463 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:30,774 - ERROR - Failed to insert image 11 for '28 Days Later'
+2025-07-27 22:17:31,394 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:31,703 - ERROR - Failed to insert image 12 for '28 Days Later'
+2025-07-27 22:17:32,302 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:32,613 - ERROR - Failed to insert image 13 for '28 Days Later'
+2025-07-27 22:17:33,201 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:33,499 - ERROR - Failed to insert image 14 for '28 Days Later'
+2025-07-27 22:17:34,116 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:34,400 - ERROR - Failed to insert image 15 for '28 Days Later'
+2025-07-27 22:17:34,959 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:35,240 - ERROR - Failed to insert image 16 for '28 Days Later'
+2025-07-27 22:17:35,898 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:36,201 - ERROR - Failed to insert image 17 for '28 Days Later'
+2025-07-27 22:17:36,795 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:37,074 - ERROR - Failed to insert image 18 for '28 Days Later'
+2025-07-27 22:17:37,711 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:38,037 - ERROR - Failed to insert image 19 for '28 Days Later'
+2025-07-27 22:17:38,664 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:38,963 - ERROR - Failed to insert image 20 for '28 Days Later'
+2025-07-27 22:17:39,521 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:39,892 - ERROR - Failed to insert image 21 for '28 Days Later'
+2025-07-27 22:17:40,501 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:40,786 - ERROR - Failed to insert image 22 for '28 Days Later'
+2025-07-27 22:17:41,394 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:41,670 - ERROR - Failed to insert image 23 for '28 Days Later'
+2025-07-27 22:17:42,347 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:42,654 - ERROR - Failed to insert image 24 for '28 Days Later'
+2025-07-27 22:17:43,235 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:43,516 - ERROR - Failed to insert image 25 for '28 Days Later'
+2025-07-27 22:17:44,185 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:44,497 - ERROR - Failed to insert image 26 for '28 Days Later'
+2025-07-27 22:17:45,105 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:45,387 - ERROR - Failed to insert image 27 for '28 Days Later'
+2025-07-27 22:17:46,025 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:46,351 - ERROR - Failed to insert image 28 for '28 Days Later'
+2025-07-27 22:17:46,927 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:47,207 - ERROR - Failed to insert image 29 for '28 Days Later'
+2025-07-27 22:17:47,839 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:48,119 - ERROR - Failed to insert image 30 for '28 Days Later'
+2025-07-27 22:17:48,673 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:49,001 - ERROR - Failed to insert image 31 for '28 Days Later'
+2025-07-27 22:17:49,615 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:17:49,918 - ERROR - Failed to insert image 32 for '28 Days Later'
+2025-07-27 22:41:45,694 - INFO - TMDB API key validated successfully
+2025-07-27 22:41:52,727 - INFO - Successfully connected to database
+2025-07-27 22:41:53,447 - INFO - Found 149 content items in database
+2025-07-27 22:41:53,758 - INFO - Found 62 celebrities in database
+2025-07-27 22:41:53,758 - INFO - Starting to populate images for 149 content items and 62 celebrities
+2025-07-27 22:41:53,758 - INFO - Processing content (1/211): 28 Days Later (Movie)
+2025-07-27 22:41:56,110 - INFO - Found 52 backdrop images for TMDB ID 1100988
+2025-07-27 22:41:56,465 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:41:56,773 - ERROR - Failed to insert image 1 for '28 Days Later'
+2025-07-27 22:41:57,420 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:41:57,728 - ERROR - Failed to insert image 2 for '28 Days Later'
+2025-07-27 22:41:58,329 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:41:58,668 - ERROR - Failed to insert image 3 for '28 Days Later'
+2025-07-27 22:41:59,293 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:41:59,694 - ERROR - Failed to insert image 4 for '28 Days Later'
+2025-07-27 22:42:00,300 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:00,607 - ERROR - Failed to insert image 5 for '28 Days Later'
+2025-07-27 22:42:01,433 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:01,838 - ERROR - Failed to insert image 6 for '28 Days Later'
+2025-07-27 22:42:02,452 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:02,738 - ERROR - Failed to insert image 7 for '28 Days Later'
+2025-07-27 22:42:03,314 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:03,691 - ERROR - Failed to insert image 8 for '28 Days Later'
+2025-07-27 22:42:04,828 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:05,109 - ERROR - Failed to insert image 9 for '28 Days Later'
+2025-07-27 22:42:05,686 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:06,020 - ERROR - Failed to insert image 10 for '28 Days Later'
+2025-07-27 22:42:06,660 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:06,951 - ERROR - Failed to insert image 11 for '28 Days Later'
+2025-07-27 22:42:07,577 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:07,882 - ERROR - Failed to insert image 12 for '28 Days Later'
+2025-07-27 22:42:08,509 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:08,804 - ERROR - Failed to insert image 13 for '28 Days Later'
+2025-07-27 22:42:09,428 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:09,735 - ERROR - Failed to insert image 14 for '28 Days Later'
+2025-07-27 22:42:10,282 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:10,646 - ERROR - Failed to insert image 15 for '28 Days Later'
+2025-07-27 22:42:11,752 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:12,025 - ERROR - Failed to insert image 16 for '28 Days Later'
+2025-07-27 22:42:12,704 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:12,984 - ERROR - Failed to insert image 17 for '28 Days Later'
+2025-07-27 22:42:13,618 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:13,922 - ERROR - Failed to insert image 18 for '28 Days Later'
+2025-07-27 22:42:14,479 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:14,759 - ERROR - Failed to insert image 19 for '28 Days Later'
+2025-07-27 22:42:15,310 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:15,654 - ERROR - Failed to insert image 20 for '28 Days Later'
+2025-07-27 22:42:16,277 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:16,590 - ERROR - Failed to insert image 21 for '28 Days Later'
+2025-07-27 22:42:17,203 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:17,478 - ERROR - Failed to insert image 22 for '28 Days Later'
+2025-07-27 22:42:18,130 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:18,433 - ERROR - Failed to insert image 23 for '28 Days Later'
+2025-07-27 22:42:19,040 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:19,315 - ERROR - Failed to insert image 24 for '28 Days Later'
+2025-07-27 22:42:20,052 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:20,326 - ERROR - Failed to insert image 25 for '28 Days Later'
+2025-07-27 22:42:20,881 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:21,180 - ERROR - Failed to insert image 26 for '28 Days Later'
+2025-07-27 22:42:21,816 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:22,228 - ERROR - Failed to insert image 27 for '28 Days Later'
+2025-07-27 22:42:22,837 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:23,119 - ERROR - Failed to insert image 28 for '28 Days Later'
+2025-07-27 22:42:23,756 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:24,031 - ERROR - Failed to insert image 29 for '28 Days Later'
+2025-07-27 22:42:24,634 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:24,909 - ERROR - Failed to insert image 30 for '28 Days Later'
+2025-07-27 22:42:25,458 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:25,731 - ERROR - Failed to insert image 31 for '28 Days Later'
+2025-07-27 22:42:26,899 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:27,181 - ERROR - Failed to insert image 32 for '28 Days Later'
+2025-07-27 22:42:27,860 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:28,141 - ERROR - Failed to insert image 33 for '28 Days Later'
+2025-07-27 22:42:28,694 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:28,976 - ERROR - Failed to insert image 34 for '28 Days Later'
+2025-07-27 22:42:30,208 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:30,484 - ERROR - Failed to insert image 35 for '28 Days Later'
+2025-07-27 22:42:31,105 - ERROR - Error inserting image: record "new" has no field "created_at"
+CONTEXT:  SQL expression "NEW.created_at IS NULL"
+PL/pgSQL function auto_set_created_at() line 3 at IF
+
+2025-07-27 22:42:31,381 - ERROR - Failed to insert image 36 for '28 Days Later'
+2025-07-28 05:08:17,769 - INFO - TMDB API key validated successfully
+2025-07-28 05:08:26,830 - INFO - Successfully connected to database
+2025-07-28 05:08:27,452 - INFO - Found 149 content items in database
+2025-07-28 05:08:27,740 - INFO - Found 62 celebrities in database
+2025-07-28 05:08:27,740 - INFO - Starting to populate images for 149 content items and 62 celebrities
+2025-07-28 05:08:27,740 - INFO - Processing content (1/211): 28 Days Later (Movie)
+2025-07-28 05:08:28,776 - INFO - Found 52 backdrop images for TMDB ID 1100988
+2025-07-28 05:09:15,361 - INFO - Added 52 backdrop images for '28 Days Later'
+2025-07-28 05:09:15,363 - INFO - Processing content (2/211): 28 Weeks Later (Movie)
+2025-07-28 05:09:16,902 - INFO - Found 52 backdrop images for TMDB ID 1562
+2025-07-28 05:10:03,018 - INFO - Added 52 backdrop images for '28 Weeks Later'
+2025-07-28 05:10:03,018 - INFO - Processing content (3/211): 28 Years Later (Movie)
+2025-07-28 05:10:04,304 - INFO - Found 52 backdrop images for TMDB ID 1100988
+2025-07-28 05:10:50,905 - INFO - Added 52 backdrop images for '28 Years Later'
+2025-07-28 05:10:50,905 - INFO - Processing content (4/211): 365 Days: This Day (Movie)
+2025-07-28 05:10:52,363 - INFO - Found 22 backdrop images for TMDB ID 829557
+2025-07-28 05:11:12,200 - INFO - Added 22 backdrop images for '365 Days: This Day'
+2025-07-28 05:11:12,200 - INFO - Processing content (5/211): A Working Man (Movie)
+2025-07-28 05:11:13,655 - INFO - Found 13 backdrop images for TMDB ID 1197306
+2025-07-28 05:11:25,201 - INFO - Added 13 backdrop images for 'A Working Man'
+2025-07-28 05:11:25,201 - INFO - Processing content (6/211): Anora (Movie)
+2025-07-28 05:11:26,646 - INFO - Found 80 backdrop images for TMDB ID 1064213
+2025-07-28 05:12:38,212 - INFO - Added 80 backdrop images for 'Anora'
+2025-07-28 05:12:38,212 - INFO - Processing content (7/211): Ask Me What You Want (Movie)
+2025-07-28 05:12:39,755 - INFO - Found 3 backdrop images for TMDB ID 1252309
+2025-07-28 05:12:42,175 - INFO - Added 3 backdrop images for 'Ask Me What You Want'
+2025-07-28 05:12:42,175 - INFO - Processing content (8/211): Avengers: Infinity War (Movie)
+2025-07-28 05:12:43,654 - INFO - Found 104 backdrop images for TMDB ID 299536
+2025-07-28 05:14:17,146 - INFO - Added 104 backdrop images for 'Avengers: Infinity War'
+2025-07-28 05:14:17,146 - INFO - Processing content (9/211): Baby Blue (Movie)
+2025-07-28 05:14:18,574 - INFO - Found 3 backdrop images for TMDB ID 1026542
+2025-07-28 05:14:20,922 - INFO - Added 3 backdrop images for 'Baby Blue'
+2025-07-28 05:14:20,924 - INFO - Processing content (10/211): Ballerina (Movie)
+2025-07-28 05:14:22,372 - INFO - Found 41 backdrop images for TMDB ID 541671
+2025-07-28 05:14:58,510 - INFO - Added 41 backdrop images for 'Ballerina'
+2025-07-28 05:14:58,512 - INFO - Processing content (11/211): Bambi: A Life in the Woods (Movie)
+2025-07-28 05:14:59,970 - INFO - Found 4 backdrop images for TMDB ID 1094473
+2025-07-28 05:15:03,317 - INFO - Added 4 backdrop images for 'Bambi: A Life in the Woods'
+2025-07-28 05:15:03,320 - INFO - Processing content (12/211): Barbie (Movie)
+2025-07-28 05:15:04,753 - INFO - Found 53 backdrop images for TMDB ID 346698
+2025-07-28 05:15:50,495 - INFO - Added 53 backdrop images for 'Barbie'
+2025-07-28 05:15:50,495 - INFO - Processing content (13/211): Box Room (Movie)
+2025-07-28 05:15:51,940 - WARNING - No backdrop images found for TMDB ID 330980
+2025-07-28 05:15:51,948 - WARNING - No backdrop images found for: Box Room
+2025-07-28 05:15:51,948 - INFO - Processing content (14/211): Brave Citizen (Movie)
+2025-07-28 05:15:53,144 - INFO - Found 12 backdrop images for TMDB ID 897160
+2025-07-28 05:16:03,744 - INFO - Added 12 backdrop images for 'Brave Citizen'
+2025-07-28 05:16:03,746 - INFO - Processing content (15/211): Bring Her Back (Movie)
+2025-07-28 05:16:05,127 - INFO - Found 49 backdrop images for TMDB ID 1151031
+2025-07-28 05:16:48,427 - INFO - Added 49 backdrop images for 'Bring Her Back'
+2025-07-28 05:16:48,427 - INFO - Processing content (16/211): Candle in the Tomb: The Worm Valley (Movie)
+2025-07-28 05:16:49,799 - INFO - Found 1 backdrop images for TMDB ID 1181039
+2025-07-28 05:16:50,342 - INFO - Added 1 backdrop images for 'Candle in the Tomb: The Worm Valley'
+2025-07-28 05:16:50,351 - INFO - Processing content (17/211): Captain America: Brave New World (Movie)
+2025-07-28 05:16:53,804 - INFO - Found 52 backdrop images for TMDB ID 822119
+2025-07-28 05:17:38,789 - INFO - Added 52 backdrop images for 'Captain America: Brave New World'
+2025-07-28 05:17:38,789 - INFO - Processing content (18/211): Clown in a Cornfield (Movie)
+2025-07-28 05:17:40,300 - INFO - Found 39 backdrop images for TMDB ID 713364
+2025-07-28 05:18:14,975 - INFO - Added 39 backdrop images for 'Clown in a Cornfield'
+2025-07-28 05:18:14,975 - INFO - Processing content (19/211): Companion (Movie)
+2025-07-28 05:18:16,459 - INFO - Found 62 backdrop images for TMDB ID 1084199
+2025-07-28 05:19:11,783 - INFO - Added 62 backdrop images for 'Companion'
+2025-07-28 05:19:11,784 - INFO - Processing content (20/211): Continent (Movie)
+2025-07-28 05:19:13,388 - INFO - Found 2 backdrop images for TMDB ID 1018990
+2025-07-28 05:19:14,891 - INFO - Added 2 backdrop images for 'Continent'
+2025-07-28 05:19:14,892 - INFO - Processing content (21/211): Crazy Lizard (Movie)
+2025-07-28 05:19:16,351 - INFO - Found 2 backdrop images for TMDB ID 1442776
+2025-07-28 05:19:17,833 - INFO - Added 2 backdrop images for 'Crazy Lizard'
+2025-07-28 05:19:17,836 - INFO - Processing content (22/211): Dawn of the Croods (Series)
+2025-07-28 05:19:19,669 - INFO - Found 1 backdrop images for TMDB ID 64783
+2025-07-28 05:19:20,224 - INFO - Added 1 backdrop images for 'Dawn of the Croods'
+2025-07-28 05:19:20,227 - INFO - Processing content (23/211): Deadpool & Wolverine (Movie)
+2025-07-28 05:19:21,709 - INFO - Found 158 backdrop images for TMDB ID 533535
+2025-07-28 05:21:46,066 - INFO - Added 158 backdrop images for 'Deadpool & Wolverine'
+2025-07-28 05:21:46,066 - INFO - Processing content (24/211): Death of a Unicorn (Movie)
+2025-07-28 05:21:47,599 - INFO - Found 45 backdrop images for TMDB ID 1153714
+2025-07-28 05:22:28,375 - INFO - Added 45 backdrop images for 'Death of a Unicorn'
+2025-07-28 05:22:28,378 - INFO - Processing content (25/211): Deep Cover (Movie)
+2025-07-28 05:22:29,889 - INFO - Found 7 backdrop images for TMDB ID 1239193
+2025-07-28 05:22:36,538 - INFO - Added 7 backdrop images for 'Deep Cover'
+2025-07-28 05:22:36,538 - INFO - Processing content (26/211): Despicable Me 4 (Movie)
+2025-07-28 05:22:38,005 - INFO - Found 67 backdrop images for TMDB ID 519182
+2025-07-28 05:23:39,108 - INFO - Added 67 backdrop images for 'Despicable Me 4'
+2025-07-28 05:23:39,110 - INFO - Processing content (27/211): Devara: Part 1 (Movie)
+2025-07-28 05:23:40,542 - INFO - Found 32 backdrop images for TMDB ID 811941
+2025-07-28 05:24:09,297 - INFO - Added 32 backdrop images for 'Devara: Part 1'
+2025-07-28 05:24:09,297 - INFO - Processing content (28/211): Diablo (Movie)
+2025-07-28 05:24:10,950 - INFO - Found 5 backdrop images for TMDB ID 1127110
+2025-07-28 05:24:15,151 - INFO - Added 5 backdrop images for 'Diablo'
+2025-07-28 05:24:15,151 - INFO - Processing content (29/211): Distant (Movie)
+2025-07-28 05:24:16,591 - INFO - Found 3 backdrop images for TMDB ID 228805
+2025-07-28 05:24:18,969 - INFO - Added 3 backdrop images for 'Distant'
+2025-07-28 05:24:18,969 - INFO - Processing content (30/211): Echo Valley (Movie)
+2025-07-28 05:24:20,472 - INFO - Found 14 backdrop images for TMDB ID 1097311
+2025-07-28 05:24:32,966 - INFO - Added 14 backdrop images for 'Echo Valley'
+2025-07-28 05:24:32,969 - INFO - Processing content (31/211): Elio (Movie)
+2025-07-28 05:24:34,606 - INFO - Found 28 backdrop images for TMDB ID 1022787
+2025-07-28 05:24:59,626 - INFO - Added 28 backdrop images for 'Elio'
+2025-07-28 05:24:59,626 - INFO - Processing content (32/211): Fast X (Movie)
+2025-07-28 05:25:01,132 - INFO - Found 24 backdrop images for TMDB ID 385687
+2025-07-28 05:25:22,321 - INFO - Added 24 backdrop images for 'Fast X'
+2025-07-28 05:25:22,321 - INFO - Processing content (33/211): Fear Below (Movie)
+2025-07-28 05:25:23,853 - INFO - Found 4 backdrop images for TMDB ID 1232933
+2025-07-28 05:25:27,134 - INFO - Added 4 backdrop images for 'Fear Below'
+2025-07-28 05:25:27,134 - INFO - Processing content (34/211): Fear Cabin: The Last Weekend of Summer (Movie)
+2025-07-28 05:25:28,672 - INFO - Found 2 backdrop images for TMDB ID 1363224
+2025-07-28 05:25:30,174 - INFO - Added 2 backdrop images for 'Fear Cabin: The Last Weekend of Summer'
+2025-07-28 05:25:30,175 - INFO - Processing content (35/211): Fierce Town (Movie)
+2025-07-28 05:25:31,643 - INFO - Found 2 backdrop images for TMDB ID 584855
+2025-07-28 05:25:33,176 - INFO - Added 2 backdrop images for 'Fierce Town'
+2025-07-28 05:25:33,176 - INFO - Processing content (36/211): Final Destination Bloodlines (Movie)
+2025-07-28 05:25:34,607 - INFO - Found 51 backdrop images for TMDB ID 574475
+2025-07-28 05:26:20,804 - INFO - Added 51 backdrop images for 'Final Destination Bloodlines'
+2025-07-28 05:26:20,804 - INFO - Processing content (37/211): First Shift (Movie)
+2025-07-28 05:26:22,228 - INFO - Found 4 backdrop images for TMDB ID 1090007
+2025-07-28 05:26:25,475 - INFO - Added 4 backdrop images for 'First Shift'
+2025-07-28 05:26:25,476 - INFO - Processing content (38/211): Flight Risk (Movie)
+2025-07-28 05:26:26,946 - INFO - Found 14 backdrop images for TMDB ID 1126166
+2025-07-28 05:26:39,124 - INFO - Added 14 backdrop images for 'Flight Risk'
+2025-07-28 05:26:39,126 - INFO - Processing content (39/211): Flow (Movie)
+2025-07-28 05:26:40,618 - INFO - Found 2 backdrop images for TMDB ID 262610
+2025-07-28 05:26:42,089 - INFO - Added 2 backdrop images for 'Flow'
+2025-07-28 05:26:42,089 - INFO - Processing content (40/211): Fountain of Youth (Movie)
+2025-07-28 05:26:43,528 - INFO - Found 20 backdrop images for TMDB ID 1098006
+2025-07-28 05:27:01,305 - INFO - Added 20 backdrop images for 'Fountain of Youth'
+2025-07-28 05:27:01,305 - INFO - Processing content (41/211): Gladiator II (Movie)
+2025-07-28 05:27:02,773 - INFO - Found 69 backdrop images for TMDB ID 558449
+2025-07-28 05:28:05,248 - INFO - Added 69 backdrop images for 'Gladiator II'
+2025-07-28 05:28:05,251 - INFO - Processing content (42/211): Harry Potter and the Philosopher's Stone (Movie)
+2025-07-28 05:28:06,774 - INFO - Found 33 backdrop images for TMDB ID 671
+2025-07-28 05:28:36,672 - INFO - Added 33 backdrop images for 'Harry Potter and the Philosopher's Stone'
+2025-07-28 05:28:36,674 - INFO - Processing content (43/211): Havoc (Movie)
+2025-07-28 05:28:38,103 - INFO - Found 11 backdrop images for TMDB ID 668489
+2025-07-28 05:28:47,836 - INFO - Added 11 backdrop images for 'Havoc'
+2025-07-28 05:28:47,837 - INFO - Processing content (44/211): Heads of State (Movie)
+2025-07-28 05:28:49,374 - INFO - Found 17 backdrop images for TMDB ID 749170
+2025-07-28 05:29:04,433 - INFO - Added 17 backdrop images for 'Heads of State'
+2025-07-28 05:29:04,434 - INFO - Processing content (45/211): Hola Frida! (Movie)
+2025-07-28 05:29:05,816 - INFO - Found 3 backdrop images for TMDB ID 1245399
+2025-07-28 05:29:08,305 - INFO - Added 3 backdrop images for 'Hola Frida!'
+2025-07-28 05:29:08,305 - INFO - Processing content (46/211): How to Train Your Dragon (Movie)
+2025-07-28 05:29:09,857 - INFO - Found 63 backdrop images for TMDB ID 1087192
+2025-07-28 05:30:05,668 - INFO - Added 63 backdrop images for 'How to Train Your Dragon'
+2025-07-28 05:30:05,668 - INFO - Processing content (47/211): How to Train Your Dragon (Movie)
+2025-07-28 05:30:06,897 - INFO - Found 63 backdrop images for TMDB ID 1087192
+2025-07-28 05:31:01,691 - INFO - Added 63 backdrop images for 'How to Train Your Dragon'
+2025-07-28 05:31:01,691 - INFO - Processing content (48/211): How to Train Your Dragon 2 (Movie)
+2025-07-28 05:31:03,140 - INFO - Found 21 backdrop images for TMDB ID 82702
+2025-07-28 05:31:21,352 - INFO - Added 21 backdrop images for 'How to Train Your Dragon 2'
+2025-07-28 05:31:21,356 - INFO - Processing content (49/211): How to Train Your Dragon: Homecoming (Movie)
+2025-07-28 05:31:22,777 - INFO - Found 5 backdrop images for TMDB ID 638507
+2025-07-28 05:31:27,037 - INFO - Added 5 backdrop images for 'How to Train Your Dragon: Homecoming'
+2025-07-28 05:31:27,044 - INFO - Processing content (50/211): How to Train Your Dragon: The Hidden World (Movie)
+2025-07-28 05:31:28,506 - INFO - Found 26 backdrop images for TMDB ID 166428
+2025-07-28 05:31:51,957 - INFO - Added 26 backdrop images for 'How to Train Your Dragon: The Hidden World'
+2025-07-28 05:31:51,957 - INFO - Processing content (51/211): Hunt the Wicked (Movie)
+2025-07-28 05:31:53,376 - INFO - Found 2 backdrop images for TMDB ID 1240475
+2025-07-28 05:31:55,373 - INFO - Added 2 backdrop images for 'Hunt the Wicked'
+2025-07-28 05:31:55,373 - INFO - Processing content (52/211): Ice Road: Vengeance (Movie)
+2025-07-28 05:31:56,967 - INFO - Found 11 backdrop images for TMDB ID 1119878
+2025-07-28 05:32:07,107 - INFO - Added 11 backdrop images for 'Ice Road: Vengeance'
+2025-07-28 05:32:07,108 - INFO - Processing content (53/211): In the Lost Lands (Movie)
+2025-07-28 05:32:08,488 - INFO - Found 17 backdrop images for TMDB ID 324544
+2025-07-28 05:32:23,581 - INFO - Added 17 backdrop images for 'In the Lost Lands'
+2025-07-28 05:32:23,581 - INFO - Processing content (54/211): Inception (Movie)
+2025-07-28 05:32:25,037 - INFO - Found 59 backdrop images for TMDB ID 27205
+2025-07-28 05:33:16,194 - INFO - Added 59 backdrop images for 'Inception'
+2025-07-28 05:33:16,194 - INFO - Processing content (55/211): Inside Out 2 (Movie)
+2025-07-28 05:33:17,765 - INFO - Found 66 backdrop images for TMDB ID 1022789
+2025-07-28 05:34:17,361 - INFO - Added 66 backdrop images for 'Inside Out 2'
+2025-07-28 05:34:17,375 - INFO - Processing content (56/211): Interstellar (Movie)
+2025-07-28 05:34:18,744 - INFO - Found 120 backdrop images for TMDB ID 157336
+2025-07-28 05:36:05,225 - INFO - Added 120 backdrop images for 'Interstellar'
+2025-07-28 05:36:05,225 - INFO - Processing content (57/211): Jessie (Series)
+2025-07-28 05:36:06,626 - INFO - Found 9 backdrop images for TMDB ID 588708
+2025-07-28 05:36:14,163 - INFO - Added 9 backdrop images for 'Jessie'
+2025-07-28 05:36:14,163 - INFO - Processing content (58/211): K.O. (Movie)
+2025-07-28 05:36:15,734 - INFO - Found 5 backdrop images for TMDB ID 1450599
+2025-07-28 05:36:19,845 - INFO - Added 5 backdrop images for 'K.O.'
+2025-07-28 05:36:19,845 - INFO - Processing content (59/211): KPop Demon Hunters (Movie)
+2025-07-28 05:36:21,373 - INFO - Found 61 backdrop images for TMDB ID 803796
+2025-07-28 05:37:15,849 - INFO - Added 61 backdrop images for 'KPop Demon Hunters'
+2025-07-28 05:37:15,850 - INFO - Processing content (60/211): Karate Kid: Legends (Movie)
+2025-07-28 05:37:17,269 - INFO - Found 16 backdrop images for TMDB ID 1011477
+2025-07-28 05:37:31,413 - INFO - Added 16 backdrop images for 'Karate Kid: Legends'
+2025-07-28 05:37:31,415 - INFO - Processing content (61/211): Kayara (Movie)
+2025-07-28 05:37:32,829 - INFO - Found 9 backdrop images for TMDB ID 666154
+2025-07-28 05:37:40,314 - INFO - Added 9 backdrop images for 'Kayara'
+2025-07-28 05:37:40,314 - INFO - Processing content (62/211): Kill (Movie)
+2025-07-28 05:37:41,846 - INFO - Found 32 backdrop images for TMDB ID 1376434
+2025-07-28 05:38:10,240 - INFO - Added 32 backdrop images for 'Kill'
+2025-07-28 05:38:10,249 - INFO - Processing content (63/211): Kraven the Hunter (Movie)
+2025-07-28 05:38:11,672 - INFO - Found 35 backdrop images for TMDB ID 539972
+2025-07-28 05:38:42,572 - INFO - Added 35 backdrop images for 'Kraven the Hunter'
+2025-07-28 05:38:42,573 - INFO - Processing content (64/211): Kung Fu Panda 4 (Movie)
+2025-07-28 05:38:44,062 - INFO - Found 54 backdrop images for TMDB ID 1011985
+2025-07-28 05:39:31,835 - INFO - Added 54 backdrop images for 'Kung Fu Panda 4'
+2025-07-28 05:39:31,835 - INFO - Processing content (65/211): Laila (Movie)
+2025-07-28 05:39:33,260 - INFO - Found 1 backdrop images for TMDB ID 1403735
+2025-07-28 05:39:33,871 - INFO - Added 1 backdrop images for 'Laila'
+2025-07-28 05:39:33,871 - INFO - Processing content (66/211): Life After Fighting (Movie)
+2025-07-28 05:39:35,265 - INFO - Found 6 backdrop images for TMDB ID 1289601
+2025-07-28 05:39:40,254 - INFO - Added 6 backdrop images for 'Life After Fighting'
+2025-07-28 05:39:40,254 - INFO - Processing content (67/211): Lilo & Stitch (Movie)
+2025-07-28 05:39:41,725 - INFO - Found 45 backdrop images for TMDB ID 552524
+2025-07-28 05:40:21,394 - INFO - Added 45 backdrop images for 'Lilo & Stitch'
+2025-07-28 05:40:21,395 - INFO - Processing content (68/211): Lilo & Stitch (Movie)
+2025-07-28 05:40:22,569 - INFO - Found 45 backdrop images for TMDB ID 552524
+2025-07-28 05:41:03,373 - INFO - Added 45 backdrop images for 'Lilo & Stitch'
+2025-07-28 05:41:03,373 - INFO - Processing content (69/211): Lord of Mysteries (Series)
+2025-07-28 05:41:04,824 - INFO - Found 1 backdrop images for TMDB ID 1067428
+2025-07-28 05:41:05,374 - INFO - Added 1 backdrop images for 'Lord of Mysteries'
+2025-07-28 05:41:05,375 - INFO - Processing content (70/211): M3GAN (Movie)
+2025-07-28 05:41:06,858 - INFO - Found 43 backdrop images for TMDB ID 1071585
+2025-07-28 05:41:44,451 - INFO - Added 43 backdrop images for 'M3GAN'
+2025-07-28 05:41:44,451 - INFO - Processing content (71/211): M3GAN 2.0 (Movie)
+2025-07-28 05:41:45,724 - INFO - Found 43 backdrop images for TMDB ID 1071585
+2025-07-28 05:42:24,167 - INFO - Added 43 backdrop images for 'M3GAN 2.0'
+2025-07-28 05:42:24,167 - INFO - Processing content (72/211): Maharaja (Movie)
+2025-07-28 05:42:25,643 - INFO - Found 11 backdrop images for TMDB ID 1118224
+2025-07-28 05:42:35,288 - INFO - Added 11 backdrop images for 'Maharaja'
+2025-07-28 05:42:35,288 - INFO - Processing content (73/211): Making Squid Game: The Challenge (Movie)
+2025-07-28 05:42:36,760 - INFO - Found 3 backdrop images for TMDB ID 1214667
+2025-07-28 05:42:39,112 - INFO - Added 3 backdrop images for 'Making Squid Game: The Challenge'
+2025-07-28 05:42:39,112 - INFO - Processing content (74/211): Marvel's Spider-Man (Series)
+2025-07-28 05:42:40,963 - INFO - Found 5 backdrop images for TMDB ID 34391
+2025-07-28 05:42:45,331 - INFO - Added 5 backdrop images for 'Marvel's Spider-Man'
+2025-07-28 05:42:45,331 - INFO - Processing content (75/211): Mikaela (Movie)
+2025-07-28 05:42:46,795 - INFO - Found 3 backdrop images for TMDB ID 1315988
+2025-07-28 05:42:49,257 - INFO - Added 3 backdrop images for 'Mikaela'
+2025-07-28 05:42:49,257 - INFO - Processing content (76/211): Mission: Impossible - The Final Reckoning (Movie)
+2025-07-28 05:42:50,669 - INFO - Found 53 backdrop images for TMDB ID 575265
+2025-07-28 05:43:38,474 - INFO - Added 53 backdrop images for 'Mission: Impossible - The Final Reckoning'
+2025-07-28 05:43:38,476 - INFO - Processing content (77/211): Moana 2 (Movie)
+2025-07-28 05:43:39,935 - INFO - Found 70 backdrop images for TMDB ID 1241982
+2025-07-28 05:44:43,221 - INFO - Added 70 backdrop images for 'Moana 2'
+2025-07-28 05:44:43,223 - INFO - Processing content (78/211): Mufasa: The Lion King (Movie)
+2025-07-28 05:44:44,757 - INFO - Found 35 backdrop images for TMDB ID 762509
+2025-07-28 05:45:16,163 - INFO - Added 35 backdrop images for 'Mufasa: The Lion King'
+2025-07-28 05:45:16,163 - INFO - Processing content (79/211): My Fault (Movie)
+2025-07-28 05:45:17,624 - INFO - Found 26 backdrop images for TMDB ID 1010581
+2025-07-28 05:45:40,260 - INFO - Added 26 backdrop images for 'My Fault'
+2025-07-28 05:45:40,260 - INFO - Processing content (80/211): My Fault: London (Movie)
+2025-07-28 05:45:41,806 - INFO - Found 16 backdrop images for TMDB ID 1294203
+2025-07-28 05:45:56,137 - INFO - Added 16 backdrop images for 'My Fault: London'
+2025-07-28 05:45:56,137 - INFO - Processing content (81/211): Ne Zha 2 (Movie)
+2025-07-28 05:45:57,676 - INFO - Found 16 backdrop images for TMDB ID 980477
+2025-07-28 05:46:11,570 - INFO - Added 16 backdrop images for 'Ne Zha 2'
+2025-07-28 05:46:11,570 - INFO - Processing content (82/211): Novocaine (Movie)
+2025-07-28 05:46:13,048 - INFO - Found 39 backdrop images for TMDB ID 1195506
+2025-07-28 05:46:47,851 - INFO - Added 39 backdrop images for 'Novocaine'
+2025-07-28 05:46:47,851 - INFO - Processing content (83/211): Olympo (Series)
+2025-07-28 05:46:49,384 - INFO - Found 20 backdrop images for TMDB ID 117263
+2025-07-28 05:47:07,303 - INFO - Added 20 backdrop images for 'Olympo'
+2025-07-28 05:47:07,303 - INFO - Processing content (84/211): Open (Movie)
+2025-07-28 05:47:08,823 - INFO - Found 1 backdrop images for TMDB ID 1470736
+2025-07-28 05:47:09,373 - INFO - Added 1 backdrop images for 'Open'
+2025-07-28 05:47:09,382 - INFO - Processing content (85/211): Oppenheimer (Movie)
+2025-07-28 05:47:10,826 - INFO - Found 117 backdrop images for TMDB ID 872585
+2025-07-28 05:48:54,788 - INFO - Added 117 backdrop images for 'Oppenheimer'
+2025-07-28 05:48:54,794 - INFO - Processing content (86/211): Possessions (Movie)
+2025-07-28 05:48:56,247 - INFO - Found 1 backdrop images for TMDB ID 1152619
+2025-07-28 05:48:56,792 - INFO - Added 1 backdrop images for 'Possessions'
+2025-07-28 05:48:56,802 - INFO - Processing content (87/211): Predator: Killer of Killers (Movie)
+2025-07-28 05:48:58,060 - INFO - Found 32 backdrop images for TMDB ID 1376434
+2025-07-28 05:49:26,128 - INFO - Added 32 backdrop images for 'Predator: Killer of Killers'
+2025-07-28 05:49:26,128 - INFO - Processing content (88/211): Párvulos: Children of the Apocalypse (Movie)
+2025-07-28 05:49:27,500 - INFO - Found 3 backdrop images for TMDB ID 1199974
+2025-07-28 05:49:29,837 - INFO - Added 3 backdrop images for 'Párvulos: Children of the Apocalypse'
+2025-07-28 05:49:29,838 - INFO - Processing content (89/211): R. L. Stine's The Haunting Hour (Series)
+2025-07-28 05:49:31,262 - INFO - Found 2 backdrop images for TMDB ID 1369137
+2025-07-28 05:49:32,755 - INFO - Added 2 backdrop images for 'R. L. Stine's The Haunting Hour'
+2025-07-28 05:49:32,755 - INFO - Processing content (90/211): Raid 2 (Movie)
+2025-07-28 05:49:34,240 - INFO - Found 8 backdrop images for TMDB ID 1227128
+2025-07-28 05:49:40,695 - INFO - Added 8 backdrop images for 'Raid 2'
+2025-07-28 05:49:40,695 - INFO - Processing content (91/211): Rapunzel's Tangled Adventure (Series)
+2025-07-28 05:49:42,535 - INFO - Found 7 backdrop images for TMDB ID 70047
+2025-07-28 05:49:48,443 - INFO - Added 7 backdrop images for 'Rapunzel's Tangled Adventure'
+2025-07-28 05:49:48,443 - INFO - Processing content (92/211): Road House (Movie)
+2025-07-28 05:49:49,914 - INFO - Found 51 backdrop images for TMDB ID 359410
+2025-07-28 05:50:33,909 - INFO - Added 51 backdrop images for 'Road House'
+2025-07-28 05:50:33,909 - INFO - Processing content (93/211): STRAW (Movie)
+2025-07-28 05:50:35,579 - INFO - Found 13 backdrop images for TMDB ID 1426776
+2025-07-28 05:50:46,960 - INFO - Added 13 backdrop images for 'STRAW'
+2025-07-28 05:50:46,966 - INFO - Processing content (94/211): Savages (Movie)
+2025-07-28 05:50:48,381 - INFO - Found 14 backdrop images for TMDB ID 589018
+2025-07-28 05:51:00,440 - INFO - Added 14 backdrop images for 'Savages'
+2025-07-28 05:51:00,440 - INFO - Processing content (95/211): Scooby-Doo and Guess Who? (Series)
+2025-07-28 05:51:02,338 - INFO - Found 5 backdrop images for TMDB ID 88367
+2025-07-28 05:51:06,471 - INFO - Added 5 backdrop images for 'Scooby-Doo and Guess Who?'
+2025-07-28 05:51:06,471 - INFO - Processing content (96/211): Shadow Force (Movie)
+2025-07-28 05:51:07,843 - INFO - Found 9 backdrop images for TMDB ID 757725
+2025-07-28 05:51:15,362 - INFO - Added 9 backdrop images for 'Shadow Force'
+2025-07-28 05:51:15,362 - INFO - Processing content (97/211): Sikandar (Movie)
+2025-07-28 05:51:17,081 - INFO - Found 12 backdrop images for TMDB ID 1257960
+2025-07-28 05:51:27,148 - INFO - Added 12 backdrop images for 'Sikandar'
+2025-07-28 05:51:27,150 - INFO - Processing content (98/211): Sinners (Movie)
+2025-07-28 05:51:28,666 - INFO - Found 78 backdrop images for TMDB ID 1233413
+2025-07-28 05:52:38,326 - INFO - Added 78 backdrop images for 'Sinners'
+2025-07-28 05:52:38,326 - INFO - Processing content (99/211): Smoke (Series)
+2025-07-28 05:52:39,826 - INFO - Found 8 backdrop images for TMDB ID 10149
+2025-07-28 05:52:46,865 - INFO - Added 8 backdrop images for 'Smoke'
+2025-07-28 05:52:46,867 - INFO - Processing content (100/211): Snow White (Movie)
+2025-07-28 05:52:48,395 - INFO - Found 85 backdrop images for TMDB ID 447273
+2025-07-28 05:54:03,403 - INFO - Added 85 backdrop images for 'Snow White'
+2025-07-28 05:54:03,403 - INFO - Processing content (101/211): Snow White (Movie)
+2025-07-28 05:54:04,573 - INFO - Found 85 backdrop images for TMDB ID 447273
+2025-07-28 05:55:17,278 - INFO - Added 85 backdrop images for 'Snow White'
+2025-07-28 05:55:17,280 - INFO - Processing content (102/211): Sonic the Hedgehog 3 (Movie)
+2025-07-28 05:55:18,712 - INFO - Found 127 backdrop images for TMDB ID 939243
+2025-07-28 05:57:11,258 - INFO - Added 127 backdrop images for 'Sonic the Hedgehog 3'
+2025-07-28 05:57:11,266 - INFO - Processing content (103/211): Sorority (Movie)
+2025-07-28 05:57:12,681 - INFO - Found 5 backdrop images for TMDB ID 1477114
+2025-07-28 05:57:16,672 - INFO - Added 5 backdrop images for 'Sorority'
+2025-07-28 05:57:16,674 - INFO - Processing content (104/211): Squid Game (Series)
+2025-07-28 05:57:18,110 - INFO - Found 2 backdrop images for TMDB ID 1412113
+2025-07-28 05:57:19,543 - INFO - Added 2 backdrop images for 'Squid Game'
+2025-07-28 05:57:19,544 - INFO - Processing content (105/211): Squid Game in Conversation (Movie)
+2025-07-28 05:57:21,044 - INFO - Found 1 backdrop images for TMDB ID 1504735
+2025-07-28 05:57:21,595 - INFO - Added 1 backdrop images for 'Squid Game in Conversation'
+2025-07-28 05:57:21,598 - INFO - Processing content (106/211): Squid Game: Fireplace (Movie)
+2025-07-28 05:57:22,966 - INFO - Found 1 backdrop images for TMDB ID 1408248
+2025-07-28 05:57:23,538 - INFO - Added 1 backdrop images for 'Squid Game: Fireplace'
+2025-07-28 05:57:23,538 - INFO - Processing content (107/211): Squid Game: Making Season 2 (Movie)
+2025-07-28 05:57:24,817 - INFO - Found 2 backdrop images for TMDB ID 1412113
+2025-07-28 05:57:26,275 - INFO - Added 2 backdrop images for 'Squid Game: Making Season 2'
+2025-07-28 05:57:26,276 - INFO - Processing content (108/211): Superman (Movie)
+2025-07-28 05:57:27,838 - INFO - Found 125 backdrop images for TMDB ID 1061474
+2025-07-28 05:59:20,994 - INFO - Added 125 backdrop images for 'Superman'
+2025-07-28 05:59:21,021 - INFO - Processing content (109/211): The Accountant² (Movie)
+2025-07-28 05:59:22,496 - INFO - Found 21 backdrop images for TMDB ID 870028
+2025-07-28 05:59:41,261 - INFO - Added 21 backdrop images for 'The Accountant²'
+2025-07-28 05:59:41,261 - INFO - Processing content (110/211): The Avengers (Movie)
+2025-07-28 05:59:42,715 - INFO - Found 77 backdrop images for TMDB ID 986056
+2025-07-28 06:00:51,926 - INFO - Added 77 backdrop images for 'The Avengers'
+2025-07-28 06:00:51,929 - INFO - Processing content (111/211): The Bear (Series)
+2025-07-28 06:00:53,367 - INFO - Found 5 backdrop images for TMDB ID 13853
+2025-07-28 06:00:57,494 - INFO - Added 5 backdrop images for 'The Bear'
+2025-07-28 06:00:57,494 - INFO - Processing content (112/211): The Chronicles of Narnia: The Lion, the Witch and the Wardrobe (Movie)
+2025-07-28 06:00:59,004 - INFO - Found 36 backdrop images for TMDB ID 411
+2025-07-28 06:01:31,139 - INFO - Added 36 backdrop images for 'The Chronicles of Narnia: The Lion, the Witch and the Wardrobe'
+2025-07-28 06:01:31,142 - INFO - Processing content (113/211): The Containment (Movie)
+2025-07-28 06:01:32,605 - INFO - Found 1 backdrop images for TMDB ID 568770
+2025-07-28 06:01:33,162 - INFO - Added 1 backdrop images for 'The Containment'
+2025-07-28 06:01:33,164 - INFO - Processing content (114/211): The Dark Knight (Movie)
+2025-07-28 06:01:34,640 - INFO - Found 88 backdrop images for TMDB ID 155
+2025-07-28 06:02:54,999 - INFO - Added 88 backdrop images for 'The Dark Knight'
+2025-07-28 06:02:54,999 - INFO - Processing content (115/211): The Fantastic Four: First Steps (Movie)
+2025-07-28 06:02:56,639 - INFO - Found 94 backdrop images for TMDB ID 617126
+2025-07-28 06:04:21,026 - INFO - Added 94 backdrop images for 'The Fantastic Four: First Steps'
+2025-07-28 06:04:21,027 - INFO - Processing content (116/211): The Godfather (Movie)
+2025-07-28 06:04:22,427 - INFO - Found 50 backdrop images for TMDB ID 238
+2025-07-28 06:05:06,727 - INFO - Added 50 backdrop images for 'The Godfather'
+2025-07-28 06:05:06,727 - INFO - Processing content (117/211): The Gorge (Movie)
+2025-07-28 06:05:08,098 - INFO - Found 44 backdrop images for TMDB ID 950396
+2025-07-28 06:05:47,353 - INFO - Added 44 backdrop images for 'The Gorge'
+2025-07-28 06:05:47,353 - INFO - Processing content (118/211): The Last Rodeo (Movie)
+2025-07-28 06:05:48,776 - INFO - Found 6 backdrop images for TMDB ID 1380682
+2025-07-28 06:05:53,658 - INFO - Added 6 backdrop images for 'The Last Rodeo'
+2025-07-28 06:05:53,658 - INFO - Processing content (119/211): The Last Stand of Ellen Cole (Movie)
+2025-07-28 06:05:55,087 - INFO - Found 2 backdrop images for TMDB ID 1411773
+2025-07-28 06:05:56,557 - INFO - Added 2 backdrop images for 'The Last Stand of Ellen Cole'
+2025-07-28 06:05:56,559 - INFO - Processing content (120/211): The Last of Us (Series)
+2025-07-28 06:05:58,001 - INFO - Found 9 backdrop images for TMDB ID 1100287
+2025-07-28 06:06:05,587 - INFO - Added 9 backdrop images for 'The Last of Us'
+2025-07-28 06:06:05,587 - INFO - Processing content (121/211): The Legend of Ochi (Movie)
+2025-07-28 06:06:06,988 - INFO - Found 26 backdrop images for TMDB ID 896536
+2025-07-28 06:06:29,330 - INFO - Added 26 backdrop images for 'The Legend of Ochi'
+2025-07-28 06:06:29,330 - INFO - Processing content (122/211): The Long Game (Movie)
+2025-07-28 06:06:30,898 - INFO - Found 6 backdrop images for TMDB ID 1079810
+2025-07-28 06:06:35,722 - INFO - Added 6 backdrop images for 'The Long Game'
+2025-07-28 06:06:35,724 - INFO - Processing content (123/211): The Lord of the Rings: The Fellowship of the Ring (Movie)
+2025-07-28 06:06:37,126 - INFO - Found 79 backdrop images for TMDB ID 120
+2025-07-28 06:07:45,818 - INFO - Added 79 backdrop images for 'The Lord of the Rings: The Fellowship of the Ring'
+2025-07-28 06:07:45,820 - INFO - Processing content (124/211): The Monkey (Movie)
+2025-07-28 06:07:47,261 - INFO - Found 53 backdrop images for TMDB ID 1124620
+2025-07-28 06:08:33,542 - INFO - Added 53 backdrop images for 'The Monkey'
+2025-07-28 06:08:33,544 - INFO - Processing content (125/211): The Phoenician Scheme (Movie)
+2025-07-28 06:08:35,063 - INFO - Found 55 backdrop images for TMDB ID 1137350
+2025-07-28 06:09:23,516 - INFO - Added 55 backdrop images for 'The Phoenician Scheme'
+2025-07-28 06:09:23,524 - INFO - Processing content (126/211): The Public Woman (Movie)
+2025-07-28 06:09:24,893 - INFO - Found 7 backdrop images for TMDB ID 70410
+2025-07-28 06:09:30,714 - INFO - Added 7 backdrop images for 'The Public Woman'
+2025-07-28 06:09:30,715 - INFO - Processing content (127/211): The Ritual (Movie)
+2025-07-28 06:09:32,210 - INFO - Found 15 backdrop images for TMDB ID 1278950
+2025-07-28 06:09:45,287 - INFO - Added 15 backdrop images for 'The Ritual'
+2025-07-28 06:09:45,288 - INFO - Processing content (128/211): The Roundup: Punishment (Movie)
+2025-07-28 06:09:46,669 - INFO - Found 30 backdrop images for TMDB ID 1017163
+2025-07-28 06:10:11,567 - INFO - Added 30 backdrop images for 'The Roundup: Punishment'
+2025-07-28 06:10:11,567 - INFO - Processing content (129/211): The Shawshank Redemption (Movie)
+2025-07-28 06:10:12,963 - INFO - Found 38 backdrop images for TMDB ID 278
+2025-07-28 06:10:46,554 - INFO - Added 38 backdrop images for 'The Shawshank Redemption'
+2025-07-28 06:10:46,554 - INFO - Processing content (130/211): The Substance (Movie)
+2025-07-28 06:10:48,020 - INFO - Found 108 backdrop images for TMDB ID 933260
+2025-07-28 06:12:24,694 - INFO - Added 108 backdrop images for 'The Substance'
+2025-07-28 06:12:24,694 - INFO - Processing content (131/211): The Twisters (Movie)
+2025-07-28 06:12:26,225 - INFO - Found 2 backdrop images for TMDB ID 1311844
+2025-07-28 06:12:27,729 - INFO - Added 2 backdrop images for 'The Twisters'
+2025-07-28 06:12:27,729 - INFO - Processing content (132/211): The Ugly Stepsister (Movie)
+2025-07-28 06:12:29,256 - INFO - Found 45 backdrop images for TMDB ID 1284120
+2025-07-28 06:13:09,400 - INFO - Added 45 backdrop images for 'The Ugly Stepsister'
+2025-07-28 06:13:09,401 - INFO - Processing content (133/211): The Wild Robot (Movie)
+2025-07-28 06:13:10,875 - INFO - Found 64 backdrop images for TMDB ID 1184918
+2025-07-28 06:14:08,182 - INFO - Added 64 backdrop images for 'The Wild Robot'
+2025-07-28 06:14:08,182 - INFO - Processing content (134/211): Thunderbolts* (Movie)
+2025-07-28 06:14:09,517 - INFO - Found 77 backdrop images for TMDB ID 986056
+2025-07-28 06:15:18,293 - INFO - Added 77 backdrop images for 'Thunderbolts*'
+2025-07-28 06:15:18,301 - INFO - Processing content (135/211): Titanic (Movie)
+2025-07-28 06:15:19,828 - INFO - Found 89 backdrop images for TMDB ID 597
+2025-07-28 06:16:40,758 - INFO - Added 89 backdrop images for 'Titanic'
+2025-07-28 06:16:40,758 - INFO - Processing content (136/211): Top Gun: Maverick (Movie)
+2025-07-28 06:16:42,194 - INFO - Found 72 backdrop images for TMDB ID 361743
+2025-07-28 06:17:46,838 - INFO - Added 72 backdrop images for 'Top Gun: Maverick'
+2025-07-28 06:17:46,845 - INFO - Processing content (137/211): Until Dawn (Movie)
+2025-07-28 06:17:48,334 - INFO - Found 47 backdrop images for TMDB ID 1232546
+2025-07-28 06:18:30,637 - INFO - Added 47 backdrop images for 'Until Dawn'
+2025-07-28 06:18:30,637 - INFO - Processing content (138/211): Utopia (Movie)
+2025-07-28 06:18:32,074 - INFO - Found 4 backdrop images for TMDB ID 1379587
+2025-07-28 06:18:35,340 - INFO - Added 4 backdrop images for 'Utopia'
+2025-07-28 06:18:35,348 - INFO - Processing content (139/211): Van Gogh by Vincent (Movie)
+2025-07-28 06:18:36,713 - WARNING - No backdrop images found for TMDB ID 1471014
+2025-07-28 06:18:36,715 - WARNING - No backdrop images found for: Van Gogh by Vincent
+2025-07-28 06:18:36,715 - INFO - Processing content (140/211): Venom: The Last Dance (Movie)
+2025-07-28 06:18:37,842 - INFO - Found 61 backdrop images for TMDB ID 912649
+2025-07-28 06:19:32,268 - INFO - Added 61 backdrop images for 'Venom: The Last Dance'
+2025-07-28 06:19:32,268 - INFO - Processing content (141/211): Victoria (Movie)
+2025-07-28 06:19:33,708 - WARNING - No backdrop images found for TMDB ID 812455
+2025-07-28 06:19:33,711 - WARNING - No backdrop images found for: Victoria
+2025-07-28 06:19:33,711 - INFO - Processing content (142/211): Victoria (Movie)
+2025-07-28 06:19:34,635 - WARNING - No backdrop images found for TMDB ID 812455
+2025-07-28 06:19:34,640 - WARNING - No backdrop images found for: Victoria
+2025-07-28 06:19:34,640 - INFO - Processing content (143/211): Warfare (Movie)
+2025-07-28 06:19:35,738 - INFO - Found 90 backdrop images for TMDB ID 1241436
+2025-07-28 06:20:57,163 - INFO - Added 90 backdrop images for 'Warfare'
+2025-07-28 06:20:57,164 - INFO - Processing content (144/211): Wicked (Movie)
+2025-07-28 06:20:58,499 - INFO - Found 2 backdrop images for TMDB ID 1240475
+2025-07-28 06:21:00,024 - INFO - Added 2 backdrop images for 'Wicked'
+2025-07-28 06:21:00,024 - INFO - Processing content (145/211): Woodwalkers (Movie)
+2025-07-28 06:21:01,567 - INFO - Found 18 backdrop images for TMDB ID 1241894
+2025-07-28 06:21:17,533 - INFO - Added 18 backdrop images for 'Woodwalkers'
+2025-07-28 06:21:17,533 - INFO - Processing content (146/211): Wreck-It Ralph (Movie)
+2025-07-28 06:21:19,116 - INFO - Found 36 backdrop images for TMDB ID 82690
+2025-07-28 06:21:51,871 - INFO - Added 36 backdrop images for 'Wreck-It Ralph'
+2025-07-28 06:21:51,871 - INFO - Processing content (147/211): Your Fault (Movie)
+2025-07-28 06:21:53,391 - INFO - Found 32 backdrop images for TMDB ID 1156593
+2025-07-28 06:22:22,080 - INFO - Added 32 backdrop images for 'Your Fault'
+2025-07-28 06:22:22,082 - INFO - Processing content (148/211): Your Monster (Movie)
+2025-07-28 06:22:23,583 - INFO - Found 14 backdrop images for TMDB ID 1098378
+2025-07-28 06:22:36,030 - INFO - Added 14 backdrop images for 'Your Monster'
+2025-07-28 06:22:36,032 - INFO - Processing content (149/211): given the Movie: To the Sea (Movie)
+2025-07-28 06:22:37,510 - INFO - Found 1 backdrop images for TMDB ID 1317276
+2025-07-28 06:22:38,070 - INFO - Added 1 backdrop images for 'given the Movie: To the Sea'
+2025-07-28 06:22:38,070 - INFO - Processing celebrity (150/211):  Hugh Jackman
+2025-07-28 06:22:39,150 - INFO - Found exact match for ' Hugh Jackman': 'Hugh Jackman' (TMDB ID 6968)
+2025-07-28 06:22:39,707 - INFO - Found 14 profile images for TMDB person ID 6968
+2025-07-28 06:22:52,156 - INFO - Added 14 profile images for ' Hugh Jackman'
+2025-07-28 06:22:52,156 - INFO - Processing celebrity (151/211): Alexandra Daddario
+2025-07-28 06:22:53,271 - INFO - Found exact match for 'Alexandra Daddario': 'Alexandra Daddario' (TMDB ID 109513)
+2025-07-28 06:22:53,797 - INFO - Found 17 profile images for TMDB person ID 109513
+2025-07-28 06:23:09,263 - INFO - Added 17 profile images for 'Alexandra Daddario'
+2025-07-28 06:23:09,263 - INFO - Processing celebrity (152/211): Alissa Yagi
+2025-07-28 06:23:10,494 - INFO - Found exact match for 'Alissa Yagi': 'Alissa Yagi' (TMDB ID 1373074)
+2025-07-28 06:23:11,095 - INFO - Found 4 profile images for TMDB person ID 1373074
+2025-07-28 06:23:14,372 - INFO - Added 4 profile images for 'Alissa Yagi'
+2025-07-28 06:23:14,374 - INFO - Processing celebrity (153/211): Ana de Armas
+2025-07-28 06:23:15,517 - INFO - Found exact match for 'Ana de Armas': 'Ana de Armas' (TMDB ID 224513)
+2025-07-28 06:23:16,046 - INFO - Found 40 profile images for TMDB person ID 224513
+2025-07-28 06:23:51,774 - INFO - Added 40 profile images for 'Ana de Armas'
+2025-07-28 06:23:51,774 - INFO - Processing celebrity (154/211): Annika Blendl
+2025-07-28 06:23:52,915 - INFO - Found exact match for 'Annika Blendl': 'Annika Blendl' (TMDB ID 17053)
+2025-07-28 06:23:53,446 - INFO - Found 1 profile images for TMDB person ID 17053
+2025-07-28 06:23:53,994 - INFO - Added 1 profile images for 'Annika Blendl'
+2025-07-28 06:23:53,994 - INFO - Processing celebrity (155/211): Anurag Kashyap
+2025-07-28 06:23:55,231 - INFO - Found exact match for 'Anurag Kashyap': 'Anurag Kashyap' (TMDB ID 85670)
+2025-07-28 06:23:55,788 - INFO - Found 4 profile images for TMDB person ID 85670
+2025-07-28 06:23:59,096 - INFO - Added 4 profile images for 'Anurag Kashyap'
+2025-07-28 06:23:59,096 - INFO - Processing celebrity (156/211): Ayumi Takahashi
+2025-07-28 06:24:00,297 - INFO - Found exact match for 'Ayumi Takahashi': 'Ayumi Takahashi' (TMDB ID 2080723)
+2025-07-28 06:24:00,870 - WARNING - No profile images found for TMDB person ID 2080723
+2025-07-28 06:24:00,872 - WARNING - No profile images found for: Ayumi Takahashi
+2025-07-28 06:24:00,873 - INFO - Processing celebrity (157/211): Brad Pitt
+2025-07-28 06:24:01,678 - INFO - Found exact match for 'Brad Pitt': 'Brad Pitt' (TMDB ID 287)
+2025-07-28 06:24:02,211 - INFO - Found 18 profile images for TMDB person ID 287
+2025-07-28 06:24:18,182 - INFO - Added 18 profile images for 'Brad Pitt'
+2025-07-28 06:24:18,182 - INFO - Processing celebrity (158/211): Chae Kook-hee
+2025-07-28 06:24:19,306 - INFO - Found exact match for 'Chae Kook-hee': 'Chae Kook-hee' (TMDB ID 2627786)
+2025-07-28 06:24:19,839 - INFO - Found 1 profile images for TMDB person ID 2627786
+2025-07-28 06:24:20,439 - INFO - Added 1 profile images for 'Chae Kook-hee'
+2025-07-28 06:24:20,439 - INFO - Processing celebrity (159/211): Charlize Theron
+2025-07-28 06:24:21,516 - INFO - Found exact match for 'Charlize Theron': 'Charlize Theron' (TMDB ID 6885)
+2025-07-28 06:24:22,050 - INFO - Found 39 profile images for TMDB person ID 6885
+2025-07-28 06:24:56,364 - INFO - Added 39 profile images for 'Charlize Theron'
+2025-07-28 06:24:56,364 - INFO - Processing celebrity (160/211): Charlotte Spencer
+2025-07-28 06:24:57,591 - INFO - Found exact match for 'Charlotte Spencer': 'Charlotte Spencer' (TMDB ID 219763)
+2025-07-28 06:24:58,214 - INFO - Found 1 profile images for TMDB person ID 219763
+2025-07-28 06:24:58,824 - INFO - Added 1 profile images for 'Charlotte Spencer'
+2025-07-28 06:24:58,825 - INFO - Processing celebrity (161/211): Chris Robinson
+2025-07-28 06:25:00,069 - INFO - Found exact match for 'Chris Robinson': 'Chris Robinson' (TMDB ID 160396)
+2025-07-28 06:25:00,596 - INFO - Found 1 profile images for TMDB person ID 160396
+2025-07-28 06:25:01,276 - INFO - Added 1 profile images for 'Chris Robinson'
+2025-07-28 06:25:01,276 - INFO - Processing celebrity (162/211): Dakota Johnson
+2025-07-28 06:25:02,500 - INFO - Found exact match for 'Dakota Johnson': 'Dakota Johnson' (TMDB ID 118545)
+2025-07-28 06:25:03,075 - INFO - Found 20 profile images for TMDB person ID 118545
+2025-07-28 06:25:20,505 - INFO - Added 20 profile images for 'Dakota Johnson'
+2025-07-28 06:25:20,510 - INFO - Processing celebrity (163/211): Demord Dann
+2025-07-28 06:25:21,754 - INFO - Found exact match for 'Demord Dann': 'Demord Dann' (TMDB ID 1239253)
+2025-07-28 06:25:22,311 - INFO - Found 1 profile images for TMDB person ID 1239253
+2025-07-28 06:25:22,861 - INFO - Added 1 profile images for 'Demord Dann'
+2025-07-28 06:25:22,870 - INFO - Processing celebrity (164/211): Dyessa Garcia
+2025-07-28 06:25:23,964 - INFO - Found exact match for 'Dyessa Garcia': 'Dyessa Garcia' (TMDB ID 4095744)
+2025-07-28 06:25:24,501 - INFO - Found 1 profile images for TMDB person ID 4095744
+2025-07-28 06:25:25,052 - INFO - Added 1 profile images for 'Dyessa Garcia'
+2025-07-28 06:25:25,052 - INFO - Processing celebrity (165/211): Florence Pugh
+2025-07-28 06:25:26,289 - INFO - Found exact match for 'Florence Pugh': 'Florence Pugh' (TMDB ID 1373737)
+2025-07-28 06:25:26,879 - INFO - Found 36 profile images for TMDB person ID 1373737
+2025-07-28 06:25:58,936 - INFO - Added 36 profile images for 'Florence Pugh'
+2025-07-28 06:25:58,938 - INFO - Processing celebrity (166/211): Gary Oldman
+2025-07-28 06:26:00,106 - INFO - Found exact match for 'Gary Oldman': 'Gary Oldman' (TMDB ID 64)
+2025-07-28 06:26:00,675 - INFO - Found 15 profile images for TMDB person ID 64
+2025-07-28 06:26:13,508 - INFO - Added 15 profile images for 'Gary Oldman'
+2025-07-28 06:26:13,510 - INFO - Processing celebrity (167/211): Gerard Butler
+2025-07-28 06:26:14,608 - INFO - Found exact match for 'Gerard Butler': 'Gerard Butler' (TMDB ID 17276)
+2025-07-28 06:26:15,226 - INFO - Found 9 profile images for TMDB person ID 17276
+2025-07-28 06:26:22,495 - INFO - Added 9 profile images for 'Gerard Butler'
+2025-07-28 06:26:22,495 - INFO - Processing celebrity (168/211): Hande Erçel
+2025-07-28 06:26:23,655 - INFO - Found exact match for 'Hande Erçel': 'Hande Erçel' (TMDB ID 1522703)
+2025-07-28 06:26:24,192 - INFO - Found 18 profile images for TMDB person ID 1522703
+2025-07-28 06:26:40,195 - INFO - Added 18 profile images for 'Hande Erçel'
+2025-07-28 06:26:40,197 - INFO - Processing celebrity (169/211): Isla Fisher
+2025-07-28 06:26:41,529 - INFO - Found exact match for 'Isla Fisher': 'Isla Fisher' (TMDB ID 52848)
+2025-07-28 06:26:42,076 - INFO - Found 5 profile images for TMDB person ID 52848
+2025-07-28 06:26:46,342 - INFO - Added 5 profile images for 'Isla Fisher'
+2025-07-28 06:26:46,342 - INFO - Processing celebrity (170/211): Jackie Chan
+2025-07-28 06:26:47,434 - INFO - Found exact match for 'Jackie Chan': 'Jackie Chan' (TMDB ID 18897)
+2025-07-28 06:26:47,962 - INFO - Found 11 profile images for TMDB person ID 18897
+2025-07-28 06:26:57,474 - INFO - Added 11 profile images for 'Jackie Chan'
+2025-07-28 06:26:57,474 - INFO - Processing celebrity (171/211): Jackie Sandler
+2025-07-28 06:26:58,735 - INFO - Found exact match for 'Jackie Sandler': 'Jackie Sandler' (TMDB ID 60959)
+2025-07-28 06:26:59,360 - INFO - Found 1 profile images for TMDB person ID 60959
+2025-07-28 06:26:59,963 - INFO - Added 1 profile images for 'Jackie Sandler'
+2025-07-28 06:26:59,963 - INFO - Processing celebrity (172/211): Jake Gyllenhaal
+2025-07-28 06:27:01,137 - INFO - Found exact match for 'Jake Gyllenhaal': 'Jake Gyllenhaal' (TMDB ID 131)
+2025-07-28 06:27:01,670 - INFO - Found 25 profile images for TMDB person ID 131
+2025-07-28 06:27:24,138 - INFO - Added 25 profile images for 'Jake Gyllenhaal'
+2025-07-28 06:27:24,138 - INFO - Processing celebrity (173/211): Jane Wong
+2025-07-28 06:27:25,323 - INFO - Found exact match for 'Jane Wong': 'Jane Wong' (TMDB ID 2005186)
+2025-07-28 06:27:25,874 - INFO - Found 1 profile images for TMDB person ID 2005186
+2025-07-28 06:27:26,479 - INFO - Added 1 profile images for 'Jane Wong'
+2025-07-28 06:27:26,480 - INFO - Processing celebrity (174/211): Jason Momoa
+2025-07-28 06:27:27,710 - INFO - Found exact match for 'Jason Momoa': 'Jason Momoa' (TMDB ID 117642)
+2025-07-28 06:27:28,240 - INFO - Found 14 profile images for TMDB person ID 117642
+2025-07-28 06:27:40,416 - INFO - Added 14 profile images for 'Jason Momoa'
+2025-07-28 06:27:40,417 - INFO - Processing celebrity (175/211): Jason Statham
+2025-07-28 06:27:41,542 - INFO - Found exact match for 'Jason Statham': 'Jason Statham' (TMDB ID 976)
+2025-07-28 06:27:42,071 - INFO - Found 7 profile images for TMDB person ID 976
+2025-07-28 06:27:47,964 - INFO - Added 7 profile images for 'Jason Statham'
+2025-07-28 06:27:47,964 - INFO - Processing celebrity (176/211): Jenna Ortega
+2025-07-28 06:27:49,165 - INFO - Found exact match for 'Jenna Ortega': 'Jenna Ortega' (TMDB ID 974169)
+2025-07-28 06:27:49,697 - INFO - Found 29 profile images for TMDB person ID 974169
+2025-07-28 06:28:15,644 - INFO - Added 29 profile images for 'Jenna Ortega'
+2025-07-28 06:28:15,644 - INFO - Processing celebrity (177/211): Jensen Ackles
+2025-07-28 06:28:16,869 - INFO - Found exact match for 'Jensen Ackles': 'Jensen Ackles' (TMDB ID 49624)
+2025-07-28 06:28:17,397 - INFO - Found 11 profile images for TMDB person ID 49624
+2025-07-28 06:28:27,010 - INFO - Added 11 profile images for 'Jensen Ackles'
+2025-07-28 06:28:27,011 - INFO - Processing celebrity (178/211): Jon Bernthal
+2025-07-28 06:28:28,231 - INFO - Found exact match for 'Jon Bernthal': 'Jon Bernthal' (TMDB ID 19498)
+2025-07-28 06:28:28,850 - INFO - Found 7 profile images for TMDB person ID 19498
+2025-07-28 06:28:34,993 - INFO - Added 7 profile images for 'Jon Bernthal'
+2025-07-28 06:28:34,993 - INFO - Processing celebrity (179/211): Julie Ann Emery
+2025-07-28 06:28:36,105 - INFO - Found exact match for 'Julie Ann Emery': 'Julie Ann Emery' (TMDB ID 55256)
+2025-07-28 06:28:36,642 - INFO - Found 3 profile images for TMDB person ID 55256
+2025-07-28 06:28:39,186 - INFO - Added 3 profile images for 'Julie Ann Emery'
+2025-07-28 06:28:39,188 - INFO - Processing celebrity (180/211): Kaley Cuoco
+2025-07-28 06:28:40,419 - INFO - Found exact match for 'Kaley Cuoco': 'Kaley Cuoco' (TMDB ID 53862)
+2025-07-28 06:28:41,039 - INFO - Found 12 profile images for TMDB person ID 53862
+2025-07-28 06:28:51,409 - INFO - Added 12 profile images for 'Kaley Cuoco'
+2025-07-28 06:28:51,409 - INFO - Processing celebrity (181/211): Keanu Reeves
+2025-07-28 06:28:52,493 - INFO - Found exact match for 'Keanu Reeves': 'Keanu Reeves' (TMDB ID 6384)
+2025-07-28 06:28:53,024 - INFO - Found 30 profile images for TMDB person ID 6384
+2025-07-28 06:29:19,945 - INFO - Added 30 profile images for 'Keanu Reeves'
+2025-07-28 06:29:19,945 - INFO - Processing celebrity (182/211): Kerry Condon
+2025-07-28 06:29:21,067 - INFO - Found exact match for 'Kerry Condon': 'Kerry Condon' (TMDB ID 62105)
+2025-07-28 06:29:21,603 - INFO - Found 7 profile images for TMDB person ID 62105
+2025-07-28 06:29:27,519 - INFO - Added 7 profile images for 'Kerry Condon'
+2025-07-28 06:29:27,519 - INFO - Processing celebrity (183/211): Kevin Costner
+2025-07-28 06:29:28,759 - INFO - Found exact match for 'Kevin Costner': 'Kevin Costner' (TMDB ID 1269)
+2025-07-28 06:29:29,287 - INFO - Found 6 profile images for TMDB person ID 1269
+2025-07-28 06:29:34,421 - INFO - Added 6 profile images for 'Kevin Costner'
+2025-07-28 06:29:34,421 - INFO - Processing celebrity (184/211): Kristin Köster
+2025-07-28 06:29:35,521 - INFO - Found exact match for 'Kristin Köster': 'Kristin Köster' (TMDB ID 2641580)
+2025-07-28 06:29:36,090 - WARNING - No profile images found for TMDB person ID 2641580
+2025-07-28 06:29:36,090 - WARNING - No profile images found for: Kristin Köster
+2025-07-28 06:29:36,090 - INFO - Processing celebrity (185/211): Lakshya Lalwani
+2025-07-28 06:29:36,918 - INFO - Found exact match for 'Lakshya Lalwani': 'Lakshya Lalwani' (TMDB ID 2011444)
+2025-07-28 06:29:37,457 - INFO - Found 3 profile images for TMDB person ID 2011444
+2025-07-28 06:29:39,914 - INFO - Added 3 profile images for 'Lakshya Lalwani'
+2025-07-28 06:29:39,914 - INFO - Processing celebrity (186/211): Lee Byung-hun
+2025-07-28 06:29:41,032 - INFO - Found exact match for 'Lee Byung-hun': 'Lee Byung-hun' (TMDB ID 25002)
+2025-07-28 06:29:41,565 - INFO - Found 4 profile images for TMDB person ID 25002
+2025-07-28 06:29:44,860 - INFO - Added 4 profile images for 'Lee Byung-hun'
+2025-07-28 06:29:44,860 - INFO - Processing celebrity (187/211): Leonardo DiCaprio
+2025-07-28 06:29:46,165 - INFO - Found exact match for 'Leonardo DiCaprio': 'Leonardo DiCaprio' (TMDB ID 6193)
+2025-07-28 06:29:46,720 - INFO - Found 24 profile images for TMDB person ID 6193
+2025-07-28 06:30:07,810 - INFO - Added 24 profile images for 'Leonardo DiCaprio'
+2025-07-28 06:30:07,810 - INFO - Processing celebrity (188/211): Liu Tao
+2025-07-28 06:30:08,928 - INFO - Found exact match for 'Liu Tao': 'Liu Tao' (TMDB ID 3841254)
+2025-07-28 06:30:09,479 - WARNING - No profile images found for TMDB person ID 3841254
+2025-07-28 06:30:09,483 - WARNING - No profile images found for: Liu Tao
+2025-07-28 06:30:09,483 - INFO - Processing celebrity (189/211): Matt Damon
+2025-07-28 06:30:10,325 - INFO - Found exact match for 'Matt Damon': 'Matt Damon' (TMDB ID 1892)
+2025-07-28 06:30:10,859 - INFO - Found 20 profile images for TMDB person ID 1892
+2025-07-28 06:30:28,445 - INFO - Added 20 profile images for 'Matt Damon'
+2025-07-28 06:30:28,445 - INFO - Processing celebrity (190/211): Megan Fox
+2025-07-28 06:30:29,679 - INFO - Found exact match for 'Megan Fox': 'Megan Fox' (TMDB ID 19537)
+2025-07-28 06:30:30,208 - INFO - Found 22 profile images for TMDB person ID 19537
+2025-07-28 06:30:50,368 - INFO - Added 22 profile images for 'Megan Fox'
+2025-07-28 06:30:50,368 - INFO - Processing celebrity (191/211): Melanie Griffith
+2025-07-28 06:30:51,458 - INFO - Found exact match for 'Melanie Griffith': 'Melanie Griffith' (TMDB ID 29369)
+2025-07-28 06:30:52,010 - INFO - Found 10 profile images for TMDB person ID 29369
+2025-07-28 06:31:00,774 - INFO - Added 10 profile images for 'Melanie Griffith'
+2025-07-28 06:31:00,774 - INFO - Processing celebrity (192/211): Michael Douglas
+2025-07-28 06:31:02,032 - INFO - Found exact match for 'Michael Douglas': 'Michael Douglas' (TMDB ID 3392)
+2025-07-28 06:31:02,557 - INFO - Found 8 profile images for TMDB person ID 3392
+2025-07-28 06:31:09,371 - INFO - Added 8 profile images for 'Michael Douglas'
+2025-07-28 06:31:09,371 - INFO - Processing celebrity (193/211): Monica Bellucci
+2025-07-28 06:31:10,455 - INFO - Found exact match for 'Monica Bellucci': 'Monica Bellucci' (TMDB ID 28782)
+2025-07-28 06:31:10,988 - INFO - Found 34 profile images for TMDB person ID 28782
+2025-07-28 06:31:41,696 - INFO - Added 34 profile images for 'Monica Bellucci'
+2025-07-28 06:31:41,696 - INFO - Processing celebrity (194/211): Nikhil Nagesh Bhat
+2025-07-28 06:31:42,930 - INFO - Found exact match for 'Nikhil Nagesh Bhat': 'Nikhil Nagesh Bhat' (TMDB ID 2119237)
+2025-07-28 06:31:43,463 - INFO - Found 1 profile images for TMDB person ID 2119237
+2025-07-28 06:31:44,029 - INFO - Added 1 profile images for 'Nikhil Nagesh Bhat'
+2025-07-28 06:31:44,030 - INFO - Processing celebrity (195/211): Pedro Pascal
+2025-07-28 06:31:45,114 - INFO - Found exact match for 'Pedro Pascal': 'Pedro Pascal' (TMDB ID 1253360)
+2025-07-28 06:31:45,646 - INFO - Found 19 profile images for TMDB person ID 1253360
+2025-07-28 06:32:02,467 - INFO - Added 19 profile images for 'Pedro Pascal'
+2025-07-28 06:32:02,470 - INFO - Processing celebrity (196/211): Raghav Juyal
+2025-07-28 06:32:03,565 - INFO - Found exact match for 'Raghav Juyal': 'Raghav Juyal' (TMDB ID 1374676)
+2025-07-28 06:32:04,123 - INFO - Found 1 profile images for TMDB person ID 1374676
+2025-07-28 06:32:04,676 - INFO - Added 1 profile images for 'Raghav Juyal'
+2025-07-28 06:32:04,676 - INFO - Processing celebrity (197/211): Rika
+2025-07-28 06:32:05,802 - INFO - Found exact match for 'Rika': 'Rika' (TMDB ID 3165040)
+2025-07-28 06:32:06,333 - INFO - Found 1 profile images for TMDB person ID 3165040
+2025-07-28 06:32:06,960 - INFO - Added 1 profile images for 'Rika'
+2025-07-28 06:32:06,964 - INFO - Processing celebrity (198/211): Robert De Niro
+2025-07-28 06:32:08,184 - INFO - Found exact match for 'Robert De Niro': 'Robert De Niro' (TMDB ID 380)
+2025-07-28 06:32:08,724 - INFO - Found 11 profile images for TMDB person ID 380
+2025-07-28 06:32:18,311 - INFO - Added 11 profile images for 'Robert De Niro'
+2025-07-28 06:32:18,311 - INFO - Processing celebrity (199/211): Robert Downey Jr.
+2025-07-28 06:32:19,457 - INFO - Found exact match for 'Robert Downey Jr.': 'Robert Downey Jr.' (TMDB ID 3223)
+2025-07-28 06:32:19,992 - INFO - Found 19 profile images for TMDB person ID 3223
+2025-07-28 06:32:36,963 - INFO - Added 19 profile images for 'Robert Downey Jr.'
+2025-07-28 06:32:36,964 - INFO - Processing celebrity (200/211): Sandra Bullock
+2025-07-28 06:32:38,101 - INFO - Found exact match for 'Sandra Bullock': 'Sandra Bullock' (TMDB ID 18277)
+2025-07-28 06:32:38,631 - INFO - Found 18 profile images for TMDB person ID 18277
+2025-07-28 06:32:54,876 - INFO - Added 18 profile images for 'Sandra Bullock'
+2025-07-28 06:32:54,876 - INFO - Processing celebrity (201/211): Scarlett Johansson
+2025-07-28 06:32:55,994 - INFO - Found exact match for 'Scarlett Johansson': 'Scarlett Johansson' (TMDB ID 1245)
+2025-07-28 06:32:56,528 - INFO - Found 33 profile images for TMDB person ID 1245
+2025-07-28 06:33:26,063 - INFO - Added 33 profile images for 'Scarlett Johansson'
+2025-07-28 06:33:26,072 - INFO - Processing celebrity (202/211): Sydney Sweeney
+2025-07-28 06:33:27,179 - INFO - Found exact match for 'Sydney Sweeney': 'Sydney Sweeney' (TMDB ID 115440)
+2025-07-28 06:33:27,713 - INFO - Found 25 profile images for TMDB person ID 115440
+2025-07-28 06:33:50,395 - INFO - Added 25 profile images for 'Sydney Sweeney'
+2025-07-28 06:33:50,395 - INFO - Processing celebrity (203/211): Sylvester Stallone
+2025-07-28 06:33:51,594 - INFO - Found exact match for 'Sylvester Stallone': 'Sylvester Stallone' (TMDB ID 16483)
+2025-07-28 06:33:52,129 - INFO - Found 28 profile images for TMDB person ID 16483
+2025-07-28 06:34:16,773 - INFO - Added 28 profile images for 'Sylvester Stallone'
+2025-07-28 06:34:16,773 - INFO - Processing celebrity (204/211): Theo James
+2025-07-28 06:34:17,937 - INFO - Found exact match for 'Theo James': 'Theo James' (TMDB ID 587020)
+2025-07-28 06:34:18,462 - INFO - Found 12 profile images for TMDB person ID 587020
+2025-07-28 06:34:28,604 - INFO - Added 12 profile images for 'Theo James'
+2025-07-28 06:34:28,604 - INFO - Processing celebrity (205/211): Tom Cruise
+2025-07-28 06:34:29,802 - INFO - Found exact match for 'Tom Cruise': 'Tom Cruise' (TMDB ID 500)
+2025-07-28 06:34:30,325 - INFO - Found 23 profile images for TMDB person ID 500
+2025-07-28 06:34:50,988 - INFO - Added 23 profile images for 'Tom Cruise'
+2025-07-28 06:34:50,988 - INFO - Processing celebrity (206/211): Tom Holland
+2025-07-28 06:34:52,129 - INFO - Found exact match for 'Tom Holland': 'Tom Holland' (TMDB ID 1136406)
+2025-07-28 06:34:52,659 - INFO - Found 22 profile images for TMDB person ID 1136406
+2025-07-28 06:35:11,553 - INFO - Added 22 profile images for 'Tom Holland'
+2025-07-28 06:35:11,553 - INFO - Processing celebrity (207/211): Vijay Sethupathi
+2025-07-28 06:35:12,820 - INFO - Found exact match for 'Vijay Sethupathi': 'Vijay Sethupathi' (TMDB ID 1123766)
+2025-07-28 06:35:13,388 - INFO - Found 4 profile images for TMDB person ID 1123766
+2025-07-28 06:35:16,569 - INFO - Added 4 profile images for 'Vijay Sethupathi'
+2025-07-28 06:35:16,569 - INFO - Processing celebrity (208/211): Vin Diesel
+2025-07-28 06:35:17,828 - INFO - Found exact match for 'Vin Diesel': 'Vin Diesel' (TMDB ID 12835)
+2025-07-28 06:35:18,431 - INFO - Found 12 profile images for TMDB person ID 12835
+2025-07-28 06:35:29,000 - INFO - Added 12 profile images for 'Vin Diesel'
+2025-07-28 06:35:29,001 - INFO - Processing celebrity (209/211): Will Smith
+2025-07-28 06:35:30,213 - INFO - Found exact match for 'Will Smith': 'Will Smith' (TMDB ID 2888)
+2025-07-28 06:35:30,743 - INFO - Found 18 profile images for TMDB person ID 2888
+2025-07-28 06:35:46,665 - INFO - Added 18 profile images for 'Will Smith'
+2025-07-28 06:35:46,665 - INFO - Processing celebrity (210/211): Yoon Yool
+2025-07-28 06:35:47,872 - INFO - Found exact match for 'Yoon Yool': 'Yoon Yool' (TMDB ID 3164807)
+2025-07-28 06:35:48,401 - INFO - Found 3 profile images for TMDB person ID 3164807
+2025-07-28 06:35:50,630 - INFO - Added 3 profile images for 'Yoon Yool'
+2025-07-28 06:35:50,630 - INFO - Processing celebrity (211/211): Zac Efron
+2025-07-28 06:35:51,713 - INFO - Found exact match for 'Zac Efron': 'Zac Efron' (TMDB ID 29222)
+2025-07-28 06:35:52,244 - INFO - Found 16 profile images for TMDB person ID 29222
+2025-07-28 06:36:05,861 - INFO - Added 16 profile images for 'Zac Efron'
+2025-07-28 06:36:05,861 - INFO - ============================================================
+2025-07-28 06:36:05,861 - INFO - IMAGE POPULATION COMPLETE
+2025-07-28 06:36:05,861 - INFO - Total items processed: 211 (149 content + 62 celebrities)
+2025-07-28 06:36:05,861 - INFO - Successfully updated: 204
+2025-07-28 06:36:05,861 - INFO - Skipped (already had images): 0
+2025-07-28 06:36:05,861 - INFO - Errors/Not found: 7
+2025-07-28 06:36:05,861 - INFO - Total images added: 5567
+2025-07-28 06:36:05,861 - INFO - ============================================================
+2025-07-28 06:36:05,877 - INFO - Database connection closed

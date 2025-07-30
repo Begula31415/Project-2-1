@@ -237,7 +237,10 @@ app.get("/celebrities/popular", async (req, res) => {
         c.name,
         c.bio,
         c.birth_date,
-        c.photo_url as photo,
+        COALESCE(
+          (SELECT url FROM image WHERE celebrity_id = c.celebrity_id ORDER BY created_at DESC LIMIT 1),
+          c.photo_url
+        ) as photo,
         c.place_of_birth,
         c.gender,
         COUNT(crc.content_id) as movie_count
@@ -493,14 +496,17 @@ app.get('/api/celebrities', async (req, res) => {
       SELECT 
         c.celebrity_id AS id,
         c.name,
-        c.photo_url,
+        COALESCE(
+          (SELECT url FROM image WHERE celebrity_id = c.celebrity_id ORDER BY created_at DESC LIMIT 1),
+          c.photo_url
+        ) as photo_url,
         c.gender,
         c.bio,
         ARRAY_AGG(r.name) AS roles
       FROM celebrity c
       LEFT JOIN celebrity_role cr ON c.celebrity_id = cr.celebrity_id
       LEFT JOIN role r ON cr.role_id = r.role_id
-      GROUP BY c.celebrity_id
+      GROUP BY c.celebrity_id, c.name, c.photo_url, c.gender, c.bio
       ORDER BY c.celebrity_id DESC
     `);
     res.json(result.rows);
@@ -762,13 +768,16 @@ app.get('/api/celebrities/:id', async (req, res) => {
         c.death_date,
         c.place_of_birth,
         c.gender,
-        c.photo_url,
+        COALESCE(
+          (SELECT url FROM image WHERE celebrity_id = c.celebrity_id ORDER BY created_at DESC LIMIT 1),
+          c.photo_url
+        ) as photo_url,
         ARRAY_AGG(r.name) AS roles
       FROM celebrity c
       LEFT JOIN celebrity_role cr ON c.celebrity_id = cr.celebrity_id
       LEFT JOIN role r ON cr.role_id = r.role_id
       WHERE c.celebrity_id = $1
-      GROUP BY c.celebrity_id
+      GROUP BY c.celebrity_id, c.name, c.bio, c.birth_date, c.death_date, c.place_of_birth, c.gender, c.photo_url
     `, [id]);
 
     if (result.rows.length === 0) {
@@ -1161,7 +1170,15 @@ app.get('/api/search/celebrities', async (req, res) => {
   const { q } = req.query;  
   try {  
     const result = await pool.query(`  
-      SELECT celebrity_id AS id, name, photo_url, gender, bio  
+      SELECT 
+        celebrity_id AS id, 
+        name, 
+        COALESCE(
+          (SELECT url FROM image WHERE celebrity_id = celebrity.celebrity_id ORDER BY created_at DESC LIMIT 1),
+          photo_url
+        ) as photo_url, 
+        gender, 
+        bio  
       FROM celebrity   
       WHERE name ILIKE $1   
       ORDER BY celebrity_id DESC  
@@ -1746,10 +1763,10 @@ app.get("/movies/:id/images", async (req, res) => {
         image_id,
         url,
         caption,
-        uploaded_at
+        created_at as uploaded_at
       FROM image 
       WHERE content_id = $1
-      ORDER BY uploaded_at DESC
+      ORDER BY created_at DESC
     `, [id]);
 
     res.json({
@@ -1817,15 +1834,19 @@ app.get("/movies/:id/cast", async (req, res) => {
       SELECT 
         c.celebrity_id,
         c.name,
-        c.photo_url,
-        r.name as role_name,
-        c.bio
+        COALESCE(
+          (SELECT url FROM image WHERE celebrity_id = c.celebrity_id ORDER BY created_at DESC LIMIT 1),
+          c.photo_url
+        ) as photo_url,
+        c.bio,
+        STRING_AGG(r.name, ', ' ORDER BY r.name) as roles
       FROM celebrity c
       JOIN celebrity_role cr ON c.celebrity_id = cr.celebrity_id
       JOIN role r ON cr.role_id = r.role_id
       JOIN celebrity_role_content crc ON cr.celebrity_role_id = crc.celebrity_role_id
       WHERE crc.content_id = $1
-      ORDER BY r.name
+      GROUP BY c.celebrity_id, c.name, c.photo_url, c.bio
+      ORDER BY c.name
     `, [id]);
 
     res.json({
@@ -2971,6 +2992,438 @@ app.post("/search/celebrities", async (req, res) => {
 
 
 // ==================== ADVANCED SEARCH ENDPOINTS END ====================
+
+// In-memory store for guest view tracking (use Redis in production)
+const guestViewStore = new Map();
+
+// Clean up old guest view entries (older than 12 hours)
+const cleanupGuestViews = () => {
+  const twelveHoursAgo = Date.now() - (12 * 60 * 60 * 1000);
+  for (const [key, timestamp] of guestViewStore.entries()) {
+    if (timestamp < twelveHoursAgo) {
+      guestViewStore.delete(key);
+    }
+  }
+};
+
+// Run cleanup every hour
+setInterval(cleanupGuestViews, 60 * 60 * 1000);
+
+// ==================== VIEW TRACKING ENDPOINTS START ====================
+
+// Track content view (for page visits)
+app.post("/content/:id/view", async (req, res) => {
+  const contentId = req.params.id;
+  const { user_id } = req.body;
+  const sessionId = req.headers['x-session-id'] || req.ip; // Use session ID or IP as fallback
+
+  console.log('=== VIEW TRACKING DEBUG ===');
+  console.log('Content ID:', contentId);
+  console.log('User ID:', user_id);
+  console.log('Session ID:', sessionId);
+  console.log('Request body:', req.body);
+  console.log('Request headers x-session-id:', req.headers['x-session-id']);
+
+  try {
+    // Check if this is a valid content
+    const contentCheck = await pool.query(
+      "SELECT content_id FROM content WHERE content_id = $1",
+      [contentId]
+    );
+
+    if (contentCheck.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Content not found"
+      });
+    }
+
+    const now = new Date();
+    const twelveHoursAgo = new Date(now.getTime() - 12 * 60 * 60 * 1000);
+
+    if (user_id) {
+      // For authenticated users, we need to get the registered_user_id from user_id
+      const registeredUserResult = await pool.query(`
+        SELECT registered_user_id FROM registered_user WHERE user_id = $1
+      `, [user_id]);
+
+      if (registeredUserResult.rows.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: "User not found in registered users"
+        });
+      }
+
+      const registered_user_id = registeredUserResult.rows[0].registered_user_id;
+      console.log('Found registered_user_id:', registered_user_id, 'for user_id:', user_id);
+
+      // Check if user has viewed this content in the last 12 hours
+      const recentView = await pool.query(`
+        SELECT view_id FROM content_views 
+        WHERE registered_user_id = $1 AND content_id = $2 AND when_viewed > $3
+        ORDER BY when_viewed DESC
+        LIMIT 1
+      `, [registered_user_id, contentId, twelveHoursAgo]);
+
+      console.log('Recent view check result:', recentView.rows.length);
+
+      if (recentView.rows.length === 0) {
+        // Insert new view record (or update existing one)
+        const insertResult = await pool.query(`
+          INSERT INTO content_views (registered_user_id, content_id, when_viewed)
+          VALUES ($1, $2, $3)
+          ON CONFLICT (registered_user_id, content_id) 
+          DO UPDATE SET when_viewed = $3
+          RETURNING view_id
+        `, [registered_user_id, contentId, now]);
+
+        console.log('Insert/Update result:', insertResult.rows);
+
+        // Increment view count in content table
+        const updateResult = await pool.query(`
+          UPDATE content SET views = views + 1 WHERE content_id = $1
+          RETURNING views
+        `, [contentId]);
+
+        console.log('View count updated:', updateResult.rows[0]?.views);
+
+        res.json({
+          success: true,
+          message: "View tracked successfully",
+          counted: true
+        });
+      } else {
+        res.json({
+          success: true,
+          message: "View already counted recently",
+          counted: false
+        });
+      }
+    } else {
+      // For guest users (using session/IP tracking)
+      const guestViewKey = `${sessionId}_${contentId}`;
+      const now = Date.now();
+      const lastViewTime = guestViewStore.get(guestViewKey);
+      const twelveHoursAgo = now - (12 * 60 * 60 * 1000);
+      
+      // Check if this guest has viewed this content in the last 12 hours
+      if (!lastViewTime || lastViewTime < twelveHoursAgo) {
+        // Record this view
+        guestViewStore.set(guestViewKey, now);
+        
+        // Increment view count in content table
+        await pool.query(`
+          UPDATE content SET views = views + 1 WHERE content_id = $1
+        `, [contentId]);
+
+        res.json({
+          success: true,
+          message: "Guest view tracked successfully",
+          counted: true
+        });
+      } else {
+        res.json({
+          success: true,
+          message: "Guest view already counted recently",
+          counted: false
+        });
+      }
+    }
+
+  } catch (err) {
+    console.error('View tracking error:', err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to track view",
+      error: err.message
+    });
+  }
+});
+
+// Mark content as watched (for registered users)
+app.post("/content/:id/watched", async (req, res) => {
+  const contentId = req.params.id;
+  const { user_id } = req.body;
+
+  if (!user_id) {
+    return res.status(400).json({
+      success: false,
+      message: "User authentication required"
+    });
+  }
+
+  try {
+    // Check if this is a valid content
+    const contentCheck = await pool.query(
+      "SELECT content_id FROM content WHERE content_id = $1",
+      [contentId]
+    );
+
+    if (contentCheck.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Content not found"
+      });
+    }
+
+    const now = new Date();
+    const twelveHoursAgo = new Date(now.getTime() - 12 * 60 * 60 * 1000);
+
+    // Check if user has already marked this as watched in the last 12 hours
+    const recentView = await pool.query(`
+      SELECT view_id FROM content_views 
+      WHERE registered_user_id = $1 AND content_id = $2 AND when_viewed > $3
+      ORDER BY when_viewed DESC
+      LIMIT 1
+    `, [user_id, contentId, twelveHoursAgo]);
+
+    if (recentView.rows.length === 0) {
+      // Insert new view record
+      await pool.query(`
+        INSERT INTO content_views (registered_user_id, content_id, when_viewed)
+        VALUES ($1, $2, $3)
+        ON CONFLICT (registered_user_id, content_id) 
+        DO UPDATE SET when_viewed = $3
+      `, [user_id, contentId, now]);
+
+      // Increment view count in content table
+      await pool.query(`
+        UPDATE content SET views = views + 1 WHERE content_id = $1
+      `, [contentId]);
+
+      res.json({
+        success: true,
+        message: "Marked as watched successfully",
+        counted: true
+      });
+    } else {
+      res.json({
+        success: true,
+        message: "Already marked as watched recently",
+        counted: false
+      });
+    }
+
+  } catch (err) {
+    console.error('Mark as watched error:', err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to mark as watched",
+      error: err.message
+    });
+  }
+});
+
+// ==================== VIEW TRACKING ENDPOINTS END ====================
+
+// Basic search endpoint for all categories
+app.get("/search", async (req, res) => {
+  const { q, category = 'all' } = req.query;
+  
+  if (!q || q.trim() === '') {
+    return res.status(400).json({ 
+      success: false,
+      message: "Search query is required" 
+    });
+  }
+
+  try {
+    let results = { movies: [], series: [], celebrities: [] };
+    const searchTerm = `%${q.trim()}%`;
+
+    if (category === 'all' || category === 'titles') {
+      // Search movies
+      const movieResult = await pool.query(`
+        SELECT 
+          c.content_id as id,
+          c.title,
+          c.poster_url,
+          c.release_date,
+          c.type,
+          c.duration,
+          c.views,
+          EXTRACT(YEAR FROM c.release_date) as year,
+          COALESCE(ROUND(AVG(r.score), 1), 0) as average_rating,
+          COUNT(r.rating_id) as rating_count
+        FROM content c
+        LEFT JOIN rating r ON c.content_id = r.content_id
+        WHERE c.title ILIKE $1 AND c.type = 'Movie'
+        GROUP BY c.content_id, c.title, c.poster_url, c.release_date, c.type, c.duration, c.views
+        ORDER BY c.views DESC, average_rating DESC
+        LIMIT 20
+      `, [searchTerm]);
+
+      // Search TV Series
+      const seriesResult = await pool.query(`
+        SELECT 
+          c.content_id as id,
+          c.title,
+          c.poster_url,
+          c.release_date,
+          c.type,
+          c.duration,
+          c.views,
+          EXTRACT(YEAR FROM c.release_date) as year,
+          COALESCE(ROUND(AVG(r.score), 1), 0) as average_rating,
+          COUNT(r.rating_id) as rating_count
+        FROM content c
+        LEFT JOIN rating r ON c.content_id = r.content_id
+        WHERE c.title ILIKE $1 AND c.type = 'Series'
+        GROUP BY c.content_id, c.title, c.poster_url, c.release_date, c.type, c.duration, c.views
+        ORDER BY c.views DESC, average_rating DESC
+        LIMIT 20
+      `, [searchTerm]);
+
+      results.movies = movieResult.rows;
+      results.series = seriesResult.rows;
+    }
+
+    if (category === 'all' || category === 'celebs') {
+      // Search celebrities
+      const celebrityResult = await pool.query(`
+        SELECT 
+          c.celebrity_id as id,
+          c.name,
+          c.photo_url,
+          c.bio,
+          c.birth_date,
+          c.place_of_birth,
+          COUNT(DISTINCT crc.content_id) as movie_count
+        FROM celebrity c
+        LEFT JOIN celebrity_role cr ON c.celebrity_id = cr.celebrity_id
+        LEFT JOIN celebrity_role_content crc ON cr.celebrity_role_id = crc.celebrity_role_id
+        WHERE c.name ILIKE $1
+        GROUP BY c.celebrity_id, c.name, c.photo_url, c.bio, c.birth_date, c.place_of_birth
+        ORDER BY movie_count DESC, c.name ASC
+        LIMIT 20
+      `, [searchTerm]);
+
+      results.celebrities = celebrityResult.rows;
+    }
+
+    // Get total counts for statistics
+    const totalMoviesResult = await pool.query("SELECT COUNT(*) as count FROM content WHERE type = 'Movie'");
+    const totalSeriesResult = await pool.query("SELECT COUNT(*) as count FROM content WHERE type = 'Series'");
+    const totalCelebritiesResult = await pool.query("SELECT COUNT(*) as count FROM celebrity");
+
+    res.json({
+      success: true,
+      query: q,
+      category: category,
+      results: results,
+      totalCounts: {
+        movies: parseInt(totalMoviesResult.rows[0].count),
+        series: parseInt(totalSeriesResult.rows[0].count),
+        celebrities: parseInt(totalCelebritiesResult.rows[0].count)
+      },
+      message: 'Search completed successfully'
+    });
+
+  } catch (err) {
+    console.error('Search error:', err.message);
+    res.status(500).json({ 
+      success: false,
+      message: "Server error",
+      error: err.message
+    });
+  }
+});
+
+// Get series details by ID
+app.get('/api/content/:id', async (req, res) => {
+  const { id } = req.params;
+  
+  try {
+    const result = await pool.query(`
+      SELECT 
+        content_id,
+        title,
+        description,
+        release_date,
+        type,
+        poster_url,
+        views,
+        duration
+      FROM content 
+      WHERE content_id = $1
+    `, [id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Content not found' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Error fetching content:', err);
+    res.status(500).json({ error: 'Failed to fetch content' });
+  }
+});
+
+// Get seasons for a series
+app.get('/api/series/:id/seasons', async (req, res) => {
+  const { id } = req.params;
+  
+  try {
+    const result = await pool.query(`
+      SELECT 
+        season_id,
+        season_number,
+        season_name,
+        description,
+        episode_count,
+        poster_url,
+        release_date,
+        trailer_url
+      FROM season 
+      WHERE series_id = $1
+      ORDER BY season_number ASC
+    `, [id]);
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching seasons:', err);
+    res.status(500).json({ error: 'Failed to fetch seasons' });
+  }
+});
+
+// Get episodes for a specific season
+app.get('/api/series/:seriesId/seasons/:seasonNumber/episodes', async (req, res) => {
+  const { seriesId, seasonNumber } = req.params;
+  
+  try {
+    // First get the season_id from series_id and season_number
+    const seasonResult = await pool.query(`
+      SELECT season_id 
+      FROM season 
+      WHERE series_id = $1 AND season_number = $2
+    `, [seriesId, seasonNumber]);
+
+    if (seasonResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Season not found' });
+    }
+
+    const seasonId = seasonResult.rows[0].season_id;
+
+    // Get episodes for this season
+    const result = await pool.query(`
+      SELECT 
+        episode_id,
+        episode_number,
+        title,
+        description,
+        duration,
+        air_date
+      FROM episode 
+      WHERE season_id = $1
+      ORDER BY episode_number ASC
+    `, [seasonId]);
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching episodes:', err);
+    res.status(500).json({ error: 'Failed to fetch episodes' });
+  }
+});
 
 
 

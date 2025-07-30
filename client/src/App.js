@@ -1,166 +1,219 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
+
+// Import components
 import Navigation from './components/Navigation';
 import HomePage from './components/HomePage';
-import AuthPage from './components/AuthPage';
 import MovieDetails from './components/MovieDetails';
-import UserDashboard from './components/UserDashboard';
-import AdminDashboard from './components/AdminDashboard';
+import SearchResults from './components/SearchResults';
 import AdvancedSearch from './components/AdvancedSearch';
 import CelebrityProfile from './components/CelebrityProfile';
+import SeasonsEpisodes from './components/SeasonsEpisodes';
+import AdminDashboard from './components/AdminDashboard';
+import UserDashboard from './components/UserDashboard';
+import AuthPage from './components/AuthPage';
 
+// Import styles
 import './App.css';
 
-const TOKEN_KEY = 'filmfusion_token';
-const TOKEN_EXPIRY_KEY = 'filmfusion_token_expiry';
-const TOKEN_EXPIRY_MINUTES = 60; // Change to 30 for 30 mins
-
-function App() {
-  const location = useLocation();
-  const [currentUser, setCurrentUser] = useState(null);
+const App = () => {
+  // Authentication state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showAuth, setShowAuth] = useState(false);
-  const [authMode, setAuthMode] = useState('signin');
+  const [currentUser, setCurrentUser] = useState(null);
+  
+  // Modal states
+  const [showSignInModal, setShowSignInModal] = useState(false);
+  const [showSignUpModal, setShowSignUpModal] = useState(false);
+  const [authMode, setAuthMode] = useState('signin'); // 'signin' or 'signup'
 
-  const handleAuthSuccess = (user) => {
-    setCurrentUser(user);
+  // Check for existing session on app load
+  useEffect(() => {
+    const savedUser = localStorage.getItem('currentUser');
+    const savedAuth = localStorage.getItem('isAuthenticated');
+    
+    if (savedUser && savedAuth === 'true') {
+      try {
+        const userData = JSON.parse(savedUser);
+        setCurrentUser(userData);
+        setIsAuthenticated(true);
+      } catch (error) {
+        console.error('Error parsing saved user data:', error);
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('isAuthenticated');
+      }
+    }
+  }, []);
+
+  // Authentication handlers
+  const handleAuthSuccess = (userData) => {
+    setCurrentUser(userData);
     setIsAuthenticated(true);
-    // Save token and expiry
-    localStorage.setItem(TOKEN_KEY, JSON.stringify(user));
-    localStorage.setItem(
-      TOKEN_EXPIRY_KEY,
-      (Date.now() + TOKEN_EXPIRY_MINUTES * 60 * 1000).toString()
-    );
-    setShowAuth(false);
+    setShowSignInModal(false);
+    setShowSignUpModal(false);
+    
+    // Save to localStorage
+    localStorage.setItem('currentUser', JSON.stringify(userData));
+    localStorage.setItem('isAuthenticated', 'true');
   };
 
   const handleSignOut = () => {
     setCurrentUser(null);
     setIsAuthenticated(false);
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(TOKEN_EXPIRY_KEY);
+    
+    // Clear localStorage
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('isAuthenticated');
   };
 
-  // On app load, check token and expiry
-  useEffect(() => {
-    const token = localStorage.getItem(TOKEN_KEY);
-    const expiry = localStorage.getItem(TOKEN_EXPIRY_KEY);
-    if (token && expiry) {
-      if (Date.now() < parseInt(expiry)) {
-        setCurrentUser(JSON.parse(token));
-        setIsAuthenticated(true);
-      } else {
-        // Token expired
-        handleSignOut();
-      }
-    }
-  }, []);
-
-  const openSignIn = () => {
+  const handleSignIn = () => {
     setAuthMode('signin');
-    setShowAuth(true);
+    setShowSignInModal(true);
+    setShowSignUpModal(false);
   };
 
-  const openSignUp = () => {
+  const handleSignUp = () => {
     setAuthMode('signup');
-    setShowAuth(true);
+    setShowSignUpModal(true);
+    setShowSignInModal(false);
   };
 
-  const closeAuth = () => setShowAuth(false);
+  const handleAuthRequired = () => {
+    if (!isAuthenticated) {
+      setShowSignInModal(true);
+    }
+  };
+
+  const handleSwitchMode = () => {
+    if (authMode === 'signin') {
+      setAuthMode('signup');
+      setShowSignInModal(false);
+      setShowSignUpModal(true);
+    } else {
+      setAuthMode('signin');
+      setShowSignUpModal(false);
+      setShowSignInModal(true);
+    }
+  };
+
+  const closeModals = () => {
+    setShowSignInModal(false);
+    setShowSignUpModal(false);
+  };
 
   return (
     <div className="App">
-        <Navigation
-          currentUser={currentUser}
-          isAuthenticated={isAuthenticated}
-          onSignIn={openSignIn}
-          onSignOut={handleSignOut}
-        />
-
-<Routes>
-  <Route
-    path="/"
-    element={
-      <HomePage
-        isAuthenticated={isAuthenticated}
-        user={currentUser}
-        onSignIn={openSignIn}
-        onAuthRequired={() => setShowAuth(true)}
-      />
-    }
-  />
-  <Route
-    path="/movie/:id"
-    element={
-      <MovieDetails
-        isAuthenticated={isAuthenticated}
-        currentUser={currentUser}
-        onAuthRequired={() => setShowAuth(true)}
-      />
-    }
-  />
-  <Route
-    path="/advanced-search"
-    element={
-      <AdvancedSearch
-        isAuthenticated={isAuthenticated}
-        currentUser={currentUser}
-      />
-    }
-  />
-  <Route
-    path="/dashboard"
-    element={
-      <UserDashboard
+      {/* Navigation Bar */}
+      <Navigation 
         currentUser={currentUser}
         isAuthenticated={isAuthenticated}
+        onSignIn={handleSignIn}
+        onSignOut={handleSignOut}
       />
-    }
-  />
-  <Route
-    path="/admin-dashboard"
-    element={
-      <AdminDashboard
-        currentUser={currentUser}
-        isAuthenticated={isAuthenticated}
-      />
-    }
-  />
 
-  {/* Add the celebrity dashboard route */}
+      {/* Main Content Routes */}
+      <main>
+        <Routes>
+          <Route 
+            path="/" 
+            element={
+              <HomePage 
+                user={currentUser}
+                onAuthRequired={handleAuthRequired}
+              />
+            } 
+          />
+          
+          <Route 
+            path="/movie/:id" 
+            element={
+              <MovieDetails 
+                isAuthenticated={isAuthenticated}
+                currentUser={currentUser}
+                onAuthRequired={handleAuthRequired}
+              />
+            } 
+          />
+          
+          <Route 
+            path="/search" 
+            element={
+              <SearchResults 
+                isAuthenticated={isAuthenticated}
+                currentUser={currentUser}
+                onAuthRequired={handleAuthRequired}
+              />
+            } 
+          />
+          
+          <Route 
+            path="/advanced-search" 
+            element={<AdvancedSearch />} 
+          />
+          
+          <Route 
+            path="/celebrity/:id" 
+            element={
+              <CelebrityProfile 
+                currentUser={currentUser}
+              />
+            } 
+          />
+          
+          <Route 
+            path="/series/:id/seasons" 
+            element={<SeasonsEpisodes />} 
+          />
+          
+          <Route 
+            path="/admin-dashboard" 
+            element={
+              isAuthenticated && currentUser?.role === 'admin' ? (
+                <AdminDashboard currentUser={currentUser} />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            } 
+          />
+          
+          <Route 
+            path="/user-dashboard" 
+            element={
+              isAuthenticated ? (
+                <UserDashboard 
+                  currentUser={currentUser}
+                  isAuthenticated={isAuthenticated}
+                />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            } 
+          />
+          
+          {/* Catch all route - redirect to home */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
 
-  <Route
-
-path="/celebrity/:id"
-
-element={
-
-  <CelebrityProfile
-
-    currentUser={currentUser}
-
-    isAuthenticated={isAuthenticated}
-
-  />
-
-}
-
-/>
-
-
-</Routes>
-
-
-      {showAuth && (
+      {/* Authentication Modals */}
+      {showSignInModal && (
         <AuthPage
-          mode={authMode}
-          onClose={closeAuth}
+          mode="signin"
+          onClose={closeModals}
           onAuthSuccess={handleAuthSuccess}
-          onSwitchMode={(mode) => setAuthMode(mode)}
+          onSwitchMode={handleSwitchMode}
+        />
+      )}
+
+      {showSignUpModal && (
+        <AuthPage
+          mode="signup"
+          onClose={closeModals}
+          onAuthSuccess={handleAuthSuccess}
+          onSwitchMode={handleSwitchMode}
         />
       )}
     </div>
   );
-}
+};
 
 export default App;

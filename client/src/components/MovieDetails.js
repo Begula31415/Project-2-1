@@ -18,8 +18,10 @@ import {
   submitReaction,
   getUserReactions,
   editReview,
-  deleteReview
+  deleteReview,
+  trackContentView
 } from '../services/api';
+import { getSessionId } from '../utils/session';
 import MovieSection from './MovieSection';
 
 import {   
@@ -62,10 +64,13 @@ const MovieDetails = ({ isAuthenticated, currentUser, onAuthRequired }) => {
   const [spoilerRevealed, setSpoilerRevealed] = useState({}); // For tracking revealed spoilers
   const [editingReviewId, setEditingReviewId] = useState(null); // For tracking which review is being edited
   const [editingText, setEditingText] = useState(''); // For storing the text being edited
+  const [editingSpoilerAlert, setEditingSpoilerAlert] = useState(false); // For tracking spoiler alert during edit
   const [ratingDistribution, setRatingDistribution] = useState([]);
   const [similarMovies, setSimilarMovies] = useState([]);
   const [showRatingPopup, setShowRatingPopup] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const videoRef = useRef(null);
   const ratingPopupRef = useRef(null);
   // Add these state variables after your existing useState declarations  
@@ -73,6 +78,29 @@ const [isInUserWatchlist, setIsInUserWatchlist] = useState(false);
 const [watchlistLoading, setWatchlistLoading] = useState(false);
 
 
+
+  // Image modal functions
+  const openImageModal = (index) => {
+    setCurrentImageIndex(index);
+    setShowImageModal(true);
+  };
+
+  const closeImageModal = () => {
+    setShowImageModal(false);
+  };
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  // Celebrity page navigation
+  const navigateToCelebrity = (celebrityId) => {
+    navigate(`/celebrity/${celebrityId}`);
+  };
 
   // Emoji mapping for reactions
   const reactionEmojis = {
@@ -98,6 +126,10 @@ const [watchlistLoading, setWatchlistLoading] = useState(false);
           getRatingDistribution(id)
         ]);
         console.log('Movie data:', movieData);
+        console.log('Images data:', imagesData);
+        console.log('Cast data:', castData);
+        console.log('Images array length:', imagesData?.length);
+        console.log('Cast array length:', castData?.length);
 
         setMovie(movieData);
         setImages(imagesData);
@@ -114,6 +146,17 @@ const [watchlistLoading, setWatchlistLoading] = useState(false);
           // Check if similarMoviesData has movies array and use it
           const moviesArray = similarMoviesData.movies || similarMoviesData;
           setSimilarMovies(moviesArray.slice(0, 6)); // Limit to 6 similar movies
+        }
+
+        // Track content view
+        const userId = currentUser?.user_id || null;
+        const sessionId = getSessionId(); // Get or generate session ID for guest tracking
+        try {
+          await trackContentView(id, userId, sessionId);
+          console.log('Content view tracked for movie:', id, userId ? `(user: ${userId})` : `(session: ${sessionId})`);
+        } catch (viewError) {
+          console.error('Failed to track view:', viewError);
+          // Don't let view tracking errors affect the main functionality
         }
 
         setError(null);
@@ -533,9 +576,10 @@ useEffect(() => {
   };
 
   // Handle editing a review
-  const handleEditReview = (reviewId, currentText) => {
+  const handleEditReview = (reviewId, currentText, currentSpoilerAlert = false) => {
     setEditingReviewId(reviewId);
     setEditingText(currentText);
+    setEditingSpoilerAlert(currentSpoilerAlert);
   };
 
   // Handle saving edited review
@@ -546,18 +590,19 @@ useEffect(() => {
     }
 
     try {
-      const response = await editReview(reviewId, editingText, currentUser.user_id);
+      const response = await editReview(reviewId, editingText, currentUser.user_id, editingSpoilerAlert);
       if (response.success) {
         // Update the review in the local state
         setReviews(prevReviews => 
           prevReviews.map(review => 
             review.review_id === reviewId 
-              ? { ...review, text: editingText }
+              ? { ...review, text: editingText, spoiler_alert: editingSpoilerAlert }
               : review
           )
         );
         setEditingReviewId(null);
         setEditingText('');
+        setEditingSpoilerAlert(false);
         alert('Review updated successfully!');
       }
     } catch (error) {
@@ -570,6 +615,7 @@ useEffect(() => {
   const handleCancelEdit = () => {
     setEditingReviewId(null);
     setEditingText('');
+    setEditingSpoilerAlert(false);
   };
 
   // Handle deleting a review
@@ -591,6 +637,11 @@ useEffect(() => {
       console.error('Error deleting review:', error);
       alert(error.message || 'Failed to delete review. Please try again.');
     }
+  };
+
+  // Handle celebrity click
+  const handleCelebrityClick = (celebrityId) => {
+    navigate(`/celebrity/${celebrityId}`);
   };
 
   const renderRating = () => (
@@ -770,6 +821,17 @@ useEffect(() => {
                     className={styles.editReviewInput}
                     autoFocus
                   />
+                  <div className={styles.spoilerCheckbox}>
+                    <input
+                      type="checkbox"
+                      id={`edit-spoiler-${review.review_id}`}
+                      checked={editingSpoilerAlert}
+                      onChange={(e) => setEditingSpoilerAlert(e.target.checked)}
+                    />
+                    <label htmlFor={`edit-spoiler-${review.review_id}`}>
+                      This review contains spoilers
+                    </label>
+                  </div>
                   <div className={styles.editActions}>
                     <button 
                       className={styles.saveButton}
@@ -826,7 +888,7 @@ useEffect(() => {
                     <div className={styles.reviewActions}>
                       <button 
                         className={styles.editReviewButton}
-                        onClick={() => handleEditReview(review.review_id, review.text)}
+                        onClick={() => handleEditReview(review.review_id, review.text, review.spoiler_alert)}
                         title="Edit review"
                       >
                         Edit
@@ -931,7 +993,18 @@ useEffect(() => {
                     : 'Add to Watchlist'  
                 }  
               </button>         
-              {/* Rating Buttons */}  
+              {/* Rating Buttons */}
+              {/* Seasons & Episodes button for series */}
+              {(movie.type === 'series' || movie.type === 'Series') && (
+                <button 
+                  className={styles.seasonsButton}
+                  onClick={() => navigate(`/series/${id}/seasons`)}
+                >
+                  Seasons & Episodes
+                </button>
+              )}
+              
+              {/* Rating Buttons */}
               {renderRating()}
               {renderRatingPopup()}
             </div>
@@ -1046,38 +1119,61 @@ useEffect(() => {
                 <span className={styles.value}>{movie.min_age}+</span>
               </div>
             )}
+            {movie.views !== undefined && (
+              <div className={styles.detailItem}>
+                <span className={styles.label}>Views:</span>
+                <span className={styles.value}>{movie.views.toLocaleString()}</span>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Images Section */}
-        <div className={styles.imagesSection}>
-          <h2>Photos</h2>
-          <div className={styles.imageGrid}>
-            {images.map((image, index) => (
-              <div key={image.image_id} className={styles.imageItem}>
-                <img src={image.url} alt={image.caption || `Still ${index + 1}`} />
-              </div>
-            ))}
+        {images.length > 0 && (
+          <div className={styles.imagesSection}>
+            <h2>Photos</h2>
+            <div className={styles.imageGrid}>
+              {images.map((image, index) => (
+                <div 
+                  key={image.image_id} 
+                  className={styles.imageItem}
+                  onClick={() => openImageModal(index)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <img src={image.url} alt={image.caption || `Still ${index + 1}`} />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Cast Section */}
-        <div className={styles.castSection}>
-          <h2>Cast & Crew</h2>
-          <div className={styles.castGrid}>
-            {cast.map((member) => (
-              <div key={member.celebrity_id} className={styles.castMember}>
-                <div className={styles.castImage}>
-                  <img src={member.photo_url} alt={member.name} />
+        {cast.length > 0 && (
+          <div className={styles.castSection}>
+            <h2>Cast & Crew</h2>
+            <div className={styles.castGrid}>
+              {cast.map((member) => (
+                <div key={member.celebrity_id} className={styles.castMember}>
+                  <div 
+                    className={styles.castPhoto}
+                    onClick={() => navigateToCelebrity(member.celebrity_id)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {member.photo_url ? (
+                      <img src={member.photo_url} alt={member.name} />
+                    ) : (
+                      <div className={styles.castPhotoPlaceholder}>
+                        👤
+                      </div>
+                    )}
+                  </div>
+                  <div className={styles.castName}>{member.name}</div>
+                  <div className={styles.castRole}>{member.roles}</div>
                 </div>
-                <div className={styles.castInfo}>
-                  <h3>{member.name}</h3>
-                  <p>{member.role_name}</p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Awards Section */}
         {awards.length > 0 && (
@@ -1128,6 +1224,31 @@ useEffect(() => {
           </div>
         )}
       </div>
+
+      {/* Image Modal */}
+      {showImageModal && images.length > 0 && (
+        <div className={styles.imageModal} onClick={closeImageModal}>
+          <div className={styles.imageModalContent} onClick={(e) => e.stopPropagation()}>
+            <button className={styles.imageModalClose} onClick={closeImageModal}>
+              ×
+            </button>
+            <button className={styles.imageModalPrev} onClick={prevImage}>
+              ‹
+            </button>
+            <img 
+              src={images[currentImageIndex]?.url} 
+              alt={images[currentImageIndex]?.caption || `Image ${currentImageIndex + 1}`}
+              className={styles.imageModalImg}
+            />
+            <button className={styles.imageModalNext} onClick={nextImage}>
+              ›
+            </button>
+            <div className={styles.imageModalCaption}>
+              {images[currentImageIndex]?.caption || `Image ${currentImageIndex + 1} of ${images.length}`}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

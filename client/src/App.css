@@ -62,7 +62,7 @@ body {
 
 .search-container {
   flex: 1;
-  max-width: 500px;
+  max-width: 650px;
   position: relative;
   display: flex;
   align-items: center;
