@@ -21,6 +21,14 @@ import {
   deleteReview
 } from '../services/api';
 import MovieSection from './MovieSection';
+
+import {   
+  // ... your existing imports  
+  addToWatchlist,   
+  removeFromWatchlist,   
+  isInWatchlist   
+} from '../services/api';  
+  
 import axios from 'axios';
 
 const ReactionButton = ({ icon: Icon, count, onClick, active }) => {
@@ -60,6 +68,11 @@ const MovieDetails = ({ isAuthenticated, currentUser, onAuthRequired }) => {
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const videoRef = useRef(null);
   const ratingPopupRef = useRef(null);
+  // Add these state variables after your existing useState declarations  
+const [isInUserWatchlist, setIsInUserWatchlist] = useState(false);  
+const [watchlistLoading, setWatchlistLoading] = useState(false);
+
+
 
   // Emoji mapping for reactions
   const reactionEmojis = {
@@ -187,6 +200,51 @@ const MovieDetails = ({ isAuthenticated, currentUser, onAuthRequired }) => {
     fetchUserReactions();
   }, [isAuthenticated, currentUser?.user_id, id, reviews]);
 
+
+  // Add this entire useEffect block:  
+useEffect(() => {  
+  const checkWatchlistStatus = async () => {  
+    if (isAuthenticated && currentUser?.user_id && id) {  
+      try {  
+        const response = await isInWatchlist(currentUser.user_id, id);  
+        setIsInUserWatchlist(response.isInWatchlist);  
+      } catch (error) {  
+        console.error('Error checking watchlist status:', error);  
+        setIsInUserWatchlist(false);  
+      }  
+    }  
+  };  
+  
+  checkWatchlistStatus();  
+}, [isAuthenticated, currentUser?.user_id, id]); 
+
+
+useEffect(() => {  
+  setUserRating(null);        // Temporarily clears local state  
+  setSelectedRating(0);  
+  setTempRating(0);  
+  setShowRatingPopup(false);  
+}, [id]);  
+  
+// Step 2: Fetch useEffect runs after, retrieving your saved rating  
+useEffect(() => {  
+  const fetchUserRating = async () => {  
+    if (isAuthenticated && currentUser?.user_id && id) {  
+      try {  
+        const ratingData = await getUserRating(id, currentUser.user_id);  
+        if (ratingData.success && ratingData.rating) {  
+          setUserRating(ratingData.rating.score);     // Your rating is restored!  
+          setSelectedRating(ratingData.rating.score);  
+          setTempRating(ratingData.rating.score);  
+        }  
+      } catch (error) {  
+        // Handle error  
+      }  
+    }  
+  };  
+  fetchUserRating();  
+}, [isAuthenticated, currentUser?.user_id, id]);
+
   const calculateRatingPercentage = (count) => {
     const total = ratingDistribution.reduce((sum, item) => sum + parseInt(item.count), 0);
     return total > 0 ? (count / total * 100).toFixed(1) : 0;
@@ -219,21 +277,39 @@ const MovieDetails = ({ isAuthenticated, currentUser, onAuthRequired }) => {
     );
   };
 
-  const handleAddToWatchlist = () => {
-    if (!isAuthenticated) {
-      alert('Please sign in to add movies to your watchlist');
-      return;
-    }
-    alert('Movie added to watchlist!');
-  };
+  // const handleAddToWatchlist = () => {
+  //   if (!isAuthenticated) {
+  //     alert('Please sign in to add movies to your watchlist');
+  //     return;
+  //   }
+  //   alert('Movie added to watchlist!');
+  // };
+ const handleAddToWatchlist = async () => {    
+  if (!isAuthenticated) {    
+    onAuthRequired();    
+    return;    
+  }    
+  
+  if (isInUserWatchlist) {  
+    alert('Movie is already in your watchlist! Go to your dashboard to remove it.');  
+    return;  
+  }  
+    
+  setWatchlistLoading(true);    
+  try {    
+    const response = await addToWatchlist(currentUser.user_id, id);    
+    if (response.success) {    
+      setIsInUserWatchlist(true);    
+      alert('Movie added to watchlist!');    
+    }    
+  } catch (error) {    
+    console.error('Error updating watchlist:', error);    
+    alert(error.message || 'Failed to add to watchlist. Please try again.');    
+  } finally {    
+    setWatchlistLoading(false);    
+  }    
+}; 
 
-  const handleMarkAsVisited = () => {
-    if (!isAuthenticated) {
-      alert('Please sign in to mark movies as visited');
-      return;
-    }
-    alert('Movie marked as visited!');
-  };
 
   const handleRating = async (rating) => {
     if (!isAuthenticated) {
@@ -843,11 +919,19 @@ const MovieDetails = ({ isAuthenticated, currentUser, onAuthRequired }) => {
             </div>
             <p className={styles.description}>{movie.description}</p>
             
-            <div className={styles.actions}>
-              <button onClick={handleAddToWatchlist}>Add to Watchlist</button>
-              <button onClick={handleMarkAsVisited}>Mark as Watched</button>
-              
-              {/* Rating Buttons */}
+            <div className={styles.actions}>  
+              <button   
+                onClick={handleAddToWatchlist}  
+                disabled={watchlistLoading || isInUserWatchlist}  
+              >  
+                {watchlistLoading   
+                  ? 'Loading...'   
+                  : isInUserWatchlist   
+                    ? '✓ In Watchlist'   
+                    : 'Add to Watchlist'  
+                }  
+              </button>         
+              {/* Rating Buttons */}  
               {renderRating()}
               {renderRatingPopup()}
             </div>

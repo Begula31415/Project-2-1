@@ -416,21 +416,21 @@ app.put("/user/:userId", async (req, res) => {
 }); 
 
 
-app.delete("/watchlist", async (req, res) => {
-  const { userId, movieId } = req.body;
+// app.delete("/watchlist", async (req, res) => {
+//   const { userId, movieId } = req.body;
 
-  try {
-    await pool.query(
-      "DELETE FROM watchlist WHERE user_id = $1 AND movie_id = $2",
-      [userId, movieId]
-    );
+//   try {
+//     await pool.query(
+//       "DELETE FROM wishlist WHERE user_id = $1 AND movie_id = $2",
+//       [userId, movieId]
+//     );
 
-    res.status(200).json({ message: "Movie removed from watchlist" });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server error" );
-  }
-});
+//     res.status(200).json({ message: "Movie removed from watchlist" });
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send("Server error" );
+//   }
+// });
 
 
 // Add new content (movie, series, documentary) by admin
@@ -674,11 +674,13 @@ app.post('/api/content', async (req, res) => {
 
     console.log('✅ All roles processed');
 
-    // ✅ Step 5: Commit transaction
-    await client.query('COMMIT');
-    console.log('✅ Transaction committed');
-    res.status(201).json({ message: 'Content added successfully', content_id: contentId });
-
+   await client.query('COMMIT');  
+console.log('✅ Transaction committed');  
+res.status(201).json({   
+  message: 'Content added successfully',   
+  content_id: contentId,  
+  success: true   
+}); 
   } catch (err) {
     await client.query('ROLLBACK');
     console.error('❌ Error inserting content:', err);
@@ -868,9 +870,13 @@ app.post('/api/celebrities', async (req, res) => {
     );
     console.log('4th query done');
 
-    await client.query('COMMIT');
-
-    res.status(201).json({ message: 'Celebrity added successfully', celebrity_id: celebrityId });
+    await client.query('COMMIT');  
+  
+res.status(201).json({   
+  message: 'Celebrity added successfully',   
+  celebrity_id: celebrityId,  
+  success: true   
+}); 
   } catch (err) {
     await client.query('ROLLBACK');
     console.error('Error adding celebrity:', err);
@@ -991,19 +997,20 @@ console.log(`✅ Deleted from season for content_id = ${id}`);
 
 
 
-app.delete('/watchlist/:userId/:contentId', async (req, res) => {
-  const { userId, contentId } = req.params;
-  try {
-    await pool.query(
-      'DELETE FROM watchlist WHERE user_id = $1 AND content_id = $2',
-      [userId, contentId]
-    );
-    res.json({ message: 'Content removed from watchlist' });
-  } catch (err) {
-    console.error('Error removing from watchlist:', err.message);
-    res.status(500).json({ error: 'Failed to remove content' });
-  }
-});
+// app.delete('/watchlist/:userId/:contentId', async (req, res) => {
+//   const { userId, contentId } = req.params;
+//   try {
+//     await pool.query(
+//       'DELETE FROM wishlist WHERE user_id = $1 AND content_id = $2',
+//       [userId, contentId]
+//     );
+//     res.json({ message: 'Content removed from watchlist' });
+//   } catch (err) {
+//     console.error('Error removing from watchlist:', err.message);
+//     res.status(500).json({ error: 'Failed to remove content' });
+//     console.log('Error nnnnnnnn nnnn details:', err);
+//   }
+// });
 
 
 
@@ -1098,14 +1105,25 @@ app.post('/api/series', async (req, res) => {
     for (const d of directors) await addRoleLink(d, 'Director');  
     for (const a of top_cast) await addRoleLink(a, 'Actor');  
   
-    // 6. Insert seasons  
-    for (const season of seasons) {  
-      await client.query(  
-        `INSERT INTO season (series_id, season_number, season_name, description, episode_count, release_date, trailer_url)  
-         VALUES ($1, $2, $3, $4, $5, $6, $7)`,  
-        [contentId, season.season_number, season.season_name, season.description,   
-         season.episode_count, season.release_date, season.trailer_url]  
-      );  
+   for (const season of seasons) {  
+      const seasonResult = await client.query(`  
+        INSERT INTO season (series_id, season_number, season_name, description, episode_count, release_date, trailer_url, poster_url)  
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)  
+        RETURNING season_id  
+      `, [contentId, season.season_number, season.season_name, season.description,  
+          season.episode_count, season.release_date, season.trailer_url, season.poster_url]);  
+  
+      const seasonId = seasonResult.rows[0].season_id;  
+  
+      // Insert episodes if they exist  
+      if (season.episodes && season.episodes.length > 0) {  
+        for (const episode of season.episodes) {  
+          await client.query(`  
+            INSERT INTO episode (season_id, episode_number, title, duration, release_date)  
+            VALUES ($1, $2, $3, $4, $5)  
+          `, [seasonId, episode.episode_number, episode.title, episode.duration, episode.release_date]);  
+        }  
+      }  
     }  
   
     await client.query('COMMIT');  
@@ -2946,9 +2964,615 @@ app.post("/search/celebrities", async (req, res) => {
   }
 });
 
+
+
+
+
+
+
 // ==================== ADVANCED SEARCH ENDPOINTS END ====================
 
 
+
+// Check if award exists  
+app.get('/api/check-award-exists', async (req, res) => {  
+  const { name, year } = req.query;  
+  
+  if (!name || !year) {  
+    return res.status(400).json({ error: 'Missing required parameters' });  
+  }  
+  
+  try {  
+    const result = await pool.query(  
+      'SELECT 1 FROM award WHERE name = $1 AND year = $2 LIMIT 1',  
+      [name, year]  
+    );  
+  
+    res.json({ exists: result.rows.length > 0 });  
+  } catch (err) {  
+    console.error('Error checking award existence:', err);  
+    res.status(500).json({ error: 'Database error during award existence check' });  
+  }  
+});  
+  
+// Add Award  
+app.post('/api/awards', async (req, res) => {  
+  const { name, year, type } = req.body;  
+  
+  try {  
+    const result = await pool.query(  
+      'INSERT INTO award (name, year, type) VALUES ($1, $2, $3) RETURNING award_id',  
+      [name, year, type]  
+    );  
+  
+    res.status(201).json({   
+      message: 'Award added successfully',   
+      award_id: result.rows[0].award_id   
+    });  
+  } catch (err) {  
+    console.error('Error adding award:', err);  
+    res.status(500).json({ error: 'Failed to add award' });  
+  }  
+});  
+  
+// Update Content  
+app.put('/api/content/:id', async (req, res) => {  
+  const { id } = req.params;  
+  const {  
+    title, description, release_date, language, type, duration,  
+    poster_url, trailer_url, budget, box_office_collection,  
+    currency_code, min_age, views, country, genres,  
+    top_cast, directors, awards  
+  } = req.body;  
+  
+  const client = await pool.connect();  
+  
+  try {  
+    await client.query('BEGIN');  
+  
+    // Update content table  
+    await client.query(`  
+      UPDATE content SET   
+        title = $1, description = $2, release_date = $3, type = $4,   
+        duration = $5, poster_url = $6, trailer_url = $7, budget = $8,   
+        box_office_collection = $9, currency_code = $10, min_age = $11, views = $12  
+      WHERE content_id = $13  
+    `, [title, description, release_date, type, duration, poster_url,   
+        trailer_url, budget, box_office_collection, currency_code, min_age, views, id]);  
+  
+    await client.query('COMMIT');  
+    res.json({ message: 'Content updated successfully' });  
+  } catch (err) {  
+    await client.query('ROLLBACK');  
+    console.error('Error updating content:', err);  
+    res.status(500).json({ error: 'Failed to update content' });  
+  } finally {  
+    client.release();  
+  }  
+});  
+  
+// Update Celebrity  
+app.put('/api/celebrities/:id', async (req, res) => {  
+  const { id } = req.params;  
+  const { name, bio, birth_date, death_date, place_of_birth, gender, photo_url, profession } = req.body;  
+  
+  const client = await pool.connect();  
+  
+  try {  
+    await client.query('BEGIN');  
+  
+    // Update celebrity  
+    await client.query(`  
+      UPDATE celebrity SET   
+        name = $1, bio = $2, birth_date = $3, death_date = $4,   
+        place_of_birth = $5, gender = $6, photo_url = $7  
+      WHERE celebrity_id = $8  
+    `, [name, bio, birth_date, death_date || null, place_of_birth, gender, photo_url, id]);  
+  
+    await client.query('COMMIT');  
+    res.json({ message: 'Celebrity updated successfully' });  
+  } catch (err) {  
+    await client.query('ROLLBACK');  
+    console.error('Error updating celebrity:', err);  
+    res.status(500).json({ error: 'Failed to update celebrity' });  
+  } finally {  
+    client.release();  
+  }  
+});  
+  
+// Update Award  
+app.put('/api/awards/:id', async (req, res) => {  
+  const { id } = req.params;  
+  const { name, year, type } = req.body;  
+  
+  try {  
+    await pool.query(  
+      'UPDATE award SET name = $1, year = $2, type = $3 WHERE award_id = $4',  
+      [name, year, type, id]  
+    );  
+  
+    res.json({ message: 'Award updated successfully' });  
+  } catch (err) {  
+    console.error('Error updating award:', err);  
+    res.status(500).json({ error: 'Failed to update award' });  
+  }  
+});  
+  
+// Delete Award (this will replace your existing deleteAwardById function)  
+app.delete('/api/awards/:id', async (req, res) => {  
+  const { id } = req.params;  
+  
+  try {  
+    await pool.query('DELETE FROM award WHERE award_id = $1', [id]);  
+    res.json({ message: 'Award deleted successfully' });  
+  } catch (err) {  
+    console.error('Error deleting award:', err);  
+    res.status(500).json({ error: 'Failed to delete award' });  
+  }  
+});
+
+
+
+// Add content images  
+app.post('/api/content/:id/images', async (req, res) => {  
+  const { id } = req.params;  
+  const { imageUrls } = req.body;  
+    
+  const client = await pool.connect();  
+    
+  try {  
+    await client.query('BEGIN');  
+      
+    // Parse comma-separated URLs  
+    const urls = imageUrls.split(',').map(url => url.trim()).filter(url => url);  
+      
+    for (const url of urls) {  
+      await client.query(  
+        'INSERT INTO image (content_id, url, caption) VALUES ($1, $2, $3)',  
+        [id, url, 'Additional content image']  
+      );  
+    }  
+      
+    await client.query('COMMIT');  
+    res.json({ message: 'Content images added successfully' });  
+  } catch (err) {  
+    await client.query('ROLLBACK');  
+    console.error('Error adding content images:', err);  
+    res.status(500).json({ error: 'Failed to add content images' });  
+  } finally {  
+    client.release();  
+  }  
+});  
+  
+// Add celebrity images  
+app.post('/api/celebrities/:id/images', async (req, res) => {  
+  const { id } = req.params;  
+  const { imageUrls } = req.body;  
+    
+  const client = await pool.connect();  
+    
+  try {  
+    await client.query('BEGIN');  
+      
+    // Parse comma-separated URLs  
+    const urls = imageUrls.split(',').map(url => url.trim()).filter(url => url);  
+      
+    for (const url of urls) {  
+      await client.query(  
+        'INSERT INTO image (celebrity_id, url, caption) VALUES ($1, $2, $3)',  
+        [id, url, 'Additional celebrity image']  
+      );  
+    }  
+      
+    await client.query('COMMIT');  
+    res.json({ message: 'Celebrity images added successfully' });  
+  } catch (err) {  
+    await client.query('ROLLBACK');  
+    console.error('Error adding celebrity images:', err);  
+    res.status(500).json({ error: 'Failed to add celebrity images' });  
+  } finally {  
+    client.release();  
+  }  
+});  
+  
+// Update series with seasons and episodes  
+app.put('/api/series/:id', async (req, res) => {  
+  const { id } = req.params;  
+  const {  
+    title, description, release_date, language, type, duration,  
+    poster_url, trailer_url, budget, box_office_collection,  
+    currency_code, min_age, views, country, genres, top_cast,  
+    directors, awards, seasons, series_image_urls  
+  } = req.body;  
+  
+  const client = await pool.connect();  
+  
+  try {  
+    await client.query('BEGIN');  
+  
+    // Update content table  
+    await client.query(`  
+      UPDATE content SET   
+        title = $1, description = $2, release_date = $3, type = $4,  
+        duration = $5, poster_url = $6, trailer_url = $7, budget = $8,  
+        box_office_collection = $9, currency_code = $10, min_age = $11, views = $12  
+      WHERE content_id = $13  
+    `, [title, description, release_date, type, duration, poster_url,  
+        trailer_url, budget, box_office_collection, currency_code, min_age, views, id]);  
+  
+    // Delete existing seasons and episodes (cascade will handle episodes)  
+    await client.query('DELETE FROM season WHERE series_id = $1', [id]);  
+  
+     // Insert updated seasons with episodes and poster_url  
+    for (const season of seasons) {  
+      const seasonResult = await client.query(`  
+        INSERT INTO season (series_id, season_number, season_name, description, episode_count, release_date, trailer_url, poster_url)  
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)  
+        RETURNING season_id  
+      `, [id, season.season_number, season.season_name, season.description,  
+          season.episode_count, season.release_date, season.trailer_url, season.poster_url]);  
+  
+      const seasonId = seasonResult.rows[0].season_id;  
+  
+      // Insert episodes if they exist  
+      if (season.episodes && season.episodes.length > 0) {  
+        for (const episode of season.episodes) {  
+          await client.query(`  
+            INSERT INTO episode (season_id, episode_number, title, duration, release_date)  
+            VALUES ($1, $2, $3, $4, $5)  
+          `, [seasonId, episode.episode_number, episode.title, episode.duration, episode.release_date]);  
+        }  
+      }  
+    }
+  
+    // Handle additional series images  
+    if (series_image_urls && series_image_urls.trim()) {  
+      const urls = series_image_urls.split(',').map(url => url.trim()).filter(url => url);  
+      for (const url of urls) {  
+        await client.query(  
+          'INSERT INTO image (content_id, url, caption) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING',  
+          [id, url, 'Series additional image']  
+        );  
+      }  
+    }  
+  
+    await client.query('COMMIT');  
+    res.json({ message: 'Series updated successfully' });  
+  } catch (err) {  
+    await client.query('ROLLBACK');  
+    console.error('Error updating series:', err);  
+    res.status(500).json({ error: 'Failed to update series' });  
+  } finally {  
+    client.release();  
+  }  
+});  
+
+
+app.get('/api/series/:id', async (req, res) => {  
+  const { id } = req.params;  
+    
+  try {  
+    // Get series basic info  
+    const seriesResult = await pool.query(`  
+      SELECT * FROM content WHERE content_id = $1 AND type = 'Series'  
+    `, [id]);  
+  
+    if (seriesResult.rows.length === 0) {  
+      return res.status(404).json({ error: 'Series not found' });  
+    }  
+  
+    const series = seriesResult.rows[0];  
+  
+    // Get seasons with poster_url  
+    const seasonsResult = await pool.query(`  
+      SELECT season_id, season_number, season_name, description, episode_count,   
+             release_date, trailer_url, poster_url  
+      FROM season   
+      WHERE series_id = $1   
+      ORDER BY season_number  
+    `, [id]);  
+  
+    // Get episodes for each season  
+    for (let season of seasonsResult.rows) {  
+      const episodesResult = await pool.query(`  
+        SELECT episode_number, title, duration, release_date  
+        FROM episode   
+        WHERE season_id = $1   
+        ORDER BY episode_number  
+      `, [season.season_id]);  
+        
+      season.episodes = episodesResult.rows;  
+    }  
+  
+    series.seasons = seasonsResult.rows;  
+  
+    res.json(series);  
+  } catch (err) {  
+    console.error('Error fetching series details:', err);  
+    res.status(500).json({ error: 'Failed to fetch series details' });  
+  }  
+}); 
+  
+
+// Get user's average rating  
+app.get('/user/:userId/average-rating', async (req, res) => {  
+  const { userId } = req.params;  
+    
+  try {  
+    // First get the registered_user_id  
+    const userQuery = 'SELECT registered_user_id FROM registered_user WHERE user_id = $1';  
+    const userResult = await pool.query(userQuery, [userId]);  
+      
+    if (userResult.rows.length === 0) {  
+      return res.status(404).json({ success: false, message: 'User not found' });  
+    }  
+      
+    const registered_user_id = userResult.rows[0].registered_user_id;  
+      
+    // Calculate average rating for this user  
+    const avgQuery = `  
+      SELECT   
+        ROUND(AVG(score)::numeric, 2) as average_rating,  
+        COUNT(*) as total_ratings  
+      FROM rating   
+      WHERE registered_user_id = $1  
+    `;  
+      
+    const avgResult = await pool.query(avgQuery, [registered_user_id]);  
+      
+    const averageRating = avgResult.rows[0].average_rating || 0;  
+    const totalRatings = avgResult.rows[0].total_ratings || 0;  
+      
+    res.json({   
+      success: true,   
+      averageRating: parseFloat(averageRating),  
+      totalRatings: parseInt(totalRatings)  
+    });  
+  } catch (error) {  
+    console.error('Error fetching user average rating:', error);  
+    res.status(500).json({ success: false, message: 'Internal server error' });  
+  }  
+}); 
+
+
+
+
+// Add to watchlist - FIXED VERSION  
+app.post("/watchlist", async (req, res) => {      
+  const { user_id, content_id } = req.body;      
+        
+  try {      
+    console.log('Adding to watchlist:', { user_id, content_id });    
+        
+    // Validate required fields    
+    if (!user_id || !content_id) {    
+      return res.status(400).json({     
+        success: false,     
+        message: 'User ID and Content ID are required'     
+      });    
+    }    
+    
+    // Get registered_user_id      
+    const userQuery = 'SELECT registered_user_id FROM registered_user WHERE user_id = $1';      
+    const userResult = await pool.query(userQuery, [user_id]);      
+          
+    if (userResult.rows.length === 0) {      
+      return res.status(404).json({     
+        success: false,     
+        message: 'User not found'     
+      });      
+    }      
+          
+    const registered_user_id = userResult.rows[0].registered_user_id;      
+        
+    // Check if content exists    
+    const contentQuery = 'SELECT content_id, title FROM content WHERE content_id = $1';    
+    const contentResult = await pool.query(contentQuery, [content_id]);    
+        
+    if (contentResult.rows.length === 0) {    
+      return res.status(404).json({    
+        success: false,    
+        message: 'Content not found'    
+      });    
+    }    
+          
+    // Check if already in watchlist      
+    const checkQuery = 'SELECT * FROM wishlist WHERE registered_user_id = $1 AND content_id = $2';      
+    const checkResult = await pool.query(checkQuery, [registered_user_id, content_id]);      
+          
+    if (checkResult.rows.length > 0) {      
+      return res.status(400).json({     
+        success: false,     
+        message: 'Content already in watchlist'     
+      });      
+    }      
+          
+    // Add to watchlist      
+    const insertResult = await pool.query(    
+      'INSERT INTO wishlist (registered_user_id, content_id) VALUES ($1, $2) RETURNING wishlist_id',     
+      [registered_user_id, content_id]    
+    );      
+          
+    res.status(201).json({     
+      success: true,     
+      message: 'Added to watchlist successfully',    
+      wishlist_id: insertResult.rows[0].wishlist_id    
+    });      
+  } catch (error) {      
+    console.error('Error adding to watchlist:', error);      
+    res.status(500).json({     
+      success: false,     
+      message: 'Internal server error',    
+      error: error.message     
+    });      
+  }      
+});  
+  
+// Remove from watchlist - FIXED VERSION  
+app.delete("/watchlist", async (req, res) => {        
+  const { user_id, content_id } = req.body;        
+          
+  try {     
+    console.log('Received request to remove from watchlist:', { user_id, content_id });      
+        
+    // Validate required fields    
+    if (!user_id || !content_id) {    
+      return res.status(400).json({     
+        success: false,     
+        message: 'User ID and Content ID are required'     
+      });    
+    }    
+          
+    const userQuery = 'SELECT registered_user_id FROM registered_user WHERE user_id = $1';        
+    const userResult = await pool.query(userQuery, [user_id]);        
+            
+    if (userResult.rows.length === 0) {        
+      return res.status(404).json({     
+        success: false,     
+        message: 'User not found'     
+      });        
+    }        
+            
+    const registered_user_id = userResult.rows[0].registered_user_id;        
+    console.log('Found registered_user_id:', registered_user_id);      
+            
+    const result = await pool.query(    
+      'DELETE FROM wishlist WHERE registered_user_id = $1 AND content_id = $2 RETURNING wishlist_id',     
+      [registered_user_id, content_id]    
+    );        
+    console.log('Delete result:', result.rowCount);      
+            
+    if (result.rowCount === 0) {        
+      return res.status(404).json({     
+        success: false,     
+        message: 'Content not found in watchlist'     
+      });        
+    }        
+            
+    res.json({     
+      success: true,     
+      message: 'Removed from watchlist successfully',    
+      removed_wishlist_id: result.rows[0].wishlist_id    
+    });        
+  } catch (error) {        
+    console.error('Error removing from watchlist:', error);        
+    res.status(500).json({     
+      success: false,     
+      message: 'Internal server error',     
+      error: error.message     
+    });        
+  }        
+});  
+  
+// Get user's watchlist - FIXED VERSION  
+app.get('/watchlist/:userId', async (req, res) => {      
+  const { userId } = req.params;      
+        
+  try {      
+    console.log('Fetching watchlist for user:', userId);    
+        
+    // Validate userId    
+    if (!userId) {    
+      return res.status(400).json({     
+        success: false,     
+        message: 'User ID is required',  
+        watchlist: []     
+      });    
+    }    
+    
+    const userQuery = 'SELECT registered_user_id FROM registered_user WHERE user_id = $1';      
+    const userResult = await pool.query(userQuery, [userId]);      
+          
+    if (userResult.rows.length === 0) {      
+      return res.status(404).json({     
+        success: false,     
+        message: 'User not found',    
+        watchlist: []    
+      });      
+    }      
+          
+    const registered_user_id = userResult.rows[0].registered_user_id;      
+          
+    const watchlistQuery = `      
+      SELECT       
+        w.wishlist_id,      
+        c.content_id,      
+        c.title,      
+        c.poster_url,      
+        c.release_date,      
+        EXTRACT(YEAR FROM c.release_date) as release_year,      
+        c.type,    
+        c.description,    
+        c.duration,    
+        COALESCE(ROUND(AVG(r.score), 1), 0) as average_rating,    
+        COUNT(r.rating_id) as rating_count    
+      FROM wishlist w      
+      JOIN content c ON w.content_id = c.content_id      
+      LEFT JOIN rating r ON c.content_id = r.content_id    
+      WHERE w.registered_user_id = $1      
+      GROUP BY w.wishlist_id, c.content_id, c.title, c.poster_url, c.release_date, c.type, c.description, c.duration    
+            
+    `;      
+          
+    const result = await pool.query(watchlistQuery, [registered_user_id]);      
+        
+    res.json({    
+      success: true,    
+      message: 'Watchlist fetched successfully',    
+      count: result.rows.length,    
+      watchlist: result.rows    
+    });    
+  } catch (error) {      
+    console.error('Error fetching watchlist:', error);      
+    res.status(500).json({    
+      success: false,    
+      message: 'Internal server error',    
+      error: error.message,    
+      watchlist: []    
+    });      
+  }      
+});  
+  
+// Check if content is in watchlist  
+app.get('/watchlist/check/:userId/:contentId', async (req, res) => {    
+  const { userId, contentId } = req.params;    
+      
+  try {    
+    console.log('Checking watchlist status for:', { userId, contentId });    
+        
+    const userQuery = 'SELECT registered_user_id FROM registered_user WHERE user_id = $1';    
+    const userResult = await pool.query(userQuery, [userId]);    
+        
+    if (userResult.rows.length === 0) {    
+      return res.json({    
+        success: false,    
+        isInWatchlist: false,    
+        message: 'User not found'    
+      });    
+    }    
+        
+    const registered_user_id = userResult.rows[0].registered_user_id;    
+        
+    const result = await pool.query(    
+      'SELECT wishlist_id FROM wishlist WHERE registered_user_id = $1 AND content_id = $2',     
+      [registered_user_id, contentId]    
+    );    
+        
+    res.json({    
+      success: true,    
+      isInWatchlist: result.rows.length > 0,    
+      message: result.rows.length > 0 ? 'Content is in watchlist' : 'Content not in watchlist'    
+    });    
+  } catch (error) {    
+    console.error('Error checking watchlist status:', error);    
+    res.json({    
+      success: false,    
+      isInWatchlist: false,    
+      message: 'Internal server error',    
+      error: error.message    
+    });    
+  }    
+});  
 
 
 app.listen(5000, () => {

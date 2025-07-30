@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { getWatchlist, removeFromWatchlist, getUserDetails, updateProfile,getFavouriteCelebrities,removeFromFavouriteCelebrities } from '../services/api';
+import { addToWatchlist,isInWatchlist } from '../services/api';
+import { getUserAverageRating } from '../services/api';
+
+import { useNavigate } from 'react-router-dom';
 
 const UserDashboard = ({ currentUser, isAuthenticated = true }) => {
   const [userDetails, setUserDetails] = useState(null);
@@ -10,6 +14,9 @@ const UserDashboard = ({ currentUser, isAuthenticated = true }) => {
   const [favouriteCelebrities, setFavouriteCelebrities] = useState([]);  
   const [activeTab, setActiveTab] = useState('watchlist');
 
+  const navigate = useNavigate();
+ 
+  const[userAverageRating,setUserAverageRating]=useState(0);
 
   const [formData, setFormData] = useState({
     username: '',
@@ -66,46 +73,82 @@ const UserDashboard = ({ currentUser, isAuthenticated = true }) => {
   useEffect(() => {
     if (!isAuthenticated || !currentUser?.user_id) return;
   
-    const fetchData = async () => {
-      try {
-        const details = await getUserDetails(currentUser.user_id);
-        console.log("User Details From API:", details);
-
-        setUserDetails({  
-          username: details.username || '',  
-          bio: details.bio || '',  
-          role: details.role || '',  
-          email: details.email || 'GOT NO EMAIL TILL NOW',  
-          profile_picture: details.profile_picture_url || '',  
-          favoriteGenre: details.favorite_genre || 'N/A',  
-          birthdate: details.birth_date ? new Date(details.birth_date).toLocaleDateString() : 'Not set',  
-          country: details.location || 'Unknown',  
-          memberSince: details.created_at ? new Date(details.created_at).toLocaleDateString() : 'Unknown',  
-          accountStatus: 'Active' // Always active when logged in  
-        });  
+    // Update the fetchData function in your useEffect  
+const fetchData = async () => {  
+  try {  
+    const details = await getUserDetails(currentUser.user_id);  
+    console.log("User Details From API:", details);  
+  
+    setUserDetails({    
+      username: details.username || '',    
+      bio: details.bio || '',    
+      role: details.role || '',    
+      email: details.email || 'GOT NO EMAIL TILL NOW',    
+      profile_picture: details.profile_picture_url || '',    
+      favoriteGenre: details.favorite_genre || 'N/A',    
+      birthdate: details.birth_date ? new Date(details.birth_date).toLocaleDateString() : 'Not set',    
+      country: details.location || 'Unknown',    
+      memberSince: details.created_at ? new Date(details.created_at).toLocaleDateString() : 'Unknown',    
+      accountStatus: 'Active'  
+    });    
           
-        setFormData({  
-          username: details.username || '',  
-          bio: details.bio || '',  
-          profile_picture_url: details.profile_picture_url || '',
-          email: details.email || '' // Assuming email is part of user details
-        }); 
-         // Fetch favourite celebrities  
-         try {  
-          const celebData = await getFavouriteCelebrities(currentUser.user_id);  
-          setFavouriteCelebrities(celebData);  
-        } catch (error) {  
-          console.error('Error fetching favourite celebrities:', error);  
-          setFavouriteCelebrities([]);  
-        } 
-
-      } catch (err) {
-        console.error('Error fetching dashboard data:', err);
-      }
-    };
+    setFormData({    
+      username: details.username || '',    
+      bio: details.bio || '',    
+      profile_picture_url: details.profile_picture_url || '',  
+      email: details.email || ''  
+    });   
+  
+    // Fetch favourite celebrities    
+    try {    
+      const celebData = await getFavouriteCelebrities(currentUser.user_id);    
+      setFavouriteCelebrities(celebData);    
+    } catch (error) {    
+      console.error('Error fetching favourite celebrities:', error);    
+      setFavouriteCelebrities([]);    
+    }   
+  
+    // Fetch watchlist - IMPROVED ERROR HANDLING  
+    try {    
+      console.log('Fetching watchlist for user:', currentUser.user_id);  
+      const watchlistData = await getWatchlist(currentUser.user_id);    
+      console.log('Watchlist data received:', watchlistData);  
+        
+      if (Array.isArray(watchlistData)) {  
+        setWatchlist(watchlistData.map(movie => ({    
+          ...movie,    
+          id: movie.content_id,    
+          year: movie.release_year || new Date(movie.release_date).getFullYear(),    
+          dateAdded: movie.added_at,  
+          poster: movie.poster_url    
+        })));  
+      } else {  
+        console.warn('Watchlist data is not an array:', watchlistData);  
+        setWatchlist([]);  
+      }  
+    } catch (error) {    
+      console.error('Error fetching watchlist:', error);    
+      setWatchlist([]);    
+    }    
+  
+    // Fetch user average rating      
+    try {      
+      const avgRatingData = await getUserAverageRating(currentUser.user_id);      
+      setUserAverageRating(avgRatingData.averageRating || 0);      
+    } catch (error) {      
+      console.error('Error fetching user average rating:', error);      
+      setUserAverageRating(0);      
+    }   
+  
+  } catch (err) {  
+    console.error('Error fetching dashboard data:', err);  
+  }  
+};
   
     fetchData();
   }, [currentUser, isAuthenticated]);
+
+  
 
 
   //const mockCurrentUser = currentUser || { user_id: 'mock-user-123' };
@@ -120,12 +163,21 @@ const UserDashboard = ({ currentUser, isAuthenticated = true }) => {
   const handleRemove = async (movieId, e) => {
     e.stopPropagation();
     try {
-      await removeFromWatchlist(currentUser.user_id, movieId);
-      setWatchlist(prevList => prevList.filter((m) => m.id !== movieId));
-    } catch (err) {
-      console.error('Error removing movie:', err);
-      alert('Failed to remove movie. Please try again.');
-    }
+       console.log('Removing movie from watchlist:', movieId);  
+    const response = await removeFromWatchlist(currentUser.user_id, movieId);  
+    console.log('Remove response:', response);  
+      
+    if (response.success) {  
+      setWatchlist(prevList => prevList.filter((m) => m.id !== movieId));  
+      // Optional: Show success message  
+      console.log('Movie removed successfully');  
+    } else {  
+      throw new Error(response.message || 'Failed to remove movie');  
+    }  
+  } catch (err) {  
+    console.error('Error removing movie:', err);  
+    alert('Failed to remove movie. Please try again.');  
+  }  
   };
 
 
@@ -166,8 +218,46 @@ const UserDashboard = ({ currentUser, isAuthenticated = true }) => {
   };
 
   const handleMovieClick = (movie) => {
-    alert(`Opening ${movie.title} (${movie.year})`);
+    navigate(`/movie/${movie.id}`);
   };
+
+
+//   // Replace the existing handleAddToWatchlist function  
+// const handleAddToWatchlist = async () => {  
+//   if (!isAuthenticated) {  
+//     onAuthRequired();  
+//     return;  
+//   }  
+  
+//   setWatchlistLoading(true);  
+//   try {  
+//     if (isInUserWatchlist) {  
+//       // Remove from watchlist  
+//       const response = await removeFromWatchlist(currentUser.user_id, id);  
+//       if (response.success) {  
+//         setIsInUserWatchlist(false);  
+//         alert('Movie removed from watchlist!');  
+//       }  
+//     } else {  
+//       // Add to watchlist  
+//       const response = await addToWatchlist(currentUser.user_id, id);  
+//       if (response.success) {  
+//         setIsInUserWatchlist(true);  
+//         alert('Movie added to watchlist!');  
+//       }  
+//     }  
+//   } catch (error) {  
+//     console.error('Error updating watchlist:', error);  
+//     if (error.message.includes('already exists')) {  
+//       alert('This movie is already in your watchlist!');  
+//       setIsInUserWatchlist(true);  
+//     } else {  
+//       alert(error.message || 'Failed to update watchlist. Please try again.');  
+//     }  
+//   } finally {  
+//     setWatchlistLoading(false);  
+//   }  
+// };
 
   if (!userDetails) {
     return (
@@ -802,7 +892,7 @@ const UserDashboard = ({ currentUser, isAuthenticated = true }) => {
                 </div>  
               </div>  
                 
-              <div style={{ textAlign: 'center' }}>  
+              {/* <div style={{ textAlign: 'center' }}>  
                 <div style={{  
                   fontSize: '2rem',  
                   fontWeight: 'bold',  
@@ -817,28 +907,28 @@ const UserDashboard = ({ currentUser, isAuthenticated = true }) => {
                 }}>  
                   Watch Time  
                 </div>  
-              </div>  
+              </div>   */}
                 
-              <div style={{ textAlign: 'center' }}>  
-                <div style={{  
-                  fontSize: '2rem',  
-                  fontWeight: 'bold',  
-                  color: '#fbbf24',  
-                  marginBottom: '0.5rem',  
-                  display: 'flex',  
-                  alignItems: 'center',  
-                  justifyContent: 'center',  
-                  gap: '0.25rem'  
-                }}>  
-                  ⭐ 4.2  
-                </div>  
-                <div style={{  
-                  fontSize: '0.875rem',  
-                  color: '#9ca3af'  
-                }}>  
-                  Avg Rating  
-                </div>  
-              </div>  
+             <div style={{ textAlign: 'center' }}>    
+  <div style={{    
+    fontSize: '2rem',    
+    fontWeight: 'bold',    
+    color: '#fbbf24',    
+    marginBottom: '0.5rem',    
+    display: 'flex',    
+    alignItems: 'center',    
+    justifyContent: 'center',    
+    gap: '0.25rem'    
+  }}>    
+    ⭐ {userAverageRating.toFixed(1)}    
+  </div>    
+  <div style={{    
+    fontSize: '0.875rem',    
+    color: '#9ca3af'    
+  }}>    
+    Your Avg Rating    
+  </div>    
+</div>  
                 
               <div style={{ textAlign: 'center' }}>  
                 <div style={{  
@@ -918,7 +1008,7 @@ const UserDashboard = ({ currentUser, isAuthenticated = true }) => {
                   </div>  
                 </div>  
   
-                {/* Favorite Genre */}  
+                {/* Favorite Genre  
                 <div style={{  
                   display: 'flex',  
                   alignItems: 'center',  
@@ -956,7 +1046,7 @@ const UserDashboard = ({ currentUser, isAuthenticated = true }) => {
                       {userDetails.favoriteGenre}  
                     </div>  
                   </div>  
-                </div>  
+                </div>   */}
   
                 {/* Birthdate */}  
                 <div style={{  
@@ -1159,91 +1249,92 @@ const UserDashboard = ({ currentUser, isAuthenticated = true }) => {
         </span>  
       </div>  
 
-      {watchlist.length > 0 ? (  
-        <div style={{  
-          display: 'grid',  
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',  
-          gap: '1rem',  
-          maxHeight: '400px',  
-          overflowY: 'auto'  
-        }}>  
-          {watchlist.map(movie => (  
-            <div  
-              key={movie.id}  
-              onClick={() => handleMovieClick(movie)}  
-              style={{  
-                backgroundColor: '#2a2a2a',  
-                borderRadius: '8px',  
-                overflow: 'hidden',  
-                cursor: 'pointer',  
-                transition: 'transform 0.2s',  
-                position: 'relative'  
-              }}  
-              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}  
-              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}  
-            >  
-              <button  
-                onClick={(e) => handleRemove(movie.id, e)}  
-                style={{  
-                  position: 'absolute',  
-                  top: '0.5rem',  
-                  right: '0.5rem',  
-                  width: '24px',  
-                  height: '24px',  
-                  backgroundColor: 'rgba(0, 0, 0, 0.8)',  
-                  color: '#ffffff',  
-                  border: 'none',  
-                  borderRadius: '50%',  
-                  cursor: 'pointer',  
-                  fontSize: '1rem',  
-                  display: 'flex',  
-                  alignItems: 'center',  
-                  justifyContent: 'center',  
-                  zIndex: 1  
+       {watchlist.length > 0 ? (    
+        <div style={{    
+          display: 'grid',    
+          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',    
+          gap: '1rem',    
+          maxHeight: '400px',    
+          overflowY: 'auto'    
+        }}>    
+          {watchlist.map(movie => (    
+            <div    
+              key={movie.id}    
+              onClick={() => handleMovieClick(movie)}    
+              style={{    
+                backgroundColor: '#2a2a2a',    
+                borderRadius: '8px',    
+                overflow: 'hidden',    
+                cursor: 'pointer',    
+                transition: 'transform 0.2s',    
+                position: 'relative'    
+              }}    
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}    
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}    
+            >    
+              <button    
+                onClick={(e) => handleRemove(movie.id, e)}    
+                title="Remove from Watchlist"  
+                style={{    
+                  position: 'absolute',    
+                  top: '0.5rem',    
+                  right: '0.5rem',    
+                  padding: '0.25rem 0.5rem',  
+                  backgroundColor: 'rgba(0, 0, 0, 0.8)',    
+                  color: '#ffffff',    
+                  border: 'none',    
+                  borderRadius: '4px',    
+                  cursor: 'pointer',    
+                  fontSize: '0.75rem',    
+                  fontWeight: '500',  
+                  zIndex: 1,  
+                  transition: 'all 0.2s'  
                 }}  
-              >  
-                ×  
-              </button>  
-
-              <div style={{  
-                height: '120px',  
-                backgroundColor: '#333',  
-                display: 'flex',  
-                alignItems: 'center',  
-                justifyContent: 'center',  
-                color: '#9ca3af',  
-                fontSize: '0.75rem'  
-              }}>  
-                {movie.poster ? (  
-                  <img   
-                    src={movie.poster}   
-                    alt={movie.title}  
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}  
-                  />  
-                ) : 'No Image'}  
-              </div>  
-
-              <div style={{ padding: '0.75rem' }}>  
-                <h4 style={{  
-                  margin: '0 0 0.25rem 0',  
-                  fontSize: '0.875rem',  
-                  fontWeight: '600',  
-                  color: '#ffffff',  
-                  lineHeight: '1.2'  
-                }}>  
-                  {movie.title}  
-                </h4>  
-                <p style={{  
-                  margin: '0',  
-                  color: '#9ca3af',  
-                  fontSize: '0.75rem'  
-                }}>  
-                  {movie.year}  
-                </p>  
-              </div>  
-            </div>  
-          ))}  
-        </div>  
+                onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(239, 68, 68, 0.9)'}  
+                onMouseLeave={(e) => e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.8)'}  
+              >    
+                Remove  
+              </button>    
+  
+              <div style={{    
+                height: '280px',    
+                backgroundColor: '#333',    
+                display: 'flex',    
+                alignItems: 'center',    
+                justifyContent: 'center',    
+                color: '#9ca3af',    
+                fontSize: '0.75rem'    
+              }}>    
+                {movie.poster ? (    
+                  <img     
+                    src={movie.poster}     
+                    alt={movie.title}    
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}    
+                  />    
+                ) : 'No Image'}    
+              </div>    
+  
+              <div style={{ padding: '0.75rem' }}>    
+                <h4 style={{    
+                  margin: '0 0 0.25rem 0',    
+                  fontSize: '0.875rem',    
+                  fontWeight: '600',    
+                  color: '#ffffff',    
+                  lineHeight: '1.2'    
+                }}>    
+                  {movie.title}    
+                </h4>    
+                <p style={{    
+                  margin: '0',    
+                  color: '#9ca3af',    
+                  fontSize: '0.75rem'    
+                }}>    
+                  {movie.year}    
+                </p>    
+              </div>    
+            </div>    
+          ))}    
+        </div> 
       ) : (  
         <div style={{  
           textAlign: 'center',  
@@ -1287,89 +1378,90 @@ const UserDashboard = ({ currentUser, isAuthenticated = true }) => {
         </span>  
       </div>  
 
-      {favouriteCelebrities.length > 0 ? (  
-        <div style={{  
-          display: 'grid',  
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',  
-          gap: '1rem',  
-          maxHeight: '400px',  
-          overflowY: 'auto'  
-        }}>  
-          {favouriteCelebrities.map(celebrity => (  
-            <div  
-              key={celebrity.celebrity_id}  
-              style={{  
-                backgroundColor: '#2a2a2a',  
-                borderRadius: '8px',  
-                overflow: 'hidden',  
-                cursor: 'pointer',  
-                transition: 'transform 0.2s',  
-                position: 'relative'  
-              }}  
-              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}  
-              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}  
-            >  
-              <button  
-                onClick={(e) => handleRemoveCelebrity(celebrity.celebrity_id, e)}  
-                style={{  
-                  position: 'absolute',  
-                  top: '0.5rem',  
-                  right: '0.5rem',  
-                  width: '24px',  
-                  height: '24px',  
-                  backgroundColor: 'rgba(0, 0, 0, 0.8)',  
-                  color: '#ffffff',  
-                  border: 'none',  
-                  borderRadius: '50%',  
-                  cursor: 'pointer',  
-                  fontSize: '1rem',  
-                  display: 'flex',  
-                  alignItems: 'center',  
-                  justifyContent: 'center',  
-                  zIndex: 1  
+      {favouriteCelebrities.length > 0 ? (    
+        <div style={{    
+          display: 'grid',    
+          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',    
+          gap: '1rem',    
+          maxHeight: '400px',    
+          overflowY: 'auto'    
+        }}>    
+          {favouriteCelebrities.map(celebrity => (    
+            <div    
+              key={celebrity.celebrity_id}    
+              style={{    
+                backgroundColor: '#2a2a2a',    
+                borderRadius: '8px',    
+                overflow: 'hidden',    
+                cursor: 'pointer',    
+                transition: 'transform 0.2s',    
+                position: 'relative'    
+              }}    
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}    
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}    
+            >    
+              <button    
+                onClick={(e) => handleRemoveCelebrity(celebrity.celebrity_id, e)}    
+                title="Remove from Favourites"  
+                style={{    
+                  position: 'absolute',    
+                  top: '0.5rem',    
+                  right: '0.5rem',    
+                  padding: '0.25rem 0.5rem',  
+                  backgroundColor: 'rgba(0, 0, 0, 0.8)',    
+                  color: '#ffffff',    
+                  border: 'none',    
+                  borderRadius: '4px',    
+                  cursor: 'pointer',    
+                  fontSize: '0.75rem',    
+                  fontWeight: '500',  
+                  zIndex: 1,  
+                  transition: 'all 0.2s'  
                 }}  
-              >  
-                ×  
-              </button>  
-
-              <div style={{  
-                height: '120px',  
-                backgroundColor: '#333',  
-                display: 'flex',  
-                alignItems: 'center',  
-                justifyContent: 'center',  
-                color: '#9ca3af',  
-                fontSize: '0.75rem'  
-              }}>  
-                {celebrity.photo_url ? (  
-                  <img   
-                    src={celebrity.photo_url}   
-                    alt={celebrity.name}  
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}  
-                  />  
-                ) : 'No Image'}  
-              </div>  
-
-              <div style={{ padding: '0.75rem' }}>  
-                <h4 style={{  
-                  margin: '0 0 0.25rem 0',  
-                  fontSize: '0.875rem',  
-                  fontWeight: '600',  
-                  color: '#ffffff',  
-                  lineHeight: '1.2'  
-                }}>  
-                  {celebrity.name}  
-                </h4>  
-                <p style={{  
-                  margin: '0',  
-                  color: '#9ca3af',  
-                  fontSize: '0.75rem'  
-                }}>  
-                  {celebrity.birth_date ? new Date(celebrity.birth_date).toLocaleDateString() : 'N/A'}  
-                </p>  
-              </div>  
-            </div>  
-          ))}  
+                onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(239, 68, 68, 0.9)'}  
+                onMouseLeave={(e) => e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.8)'}  
+              >    
+                Remove  
+              </button>    
+  
+              <div style={{    
+                height: '280px',    
+                backgroundColor: '#333',    
+                display: 'flex',    
+                alignItems: 'center',    
+                justifyContent: 'center',    
+                color: '#9ca3af',    
+                fontSize: '0.75rem'    
+              }}>    
+                {celebrity.photo_url ? (    
+                  <img     
+                    src={celebrity.photo_url}     
+                    alt={celebrity.name}    
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}    
+                  />    
+                ) : 'No Image'}    
+              </div>    
+  
+              <div style={{ padding: '0.75rem' }}>    
+                <h4 style={{    
+                  margin: '0 0 0.25rem 0',    
+                  fontSize: '0.875rem',    
+                  fontWeight: '600',    
+                  color: '#ffffff',    
+                  lineHeight: '1.2'    
+                }}>    
+                  {celebrity.name}    
+                </h4>    
+                <p style={{    
+                  margin: '0',    
+                  color: '#9ca3af',    
+                  fontSize: '0.75rem'    
+                }}>    
+                  {celebrity.birth_date ? new Date(celebrity.birth_date).toLocaleDateString() : 'N/A'}    
+                </p>    
+              </div>    
+            </div>    
+          ))}    
         </div>  
       ) : (  
         <div style={{  
