@@ -171,6 +171,22 @@ export const searchMovies = async (query) => {
   }
 };
 
+// Basic search function for all categories
+export const basicSearch = async (query, category = 'all') => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/search?q=${encodeURIComponent(query)}&category=${category}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Basic search error:', error);
+    throw error;
+  }
+};
+
 // Movie Details Related APIs
 export const getMovieDetails = async (movieId) => {
   try {
@@ -427,7 +443,7 @@ export const getUserReactions = async (movieId, userId) => {
 };
 
 // Edit a review
-export const editReview = async (reviewId, reviewText, userId) => {
+export const editReview = async (reviewId, reviewText, userId, spoilerAlert = false) => {
   try {
     const response = await fetch(`${API_BASE_URL}/reviews/${reviewId}`, {
       method: 'PUT',
@@ -436,7 +452,8 @@ export const editReview = async (reviewId, reviewText, userId) => {
       },
       body: JSON.stringify({
         text: reviewText,
-        user_id: userId
+        user_id: userId,
+        spoiler_alert: spoilerAlert
       }),
     });
     
@@ -865,6 +882,50 @@ export const removeFromFavouriteCelebrities = async (userId, celebrityId) => {
     console.error('Remove from favourite celebrities error:', error);  
     throw error;  
   }  
+};
+
+export const markAsWatched = async (contentId, userId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/content/${contentId}/watched`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: userId
+      }),
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Mark as watched error:', error);
+    throw error;
+  }
+};
+
+// Track content view (for page visits)
+export const trackContentView = async (contentId, userId = null, sessionId = null) => {
+  try {
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+    
+    // Add session ID to headers if provided
+    if (sessionId) {
+      headers['x-session-id'] = sessionId;
+    }
+    
+    const response = await fetch(`${API_BASE_URL}/content/${contentId}/view`, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({
+        user_id: userId
+      }),
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    console.error('Track content view error:', error);
+    throw error;
+  }
 };
 
 

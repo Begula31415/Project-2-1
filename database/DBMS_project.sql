@@ -217,6 +217,8 @@ ALTER TABLE episode ALTER COLUMN trailer_url TYPE VARCHAR(500);
 
 -- IMAGE
 ALTER TABLE image ALTER COLUMN url TYPE VARCHAR(500);
+ALTER TABLE image ADD CONSTRAINT unique_image_url_per_content UNIQUE (url, content_id, celebrity_id);
+ALTER TABLE image RENAME COLUMN uploaded_at TO created_at;
 
 -- AWARD
 ALTER TABLE award ALTER COLUMN name TYPE VARCHAR(100);
@@ -1115,3 +1117,4 @@ JOIN information_schema.referential_constraints AS rc
 WHERE tc.constraint_type = 'FOREIGN KEY' 
   AND tc.table_name = 'reaction'
   AND kcu.column_name = 'review_id';
+  

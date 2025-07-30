@@ -34,7 +34,11 @@ const Navigation = ({ currentUser, isAuthenticated, onSignIn, onSignOut }) => {
       if (searchType === 'Advanced search') {
         navigate('/advanced-search');
       } else {
-        alert(`Searching for: "${searchTerm}" in ${searchType}`);
+        // Navigate to search results page with query parameters
+        const category = searchType.toLowerCase() === 'all' ? 'all' : 
+                        searchType.toLowerCase() === 'titles' ? 'titles' : 
+                        searchType.toLowerCase() === 'celebs' ? 'celebs' : 'all';
+        navigate(`/search?q=${encodeURIComponent(searchTerm)}&category=${category}`);
       }
     }
   };
@@ -61,23 +65,23 @@ const Navigation = ({ currentUser, isAuthenticated, onSignIn, onSignOut }) => {
     }
   };
 
-  const checkAuthAndAddToWatchlist = () => {
-    if (!isAuthenticated) {
-      alert('Please sign in to add movies to your watchlist');
-      onSignIn();
-    } else {
-      alert('Watchlist feature - you are signed in!');
-    }
+  const navigateToTop50 = () => {
+    navigate('/top-50');
+  };
+
+  const navigateToBrowseByGenre = () => {
+    navigate('/advanced-search');
+  };
+
+  const navigateToAwards = () => {
+    navigate('/awards');
   };
 
   const searchOptions = [
-    { value: 'All', label: '🔍 All', icon: '🔍'},
-    { value: 'Titles', label: '📺 Titles', icon: '📺' },
-    { value: 'TV episodes', label: '📺 TV episodes', icon: '📺' },
-    { value: 'Celebs', label: '👥 Celebs', icon: '👥' },
-    { value: 'Companies', label: '🏢 Companies', icon: '🏢' },
-    { value: 'Keywords', label: '🔤 Keywords', icon: '🔤' },
-    { value: 'Advanced search', label: '🔍 Advanced search', icon: '🔍' }
+    { value: 'All', label: 'All' },
+    { value: 'Titles', label: 'Titles' },
+    { value: 'Celebs', label: 'Celebs' },
+    { value: 'Advanced search', label: 'Advanced search' }
   ];
 
   return (
@@ -95,12 +99,9 @@ const Navigation = ({ currentUser, isAuthenticated, onSignIn, onSignOut }) => {
           </div>
           <span className="menu-text">Menu</span>
           <div className={`menu-dropdown ${showMenu ? 'show' : ''}`}>
-            <a href="#" onClick={(e) => { e.preventDefault(); closeMenu(); }}>Movies</a>
-            <a href="#" onClick={(e) => { e.preventDefault(); closeMenu(); }}>TV Shows</a>
-            <a href="#" onClick={(e) => { e.preventDefault(); closeMenu(); }}>Documentaries</a>
-            <a href="#" onClick={(e) => { e.preventDefault(); closeMenu(); }}>Top Rated</a>
-            <a href="#" onClick={(e) => { e.preventDefault(); closeMenu(); }}>Most Viewed</a>
-            <a href="#" onClick={(e) => { e.preventDefault(); closeMenu(); }}>Upcoming</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); closeMenu(); navigateToTop50(); }}>Top 50</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); closeMenu(); navigateToBrowseByGenre(); }}>Browse by Genre</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); closeMenu(); navigateToAwards(); }}>Awards</a>
           </div>
         </div>
 
@@ -120,8 +121,7 @@ const Navigation = ({ currentUser, isAuthenticated, onSignIn, onSignOut }) => {
                     className={`search-option ${searchType === option.value ? 'active' : ''}`}
                     onClick={() => handleSearchTypeSelect(option.value)}
                   >
-                    <span className="option-icon">{option.icon}</span>
-                    <span className="option-label">{option.label.replace(/^.+ /, '')}</span>
+                    <span className="option-label">{option.label}</span>
                   </div>
                 ))}
               </div>
@@ -141,32 +141,36 @@ const Navigation = ({ currentUser, isAuthenticated, onSignIn, onSignOut }) => {
         </div>
 
         <div className="nav-actions">
-          <button className="watchlist-btn" onClick={checkAuthAndAddToWatchlist}>
-            ⭐ Watchlist
-          </button>
-          {/* <button className="signin-btn" onClick={handleSignInClick}>
-            {isAuthenticated ? (currentUser?.name || currentUser?.username) : 'Sign In'}
-          </button> */}
           <button
-  className="signin-btn"
-  onClick={() => {
-    if (!isAuthenticated) {
-      onSignIn();
-    } else {
-      const role = currentUser?.role || 'user'; // Default to 'user' if role not set
-      if (role === 'admin') {
-        navigate('/admin-dashboard');
-      } else {
-        navigate('/dashboard');
-      }
-    }
-  }}
->
-  {isAuthenticated ? (currentUser?.name || currentUser?.username) : 'Sign In'}
-</button>
-
-
-
+            className="signin-btn"
+            onClick={() => {
+              if (!isAuthenticated) {
+                onSignIn();
+              } else {
+                const role = currentUser?.role || 'user'; // Default to 'user' if role not set
+                if (role === 'admin') {
+                  navigate('/admin-dashboard');
+                } else {
+                  navigate('/dashboard');
+                }
+              }
+            }}
+          >
+            {isAuthenticated ? (currentUser?.name || currentUser?.username) : 'Sign In'}
+          </button>
+          
+          {isAuthenticated && (
+            <button
+              className="signin-btn signout-btn"
+              onClick={() => {
+                if (window.confirm('Are you sure you want to sign out?')) {
+                  onSignOut();
+                }
+              }}
+            >
+              Sign Out
+            </button>
+          )}
         </div>
       </div>
     </header>
