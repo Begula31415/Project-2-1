@@ -80,7 +80,6 @@ const [showEditSeriesModal, setShowEditSeriesModal] = useState(false);
 // Series edit state  
 const [isEditingSeries, setIsEditingSeries] = useState(false);
 
-
   // Search states  
 const [searchQuery, setSearchQuery] = useState('');  
 const [searchResults, setSearchResults] = useState([]);  

@@ -993,11 +993,7 @@ useEffect(() => {
                     : 'Add to Watchlist'  
                 }  
               </button>         
-              {/* Rating Buttons */}  
-            <div className={styles.actions}>
-              <button onClick={handleAddToWatchlist}>Add to Watchlist</button>
-              <button onClick={handleMarkAsVisited}>Mark as Watched</button>
-              
+              {/* Rating Buttons */}
               {/* Seasons & Episodes button for series */}
               {(movie.type === 'series' || movie.type === 'Series') && (
                 <button 
