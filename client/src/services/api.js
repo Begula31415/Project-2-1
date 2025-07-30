@@ -128,16 +128,47 @@ export const updateProfile = async (userId, data) => {
   });
   return await handleResponse(response);
 };
-export const removeFromWatchlist = async (userId, movieId) => {
-  const response = await fetch(`${API_BASE_URL}/watchlist`, {
-    method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ userId, movieId })
-  });
-  return await handleResponse(response);
-};
 
-
+// Remove from watchlist  
+export const removeFromWatchlist = async (userId, contentId) => {        
+  try {        
+    console.log('API call - removing from watchlist:', { userId, contentId });      
+          
+    const response = await fetch(`${API_BASE_URL}/watchlist`, {        
+      method: 'DELETE',        
+      headers: {        
+        'Content-Type': 'application/json',        
+      },        
+      body: JSON.stringify({        
+        user_id: userId,        
+        content_id: contentId  
+      }),        
+    });        
+        
+    console.log('Response status:', response.status);      
+          
+    if (!response.ok) {        
+      let errorMessage = 'Failed to remove from watchlist';      
+      try {      
+        const errorData = await response.json();      
+        errorMessage = errorData.message || errorMessage;      
+      } catch (e) {      
+        try {      
+          const errorText = await response.text();      
+          errorMessage = `Server error: ${errorText}`;      
+        } catch (e2) {      
+          errorMessage = `HTTP ${response.status}: ${response.statusText}`;      
+        }      
+      }      
+      throw new Error(errorMessage);        
+    }        
+        
+    return await response.json();        
+  } catch (error) {        
+    console.error('Error removing from watchlist:', error);        
+    throw error;        
+  }        
+};  
 
 // Get movies function
 export const getMovies = async (category = 'all') => {
@@ -233,38 +264,88 @@ export const getMovieAwards = async (movieId) => {
 };
 
 
-// Add to watchlist function
-export const addToWatchlist = async (movieId, userId) => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/watchlist`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ movieId, userId }),
-    });
-    return await handleResponse(response);
-  } catch (error) {
-    console.error('Add to watchlist error:', error);
-    throw error;
-  }
+// Add to watchlist    
+export const addToWatchlist = async (userId, contentId) => {    
+  try {    
+    const response = await fetch(`${API_BASE_URL}/watchlist`, {    
+      method: 'POST',    
+      headers: {    
+        'Content-Type': 'application/json',    
+      },    
+      body: JSON.stringify({    
+        user_id: userId,    
+        content_id: contentId    
+      }),    
+    });    
+    
+    if (!response.ok) {    
+      const errorData = await response.json();    
+      throw new Error(errorData.message || 'Failed to add to watchlist');    
+    }    
+    
+    return await response.json();    
+  } catch (error) {    
+    console.error('Error adding to watchlist:', error);    
+    throw error;    
+  }    
+};   
+  
+
+  
+// Get watchlist function  
+export const getWatchlist = async (userId) => {  
+  try {  
+    const response = await fetch(`${API_BASE_URL}/watchlist/${userId}`, {  
+      method: 'GET',  
+      headers: {  
+        'Content-Type': 'application/json',  
+      },  
+    });  
+      
+    if (!response.ok) {  
+      throw new Error('Failed to fetch watchlist');  
+    }  
+      
+    const data = await response.json();  
+    return data.watchlist || []; // Return the watchlist array  
+  } catch (error) {  
+    console.error('Get watchlist error:', error);  
+    return []; // Return empty array on error  
+  }  
+}; 
+
+// Check if content is in watchlist    
+export const isInWatchlist = async (userId, contentId) => {    
+  try {    
+    const response = await fetch(`${API_BASE_URL}/watchlist/check/${userId}/${contentId}`);    
+        
+    if (!response.ok) {    
+      throw new Error('Failed to check watchlist status');    
+    }    
+    
+    const data = await response.json();  
+    return data;    
+  } catch (error) {    
+    console.error('Error checking watchlist status:', error);    
+    return { success: false, isInWatchlist: false };  
+  }    
 };
 
-// Get watchlist function
-export const getWatchlist = async (userId) => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/watchlist/${userId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return await handleResponse(response);
-  } catch (error) {
-    console.error('Get watchlist error:', error);
-    throw error;
-  }
-};
+// Get user's average rating  
+export const getUserAverageRating = async (userId) => {  
+  try {  
+    const response = await fetch(`${API_BASE_URL}/user/${userId}/average-rating`);  
+      
+    if (!response.ok) {  
+      throw new Error('Failed to fetch user average rating');  
+    }  
+  
+    return await response.json();  
+  } catch (error) {  
+    console.error('Error fetching user average rating:', error);  
+    throw error;  
+  }  
+}; 
 
 //addMovie function for admin to add new movies
 export const addMovie = async (movieData) => {
@@ -289,14 +370,6 @@ export const addMovie = async (movieData) => {
 
 
 
-export const addAward = async (data) => {
-  // Replace with actual API call
-  return fetch('/api/awards', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
-};
 
 export const getCelebrities = async () => {
   // Replace with real API
@@ -328,10 +401,19 @@ export const deleteCelebrityById = async (id) => {
   return fetch(`/api/celebrities/${id}`, { method: 'DELETE' });
 };
 
-export const deleteAwardById = async (id) => {
-  return fetch(`/api/awards/${id}`, { method: 'DELETE' });
-};
 
+export const deleteAwardById = async (id) => {  
+  const res = await fetch(`/api/awards/${id}`, {  
+    method: 'DELETE'  
+  });  
+  
+  if (!res.ok) {  
+    const errorData = await res.json();  
+    throw new Error(errorData.error || 'Failed to delete award');  
+  }  
+  
+  return await res.json();  
+};  
 
 // Add these functions for movie details functionality
 
@@ -657,52 +739,49 @@ export const checkContentExists = async (title, release_date, type) => {
 };
 
 
-
-export const addContent = async (movieData) => {
-  try {
-    const response = await fetch('/api/content', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(movieData)
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to add content: ${errorText}`);
-    }
-
-    return await response.json();
-  } catch (err) {
-    console.error('Error in addContent:', err);
-    throw err;
-  }
-};
-
+export const addContent = async (contentData) => {  
+  try {  
+    const response = await fetch('/api/content', {  
+      method: 'POST',  
+      headers: {  
+        'Content-Type': 'application/json',  
+      },  
+      body: JSON.stringify(contentData),  
+    });  
+  
+    if (!response.ok) {  
+      throw new Error(`HTTP error! status: ${response.status}`);  
+    }  
+  
+    const result = await response.json();  
+    return result; // This should contain { message: '...', content_id: ..., success: true }  
+  } catch (error) {  
+    console.error('Error in addContent:', error);  
+    throw error;  
+  }  
+}; 
 
 
-// Add these at the end or export them in your existing export block
-export const addCelebrity = async (celebrityData) => {
-  try {
-    const response = await fetch('/api/celebrities', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(celebrityData),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to add celebrity: ${errorText}`);
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Error in addCelebrity:', error);
-    throw error;
-  }
+export const addCelebrity = async (celebrityData) => {  
+  try {  
+    const response = await fetch('/api/celebrities', {  
+      method: 'POST',  
+      headers: {  
+        'Content-Type': 'application/json',  
+      },  
+      body: JSON.stringify(celebrityData),  
+    });  
+  
+    if (!response.ok) {  
+      throw new Error(`HTTP error! status: ${response.status}`);  
+    }  
+  
+    const result = await response.json();  
+    return result; // This should contain { message: '...', celebrity_id: ..., success: true }  
+  } catch (error) {  
+    console.error('Error in addCelebrity:', error);  
+    throw error;  
+  }  
 };
 
 
@@ -929,7 +1008,207 @@ export const trackContentView = async (contentId, userId = null, sessionId = nul
 };
 
 
+export const getRelatedCelebrities = async (celebrityId) => {  
+  try {  
+    const res = await fetch(`${API_BASE_URL}/api/celebrities/${celebrityId}/related`);  
+    if (!res.ok) {  
+      throw new Error(`HTTP error! status: ${res.status}`);  
+    }  
+    return await res.json();  
+  } catch (error) {  
+    console.error('Get related celebrities error:', error);  
+    throw error;  
+  }  
+};  
 
 
 
+// Update functions for edit functionality  
+export const updateContent = async (id, contentData) => {  
+  try {  
+    const response = await fetch(`/api/content/${id}`, {  
+      method: 'PUT',  
+      headers: {  
+        'Content-Type': 'application/json'  
+      },  
+      body: JSON.stringify(contentData)  
+    });  
+  
+    if (!response.ok) {  
+      const errorText = await response.text();  
+      throw new Error(`Failed to update content: ${errorText}`);  
+    }  
+  
+    return await response.json();  
+  } catch (err) {  
+    console.error('Error in updateContent:', err);  
+    throw err;  
+  }  
+};  
+  
+export const updateCelebrity = async (id, celebrityData) => {  
+  try {  
+    const response = await fetch(`/api/celebrities/${id}`, {  
+      method: 'PUT',  
+      headers: {  
+        'Content-Type': 'application/json'  
+      },  
+      body: JSON.stringify(celebrityData)  
+    });  
+  
+    if (!response.ok) {  
+      const errorText = await response.text();  
+      throw new Error(`Failed to update celebrity: ${errorText}`);  
+    }  
+  
+    return await response.json();  
+  } catch (err) {  
+    console.error('Error in updateCelebrity:', err);  
+    throw err;  
+  }  
+};  
+  
+export const updateAward = async (id, awardData) => {  
+  try {  
+    const response = await fetch(`/api/awards/${id}`, {  
+      method: 'PUT',  
+      headers: {  
+        'Content-Type': 'application/json'  
+      },  
+      body: JSON.stringify(awardData)  
+    });  
+  
+    if (!response.ok) {  
+      const errorText = await response.text();  
+      throw new Error(`Failed to update award: ${errorText}`);  
+    }  
+  
+    return await response.json();  
+  } catch (err) {  
+    console.error('Error in updateAward:', err);  
+    throw err;  
+  }  
+};  
+  
+// Fix the addAward function  
+export const addAward = async (awardData) => {  
+  try {  
+    const response = await fetch('/api/awards', {  
+      method: 'POST',  
+      headers: {  
+        'Content-Type': 'application/json'  
+      },  
+      body: JSON.stringify(awardData)  
+    });  
+  
+    if (!response.ok) {  
+      const errorText = await response.text();  
+      throw new Error(`Failed to add award: ${errorText}`);  
+    }  
+  
+    return await response.json();  
+  } catch (err) {  
+    console.error('Error in addAward:', err);  
+    throw err;  
+  }  
+};  
 
+
+export const checkAwardExists = async (name, year) => {  
+  const query = new URLSearchParams({  
+    name,  
+    year  
+  }).toString();  
+  
+  const res = await fetch(`/api/check-award-exists?${query}`);  
+  
+  if (!res.ok) {  
+    throw new Error('Failed to check if award exists');  
+  }  
+  
+  const data = await res.json();  
+  return data.exists;  
+};  
+
+
+// Get series details with seasons and episodes  
+export const getSeriesDetails = async (seriesId) => {  
+  try {  
+    const response = await fetch(`/api/series/${seriesId}`);  
+    if (!response.ok) {  
+      throw new Error('Failed to fetch series details');  
+    }  
+    return await response.json();  
+  } catch (err) {  
+    console.error('Error in getSeriesDetails:', err);  
+    throw err;  
+  }  
+}; 
+
+
+// Add images for content  
+export const addContentImages = async (contentId, imageUrls) => {  
+  try {  
+    const response = await fetch(`/api/content/${contentId}/images`, {  
+      method: 'POST',  
+      headers: {  
+        'Content-Type': 'application/json'  
+      },  
+      body: JSON.stringify({ imageUrls })  
+    });  
+      
+    if (!response.ok) {  
+      throw new Error('Failed to add content images');  
+    }  
+      
+    return await response.json();  
+  } catch (err) {  
+    console.error('Error adding content images:', err);  
+    throw err;  
+  }  
+};  
+  
+// Add images for celebrity  
+export const addCelebrityImages = async (celebrityId, imageUrls) => {  
+  try {  
+    const response = await fetch(`/api/celebrities/${celebrityId}/images`, {  
+      method: 'POST',  
+      headers: {  
+        'Content-Type': 'application/json'  
+      },  
+      body: JSON.stringify({ imageUrls })  
+    });  
+      
+    if (!response.ok) {  
+      throw new Error('Failed to add celebrity images');  
+    }  
+      
+    return await response.json();  
+  } catch (err) {  
+    console.error('Error adding celebrity images:', err);  
+    throw err;  
+  }  
+};  
+  
+// Update series with seasons and episodes  
+export const updateSeries = async (seriesId, seriesData) => {  
+  try {  
+    const response = await fetch(`/api/series/${seriesId}`, {  
+      method: 'PUT',  
+      headers: {  
+        'Content-Type': 'application/json'  
+      },  
+      body: JSON.stringify(seriesData)  
+    });  
+  
+    if (!response.ok) {  
+      const errorText = await response.text();  
+      throw new Error(`Failed to update series: ${errorText}`);  
+    }  
+  
+    return await response.json();  
+  } catch (err) {  
+    console.error('Error in updateSeries:', err);  
+    throw err;  
+  }  
+}; 

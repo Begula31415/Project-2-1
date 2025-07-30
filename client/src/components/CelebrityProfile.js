@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react';
-import { useParams } from 'react-router-dom';
-import { getCelebrityById, getCelebrityMovies,getCelebrityAwards,addToFavouriteCelebrities } from '../services/api'; // Adjust path as needed
+import { useParams,useNavigate } from 'react-router-dom';
+import { getCelebrityById, getCelebrityMovies,getCelebrityAwards,addToFavouriteCelebrities,getRelatedCelebrities } from '../services/api'; // Adjust path as needed
 
 const CelebrityProfile = ( { currentUser } ) => {
     const { id } = useParams();
@@ -8,6 +8,8 @@ const CelebrityProfile = ( { currentUser } ) => {
     const [movies, setMovies] = useState([]);  
      const [awards, setAwards] = useState([]); 
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();  
+    const [relatedCelebrities, setRelatedCelebrities] = useState([]); 
 
 
     useEffect(() => {  
@@ -35,6 +37,14 @@ const CelebrityProfile = ( { currentUser } ) => {
             console.error('Error fetching awards:', awardErr);  
             setAwards([]);  
           }  
+
+          try {  
+            const relatedData = await getRelatedCelebrities(id);  
+            setRelatedCelebrities(relatedData || []);  
+          } catch (relatedErr) {  
+            console.error('Error fetching related celebrities:', relatedErr);  
+            setRelatedCelebrities([]);  
+          }  
             
           setLoading(false);  
         } catch (err) {  
@@ -44,13 +54,14 @@ const CelebrityProfile = ( { currentUser } ) => {
       };  
       fetchCelebrity();  
     }, [id]);  
+
   const goBack = () => {
     // Navigate back to home page
     window.history.back();
   };
 
   const handleMovieClick = (movieTitle) => {
-    
+
     // Handle movie click - could navigate to movie details page
 
     console.log(`Clicked on ${movieTitle}`);
@@ -76,6 +87,25 @@ const CelebrityProfile = ( { currentUser } ) => {
     }  
   };  
 
+
+  const handleRelatedCelebrityClick = (celebrityId) => {  
+    navigate(`/celebrity/${celebrityId}`);  
+  };  
+  
+  const scrollRelatedCelebrities = (direction) => {  
+    const container = document.getElementById('related-celebrities-container');  
+    const scrollAmount = 300;  
+    if (direction === 'left') {  
+      container.scrollLeft -= scrollAmount;  
+    } else {  
+      container.scrollLeft += scrollAmount;  
+    }  
+  }; 
+
+
+
+
+
   if (loading) {
     return <div style={{ color: 'white', padding: '30px' }}>Loading...</div>;
   }
@@ -97,9 +127,9 @@ const CelebrityProfile = ( { currentUser } ) => {
       minHeight: '100vh'
     }}>
       <div style={{
-        maxWidth: '1200px',
+        maxWidth: '1500px',
         margin: '0 auto',
-        padding: '30px'
+        padding: '30px '
       }}>
                 <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>  
           <button   
@@ -120,23 +150,23 @@ const CelebrityProfile = ( { currentUser } ) => {
             ← Back to Home  
           </button>  
             
-          <button   
+          {/* <button   
             onClick={handleAddToFavourites}  
-            style={{  
-              backgroundColor: '#e50914',  
-              color: 'white',  
-              padding: '10px 20px',  
-              border: 'none',  
-              borderRadius: '5px',  
-              fontWeight: 'bold',  
-              cursor: 'pointer',  
-              transition: 'background-color 0.3s ease'  
-            }}  
-            onMouseOver={(e) => e.target.style.backgroundColor = '#b8070f'}  
-            onMouseOut={(e) => e.target.style.backgroundColor = '#e50914'}  
+            style={{    
+              backgroundColor: '#4CAF50',    
+              color: 'white',    
+              padding: '10px 20px',    
+              border: 'none',    
+              borderRadius: '5px',    
+              fontWeight: 'bold',    
+              cursor: 'pointer',    
+              transition: 'background-color 0.3s ease'    
+            }}    
+            onMouseOver={(e) => e.target.style.backgroundColor = '#45a049'}    
+            onMouseOut={(e) => e.target.style.backgroundColor = '#4CAF50'}  
           >  
             ♥ Add to Favourites  
-          </button>  
+          </button>   */}
         </div>  
         
         <div style={{  
@@ -185,12 +215,31 @@ const CelebrityProfile = ( { currentUser } ) => {
   <strong>Profession:</strong> {celebrity.roles?.length ? celebrity.roles.join(', ') : 'N/A'}
 </p>
 
-<p style={{ marginBottom: '15px', lineHeight: '1.6' }}>
+{/* <p style={{ marginBottom: '15px', lineHeight: '1.6' }}>
   <strong>Years Active:</strong> {celebrity.years_active || 'N/A'}
-</p>
-<p style={{ marginBottom: '15px', lineHeight: '1.6' }}>
+</p> */}
+{/* <p style={{ marginBottom: '15px', lineHeight: '1.6' }}>
   <strong>Height:</strong> {celebrity.height || 'N/A'}
-</p>
+</p> */}
+
+<button   
+            onClick={handleAddToFavourites}  
+            style={{    
+              backgroundColor: '#4CAF50',    
+              color: 'white',    
+              padding: '10px 20px',    
+              border: 'none',    
+              borderRadius: '5px',    
+              fontWeight: 'bold',    
+              cursor: 'pointer',    
+              transition: 'background-color 0.3s ease'    
+            }}    
+            onMouseOver={(e) => e.target.style.backgroundColor = '#45a049'}    
+            onMouseOut={(e) => e.target.style.backgroundColor = '#4CAF50'}  
+          >  
+            ♥ Add to Favourites  
+          </button>
+
 
             </div>
           </div>
@@ -198,10 +247,10 @@ const CelebrityProfile = ( { currentUser } ) => {
           {/* Right side - Name and Biography */}
           <div style={{ flex: 1 }}>
             <h1 style={{
-              fontSize: window.innerWidth <= 768 ? '36px' : '48px',
+              fontSize: window.innerWidth <= 768 ? '32px' : '42px',
               fontWeight: 'bold',
               marginBottom: '20px',
-              color: 'white'
+              color: '#f5c518'
             }}>{celebrity.name}</h1>
             
                   {/* Movies section - Below the main content */}    
@@ -212,20 +261,22 @@ const CelebrityProfile = ( { currentUser } ) => {
   borderRadius: '10px',  
   border: '1px solid #333'  
 }}>
-              <h2 style={{
-                fontSize: '24px',
-                marginBottom: '15px',
-                color: '#f5c518'
-              }}>{celebrity.bio}</h2>
-              <p style={{
-                lineHeight: '1.8',
-                fontSize: '16px',
-                color: '#cccccc'
-              }}>
-               
-                <br /><br />
-                
-              </p>
+             <h2 style={{  
+                fontSize: '22px',  
+                marginBottom: '15px',  
+                color: '#f5c518'  
+              }}>Biography</h2>  
+              <p style={{  
+                lineHeight: '1.7',  
+                fontSize: '15px',  
+                color: '#ffffff',  
+                fontFamily: "'Inter', 'Segoe UI', sans-serif",  
+                fontWeight: '400',  
+                letterSpacing: '0.3px',  
+                textAlign: 'justify'  
+              }}>  
+                {celebrity.bio || 'No biography available for this celebrity.'}  
+              </p> 
             </div>
           </div>
         </div>
@@ -364,6 +415,126 @@ const CelebrityProfile = ( { currentUser } ) => {
     <p style={{ color: '#888', fontStyle: 'italic' }}>No awards found for this celebrity.</p>  
   )}  
 </div>
+
+{/* Related Celebrities Section */}  
+{relatedCelebrities.length > 0 && (  
+  <div style={{     
+    marginBottom: '50px',    
+    backgroundColor: '#1a1a1a',    
+    padding: '40px',    
+    borderRadius: '15px',    
+    border: '1px solid #333'    
+  }}>  
+    <h2 style={{    
+      fontSize: '28px',    
+      marginBottom: '30px',    
+      color: '#f5c518',  
+      fontWeight: '600'  
+    }}>Related Celebrities</h2>  
+    
+    <div style={{ position: 'relative' }}>  
+      <button  
+        onClick={() => scrollRelatedCelebrities('left')}  
+        style={{  
+          position: 'absolute',  
+          left: '-20px',  
+          top: '50%',  
+          transform: 'translateY(-50%)',  
+          backgroundColor: '#f5c518',  
+          color: 'black',  
+          border: 'none',  
+          borderRadius: '50%',  
+          width: '40px',  
+          height: '40px',  
+          cursor: 'pointer',  
+          fontSize: '18px',  
+          zIndex: 2  
+        }}  
+      >  
+        ‹  
+      </button>  
+        
+      <div  
+        id="related-celebrities-container"  
+        style={{  
+          display: 'flex',  
+          gap: '20px',  
+          overflowX: 'auto',  
+          scrollBehavior: 'smooth',  
+          paddingBottom: '10px'  
+        }}  
+      >  
+        {relatedCelebrities.map((relatedCeleb) => (  
+          <div  
+            key={relatedCeleb.celebrity_id}  
+            onClick={() => handleRelatedCelebrityClick(relatedCeleb.celebrity_id)}  
+            style={{  
+              minWidth: '150px',  
+              backgroundColor: '#2a2a2a',  
+              borderRadius: '12px',  
+              overflow: 'hidden',  
+              cursor: 'pointer',  
+              transition: 'transform 0.3s ease',  
+              border: '1px solid #444'  
+            }}  
+            onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}  
+            onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}  
+          >  
+            <img  
+              src={relatedCeleb.photo_url || 'https://via.placeholder.com/150x200'}  
+              alt={relatedCeleb.name}  
+              style={{  
+                width: '100%',  
+                height: '200px',  
+                objectFit: 'cover'  
+              }}  
+            />  
+            <div style={{ padding: '15px' }}>  
+              <div style={{  
+                fontSize: '14px',  
+                fontWeight: '600',  
+                color: 'white',  
+                marginBottom: '5px',  
+                textAlign: 'center'  
+              }}>  
+                {relatedCeleb.name}  
+              </div>  
+              <div style={{  
+                fontSize: '12px',  
+                color: '#aaa',  
+                textAlign: 'center'  
+              }}>  
+                {relatedCeleb.common_movies} movies together  
+              </div>  
+            </div>  
+          </div>  
+        ))}  
+      </div>  
+        
+      <button  
+        onClick={() => scrollRelatedCelebrities('right')}  
+        style={{  
+          position: 'absolute',  
+          right: '-20px',  
+          top: '50%',  
+          transform: 'translateY(-50%)',  
+          backgroundColor: '#f5c518',  
+          color: 'black',  
+          border: 'none',  
+          borderRadius: '50%',  
+          width: '40px',  
+          height: '40px',  
+          cursor: 'pointer',  
+          fontSize: '18px',  
+          zIndex: 2  
+        }}  
+      >  
+        ›  
+      </button>  
+    </div>  
+  </div>  
+)}
+
       </div>
     </div>
   );
