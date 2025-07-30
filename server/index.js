@@ -3468,42 +3468,6 @@ app.post('/api/awards', async (req, res) => {
   }  
 });  
   
-// Update Content  
-// app.put('/api/content/:id', async (req, res) => {  
-//   const { id } = req.params;  
-//   const {  
-//     title, description, release_date, language, type, duration,  
-//     poster_url, trailer_url, budget, box_office_collection,  
-//     currency_code, min_age, views, country, genres,  
-//     top_cast, directors, awards  
-//   } = req.body;  
-  
-//   const client = await pool.connect();  
-  
-//   try {  
-//     await client.query('BEGIN');  
-  
-//     // Update content table  
-//     await client.query(`  
-//       UPDATE content SET   
-//         title = $1, description = $2, release_date = $3, type = $4,   
-//         duration = $5, poster_url = $6, trailer_url = $7, budget = $8,   
-//         box_office_collection = $9, currency_code = $10, min_age = $11, views = $12  
-//       WHERE content_id = $13  
-//     `, [title, description, release_date, type, duration, poster_url,   
-//         trailer_url, budget, box_office_collection, currency_code, min_age, views, id]);  
-  
-//     await client.query('COMMIT');  
-//     res.json({ message: 'Content updated successfully' });  
-//   } catch (err) {  
-//     await client.query('ROLLBACK');  
-//     console.error('Error updating content:', err);  
-//     res.status(500).json({ error: 'Failed to update content' });  
-//   } finally {  
-//     client.release();  
-//   }  
-// });  
-
 
 // Update Content    
 app.put('/api/content/:id', async (req, res) => {    

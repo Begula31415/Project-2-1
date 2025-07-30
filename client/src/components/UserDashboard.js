@@ -221,6 +221,10 @@ const fetchData = async () => {
     navigate(`/movie/${movie.id}`);
   };
 
+    const handleCelebrityClick = (celebrity) => {  
+    navigate(`/celebrity/${celebrity.celebrity_id}`);  
+  };  
+
 
 //   // Replace the existing handleAddToWatchlist function  
 // const handleAddToWatchlist = async () => {  
@@ -1388,7 +1392,8 @@ const fetchData = async () => {
         }}>    
           {favouriteCelebrities.map(celebrity => (    
             <div    
-              key={celebrity.celebrity_id}    
+              key={celebrity.celebrity_id}   
+              onClick={() => handleCelebrityClick(celebrity)}   
               style={{    
                 backgroundColor: '#2a2a2a',    
                 borderRadius: '8px',    

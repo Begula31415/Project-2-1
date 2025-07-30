@@ -55,15 +55,22 @@ const Navigation = ({ currentUser, isAuthenticated, onSignIn, onSignOut }) => {
     }
   };
 
-  const handleSignInClick = () => {
-    if (isAuthenticated) {
-      if (window.confirm('Sign out?')) {
-        onSignOut();
-      }
-    } else {
-      onSignIn();
-    }
-  };
+  const handleUserButtonClick = () => {  
+    if (!isAuthenticated) {  
+      onSignIn();  
+    } else {  
+      console.log('Current User:', currentUser);  
+      const userRole = currentUser?.role;  
+        
+      if (userRole === 'admin') {  
+        console.log('Navigating to admin dashboard');  
+        navigate('/admin-dashboard');  
+      } else {  
+        console.log('Navigating to user dashboard');  
+        navigate('/dashboard');  
+      }  
+    }  
+  }; 
 
   const navigateToTop50 = () => {
     navigate('/top-50');
@@ -151,7 +158,7 @@ const Navigation = ({ currentUser, isAuthenticated, onSignIn, onSignOut }) => {
                 if (role === 'admin') {
                   navigate('/admin-dashboard');
                 } else {
-                  navigate('/dashboard');
+                  navigate('/user-dashboard');
                 }
               }
             }}
