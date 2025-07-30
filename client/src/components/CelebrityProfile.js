@@ -60,13 +60,10 @@ const CelebrityProfile = ( { currentUser } ) => {
     window.history.back();
   };
 
-  const handleMovieClick = (movieTitle) => {
-
-    // Handle movie click - could navigate to movie details page
-
-    console.log(`Clicked on ${movieTitle}`);
-    alert(`You clicked on ${movieTitle}`);
-  };
+  const handleMovieClick = (movie) => {  
+  // Navigate to movie details page using the movie ID  
+  navigate(`/movie/${movie.id}`);  
+};  
 
   const handleAddToFavourites = async () => {  
     if (!currentUser?.user_id) {  
@@ -147,7 +144,7 @@ const CelebrityProfile = ( { currentUser } ) => {
             onMouseOver={(e) => e.target.style.backgroundColor = '#e6b800'}  
             onMouseOut={(e) => e.target.style.backgroundColor = '#f5c518'}  
           >  
-            ← Back to Home  
+            ← Back 
           </button>  
             
           {/* <button   
@@ -306,7 +303,7 @@ const CelebrityProfile = ( { currentUser } ) => {
       {movies.map((movie, index) => (  
         <div  
           key={movie.id}  
-          onClick={() => handleMovieClick(movie.title)}  
+          onClick={() => handleMovieClick(movie)}  
           style={{  
             backgroundColor: '#1a1a1a',  
             borderRadius: '10px',  

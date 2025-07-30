@@ -3016,39 +3016,207 @@ app.post('/api/awards', async (req, res) => {
 });  
   
 // Update Content  
-app.put('/api/content/:id', async (req, res) => {  
-  const { id } = req.params;  
-  const {  
-    title, description, release_date, language, type, duration,  
-    poster_url, trailer_url, budget, box_office_collection,  
-    currency_code, min_age, views, country, genres,  
-    top_cast, directors, awards  
-  } = req.body;  
+// app.put('/api/content/:id', async (req, res) => {  
+//   const { id } = req.params;  
+//   const {  
+//     title, description, release_date, language, type, duration,  
+//     poster_url, trailer_url, budget, box_office_collection,  
+//     currency_code, min_age, views, country, genres,  
+//     top_cast, directors, awards  
+//   } = req.body;  
   
-  const client = await pool.connect();  
+//   const client = await pool.connect();  
   
-  try {  
-    await client.query('BEGIN');  
+//   try {  
+//     await client.query('BEGIN');  
   
-    // Update content table  
-    await client.query(`  
-      UPDATE content SET   
-        title = $1, description = $2, release_date = $3, type = $4,   
-        duration = $5, poster_url = $6, trailer_url = $7, budget = $8,   
-        box_office_collection = $9, currency_code = $10, min_age = $11, views = $12  
-      WHERE content_id = $13  
-    `, [title, description, release_date, type, duration, poster_url,   
-        trailer_url, budget, box_office_collection, currency_code, min_age, views, id]);  
+//     // Update content table  
+//     await client.query(`  
+//       UPDATE content SET   
+//         title = $1, description = $2, release_date = $3, type = $4,   
+//         duration = $5, poster_url = $6, trailer_url = $7, budget = $8,   
+//         box_office_collection = $9, currency_code = $10, min_age = $11, views = $12  
+//       WHERE content_id = $13  
+//     `, [title, description, release_date, type, duration, poster_url,   
+//         trailer_url, budget, box_office_collection, currency_code, min_age, views, id]);  
+  
+//     await client.query('COMMIT');  
+//     res.json({ message: 'Content updated successfully' });  
+//   } catch (err) {  
+//     await client.query('ROLLBACK');  
+//     console.error('Error updating content:', err);  
+//     res.status(500).json({ error: 'Failed to update content' });  
+//   } finally {  
+//     client.release();  
+//   }  
+// });  
+
+
+// Update Content    
+app.put('/api/content/:id', async (req, res) => {    
+  const { id } = req.params;    
+  const {    
+    title, description, release_date, language, type, duration,    
+    poster_url, trailer_url, budget, box_office_collection,    
+    currency_code, min_age, views, country, genres,    
+    top_cast, directors, awards    
+  } = req.body;    
+    
+  const client = await pool.connect();    
+    
+  try {    
+    await client.query('BEGIN');    
+    
+    // Update content table    
+    await client.query(`    
+      UPDATE content SET     
+        title = $1, description = $2, release_date = $3, type = $4,     
+        duration = $5, poster_url = $6, trailer_url = $7, budget = $8,     
+        box_office_collection = $9, currency_code = $10, min_age = $11, views = $12    
+      WHERE content_id = $13    
+    `, [title, description, release_date, type, duration, poster_url,     
+        trailer_url, budget, box_office_collection, currency_code, min_age, views, id]);    
+  
+    // Delete existing related data to prevent duplicates  
+    await client.query('DELETE FROM content_country WHERE content_id = $1', [id]);  
+    await client.query('DELETE FROM content_genre WHERE content_id = $1', [id]);  
+    await client.query('DELETE FROM content_award WHERE content_id = $1', [id]);  
+    await client.query('DELETE FROM content_language WHERE content_id = $1', [id]);  
+    await client.query('DELETE FROM content_views WHERE content_id = $1', [id]);  
+  
+    // Handle countries  
+    if (country && Array.isArray(country)) {  
+      for (const countryData of country) {  
+        // Get or create country  
+        let countryResult = await client.query(  
+          'SELECT country_id FROM country WHERE name = $1',   
+          [countryData.name]  
+        );  
+          
+        let countryId;  
+        if (countryResult.rows.length === 0) {  
+          const newCountry = await client.query(  
+            'INSERT INTO country (name) VALUES ($1) RETURNING country_id',  
+            [countryData.name]  
+          );  
+          countryId = newCountry.rows[0].country_id;  
+        } else {  
+          countryId = countryResult.rows[0].country_id;  
+        }  
+  
+        // Insert into content_country  
+        await client.query(  
+          'INSERT INTO content_country (content_id, country_id, role) VALUES ($1, $2, $3)',  
+          [id, countryId, countryData.role || 'production']  
+        );  
+      }  
+    }  
+  
+    // Handle genres  
+    if (genres && Array.isArray(genres)) {  
+      for (const genreName of genres) {  
+        // Get or create genre  
+        let genreResult = await client.query(  
+          'SELECT genre_id FROM genre WHERE name = $1',   
+          [genreName]  
+        );  
+          
+        let genreId;  
+        if (genreResult.rows.length === 0) {  
+          const newGenre = await client.query(  
+            'INSERT INTO genre (name) VALUES ($1) RETURNING genre_id',  
+            [genreName]  
+          );  
+          genreId = newGenre.rows[0].genre_id;  
+        } else {  
+          genreId = genreResult.rows[0].genre_id;  
+        }  
+  
+        // Insert into content_genre  
+        await client.query(  
+          'INSERT INTO content_genre (content_id, genre_id) VALUES ($1, $2)',  
+          [id, genreId]  
+        );  
+      }  
+    }  
+  
+    // Handle awards  
+    if (awards && Array.isArray(awards)) {  
+      for (const awardData of awards) {  
+        // Get or create award  
+        let awardResult = await client.query(  
+          'SELECT award_id FROM award WHERE name = $1 AND year = $2',   
+          [awardData.name, awardData.year]  
+        );  
+          
+        let awardId;  
+        if (awardResult.rows.length === 0) {  
+          const newAward = await client.query(  
+            'INSERT INTO award (name, year, type) VALUES ($1, $2, $3) RETURNING award_id',  
+            [awardData.name, awardData.year, awardData.type || 'General']  
+          );  
+          awardId = newAward.rows[0].award_id;  
+        } else {  
+          awardId = awardResult.rows[0].award_id;  
+        }  
+  
+        // Insert into content_award  
+        await client.query(  
+          'INSERT INTO content_award (content_id, award_id) VALUES ($1, $2)',  
+          [id, awardId]  
+        );  
+      }  
+    }  
+  
+    // Handle languages  
+    if (language && Array.isArray(language)) {  
+      for (const languageData of language) {  
+        // Get or create language  
+        let languageResult = await client.query(  
+          'SELECT language_id FROM language WHERE name = $1',   
+          [languageData.name]  
+        );  
+          
+        let languageId;  
+        if (languageResult.rows.length === 0) {  
+          const newLanguage = await client.query(  
+            'INSERT INTO language (name) VALUES ($1) RETURNING language_id',  
+            [languageData.name]  
+          );  
+          languageId = newLanguage.rows[0].language_id;  
+        } else {  
+          languageId = languageResult.rows[0].language_id;  
+        }  
+  
+        // Insert into content_language  
+        await client.query(  
+          'INSERT INTO content_language (content_id, language_id, is_primary) VALUES ($1, $2, $3)',  
+          [id, languageId, languageData.is_primary || false]  
+        );  
+      }  
+    }  
+  
+    // Handle views (if you want to track individual user views)  
+    // Note: This assumes you have user information available  
+    // You might want to modify this based on your actual requirements  
+    if (views && Array.isArray(views)) {  
+      for (const viewData of views) {  
+        await client.query(  
+          'INSERT INTO content_views (registered_user_id, content_id, when_viewed) VALUES ($1, $2, $3)',  
+          [viewData.registered_user_id, id, viewData.when_viewed || new Date()]  
+        );  
+      }  
+    }  
   
     await client.query('COMMIT');  
     res.json({ message: 'Content updated successfully' });  
-  } catch (err) {  
-    await client.query('ROLLBACK');  
-    console.error('Error updating content:', err);  
-    res.status(500).json({ error: 'Failed to update content' });  
-  } finally {  
-    client.release();  
-  }  
+  } catch (err) {    
+    await client.query('ROLLBACK');    
+    console.error('Error updating content:', err);    
+    res.status(500).json({ error: 'Failed to update content', details: err.message });    
+  } finally {    
+    client.release();    
+  }    
 });  
   
 // Update Celebrity  
@@ -3337,7 +3505,7 @@ app.get('/user/:userId/average-rating', async (req, res) => {
 
 
 
-// Add to watchlist - FIXED VERSION  
+// Add to watchlist   
 app.post("/watchlist", async (req, res) => {      
   const { user_id, content_id } = req.body;      
         
