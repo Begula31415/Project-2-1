@@ -1046,6 +1046,7 @@ app.post('/api/series', async (req, res) => {
     `;  
   
     const contentResult = await client.query(insertContentQuery, [  
+      
       title, description, release_date, type, duration, poster_url,  
       trailer_url, budget, box_office_collection, currency_code, min_age, views  
     ]);  
